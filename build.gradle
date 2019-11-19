@@ -25,6 +25,7 @@ plugins {
 group 'nl.tudelft.cse.sem.template'
 version '1.0-SNAPSHOT'
 
+
 sourceCompatibility = 12
 
 repositories {
@@ -46,6 +47,10 @@ dependencies {
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'postgresql:postgresql:9.0-801.jdbc4'
+
+    //implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.1.7.RELEASE'
+
 }
 
 jacocoTestCoverageVerification {
