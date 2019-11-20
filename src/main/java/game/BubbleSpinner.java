@@ -22,7 +22,6 @@ public class BubbleSpinner extends Game {
     @Override
     public void create() {
         game.setScreen(new LoginScreen(game));
-
     }
 
     @Override

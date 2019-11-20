@@ -18,19 +18,21 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class LoginScreen extends ScreenAdapter {
-    private static final float WORLD_WIDTH = 480;
-    private static final float WORLD_HEIGHT = 320;
+
     private transient Stage stage;
     private transient Game game;
 
     public LoginScreen(Game game) {
         this.game = game;
     }
+
     public void show() {
-        Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+        Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
         stage = new Stage(new ScreenViewport());
-        Label title = new Label("Title Screen", skin,"big-black");
+
+        Gdx.input.setInputProcessor(stage);
+        Label title = new Label("Hello World", skin,"default");
         title.setAlignment(Align.center);
         title.setY(Gdx.graphics.getHeight()*2/3);
         title.setWidth(Gdx.graphics.getWidth());
@@ -42,7 +44,8 @@ public class LoginScreen extends ScreenAdapter {
         playButton.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new LoginScreen(game));
+                game.setScreen(new GameScreen(game));
+                dispose();
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
