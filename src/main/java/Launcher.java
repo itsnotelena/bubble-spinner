@@ -1,5 +1,5 @@
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import game.BubbleSpinner;
 
 /**
@@ -13,7 +13,11 @@ public class Launcher {
      * @param args no arguments needed.
      */
     public static void main(String[] args) {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        new LwjglApplication(new BubbleSpinner(), config);
+        Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        config.setTitle("Bubble Spinner");
+        config.setWindowedMode(1280, 720);
+        config.setWindowIcon("assets/icon.png");
+        config.setResizable(false);
+        new Lwjgl3Application(new BubbleSpinner(), config);
     }
 }
