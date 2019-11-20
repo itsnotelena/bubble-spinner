@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -17,6 +15,7 @@ public class LoginScreen extends ScreenAdapter {
 
     private transient Stage stage;
     private transient Game game;
+    private transient Table table;
 
     public LoginScreen(Game game) {
         this.game = game;
@@ -26,19 +25,15 @@ public class LoginScreen extends ScreenAdapter {
         Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
         stage = new Stage(new ScreenViewport());
+        table = new Table();
+        table.setFillParent(true);
 
         Gdx.input.setInputProcessor(stage);
-        Label title = new Label("Hello World", skin,"default");
-        title.setAlignment(Align.center);
-        title.setY((float) (Gdx.graphics.getHeight() * 2 / 3.));
-        title.setWidth(Gdx.graphics.getWidth());
-        stage.addActor(title);
+        TextField userTextField = new TextField("Username", skin,"default");
+        TextField passTextField = new TextField("Password", skin, "default");
 
-        TextButton playButton = new TextButton("Play!", skin);
-        playButton.setWidth((float) (Gdx.graphics.getWidth() / 2.));
-        playButton.setPosition(
-                (float) (Gdx.graphics.getWidth() / 2. - playButton.getWidth() / 2),
-                (float) (Gdx.graphics.getHeight() / 2. - playButton.getHeight() / 2));
+        TextButton playButton = new TextButton("Play!", skin, "default");
+        playButton.setWidth(userTextField.getWidth());
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -50,7 +45,15 @@ public class LoginScreen extends ScreenAdapter {
                 return true;
             }
         });
-        stage.addActor(playButton);
+
+        table.add(userTextField).size(200, 40);
+        table.row();
+        table.add(passTextField).size(200, 40);
+        table.row();
+        table.add().size(200, 40);
+        table.row();
+        table.add(playButton).size(200, 40);
+        stage.addActor(table);
     }
 
     public void resize(int w, int h) {
@@ -58,8 +61,6 @@ public class LoginScreen extends ScreenAdapter {
     }
 
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
     }
