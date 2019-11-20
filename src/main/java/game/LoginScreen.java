@@ -3,11 +3,18 @@ package game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -33,7 +40,6 @@ public class LoginScreen extends ScreenAdapter {
         TextField passTextField = new TextField("Password", skin, "default");
 
         TextButton playButton = new TextButton("Play!", skin, "default");
-        playButton.setWidth(userTextField.getWidth());
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -46,13 +52,14 @@ public class LoginScreen extends ScreenAdapter {
             }
         });
 
-        table.add(userTextField).size(200, 40);
+        table.defaults().size(300,40).pad(5);
+        table.setColor(new Color(0,0,0,1));
+        table.add(userTextField);
         table.row();
-        table.add(passTextField).size(200, 40);
+        table.add(passTextField);
         table.row();
-        table.add().size(200, 40);
         table.row();
-        table.add(playButton).size(200, 40);
+        table.add(playButton);
         stage.addActor(table);
     }
 
@@ -61,6 +68,8 @@ public class LoginScreen extends ScreenAdapter {
     }
 
     public void render(float delta) {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
     }
