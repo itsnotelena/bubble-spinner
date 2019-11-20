@@ -32,14 +32,17 @@ public class LoginScreen extends ScreenAdapter {
         Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
         stage = new Stage(new ScreenViewport());
-        table = new Table();
-        table.setFillParent(true);
+
 
         Gdx.input.setInputProcessor(stage);
         TextField userTextField = new TextField("Username", skin,"default");
         TextField passTextField = new TextField("Password", skin, "default");
 
-        TextButton playButton = new TextButton("Play!", skin, "default");
+        TextButton playButton = new TextButton("Login", skin, "default");
+        Label register = new Label("Register", skin, "default");
+        register.setColor(new Color(0.5f,0.5f,0.5f,1));
+        Label forgotPass = new Label("Forgot password", skin, "default");
+        forgotPass.setColor(new Color(0.5f,0.5f,0.5f,1));
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -52,14 +55,23 @@ public class LoginScreen extends ScreenAdapter {
             }
         });
 
-        table.defaults().size(300,40).pad(5);
+        int w = 300;
+        int padding = 5;
+        int h = 50;
+
+        table = new Table();
+        table.setFillParent(true);
+        table.defaults().size(w, h).pad(padding);
         table.setColor(new Color(0,0,0,1));
-        table.add(userTextField);
+        table.add(userTextField).colspan(2);
         table.row();
-        table.add(passTextField);
+        table.add(passTextField).colspan(2);
         table.row();
         table.row();
-        table.add(playButton);
+        table.add(playButton).colspan(2);
+        table.row();
+        table.add(register).colspan(1).width(w/2);
+        table.add(forgotPass).colspan(1).width(w/2);
         stage.addActor(table);
     }
 
