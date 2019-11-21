@@ -24,7 +24,7 @@ public class DbImplement {
      */
     public static DbImplement getInstance() {
         if (dbImplementInstance == null) {
-            dbImplementInstance = new DbImplement(DbAdapter.getInstance());
+            dbImplementInstance = new DbImplement(new DbAdapter());
         }
 
         return dbImplementInstance;
@@ -67,7 +67,7 @@ public class DbImplement {
     public boolean checkLogin(User details) {
 
         System.out.println("Verfying User Details");
-        String query = "SELECT * FROM usario WHERE username = ?  AND password = ? ";
+        String query = "SELECT * FROM usario WHERE username = ?  AND password = ?";
 
         try {
             PreparedStatement stat = dbAdapter.getConn().prepareStatement(query);

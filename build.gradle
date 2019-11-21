@@ -47,10 +47,8 @@ dependencies {
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'postgresql:postgresql:9.0-801.jdbc4'
-
-    //implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.1.7.RELEASE'
-
+    implementation 'org.xerial:sqlite-jdbc:3.8.9.1'
+    testCompile "org.assertj:assertj-core:3.12.2"
 }
 
 jacocoTestCoverageVerification {
