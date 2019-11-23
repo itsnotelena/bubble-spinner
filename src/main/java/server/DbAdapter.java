@@ -50,30 +50,42 @@ public class DbAdapter {
      * Get the Connection object to the database.
      * @return a Connection object if the database is online, null otherwise.
      */
-    public Connection getConn() {
-        try {
-            return dataSource.getConnection();
-        } catch (SQLException e) {
-            return null;
-        }
+    public Connection getConn() throws SQLException {
+        return dataSource.getConnection();
+
     }
 
     /**
      * Import all the tables into the database
      * if they weren't imported yet.
      */
-    public boolean importTables() {
-        try {
-            Scanner scanner = new Scanner(new File("assets/db/schema.sql"))
-                    .useDelimiter(";");
-            Statement stmt = getConn().createStatement();
+    public boolean importTables() throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File("assets/db/schema.sql"))
+                .useDelimiter(";");
+
+        try (Statement stmt = getConn().createStatement()) {
+
             while (scanner.hasNext()) {
-                stmt.execute(scanner.next());
+                try {
+                    stmt.execute(scanner.next());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-            return true;
-        } catch (FileNotFoundException | SQLException e) {
+            try {
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+
+        scanner.close();
+        return true;
+
     }
+
+
 }
+
