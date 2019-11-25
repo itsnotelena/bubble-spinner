@@ -7,3 +7,5 @@ build/**
 
 # Editor settings
 .idea/**
+
+out/
