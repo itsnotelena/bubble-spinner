@@ -31,7 +31,7 @@ public class BubbleSpinner extends Game {
 //        batch.begin();
 //        batch.draw(logo,
 //                (float) (Gdx.graphics.getWidth() / 2. - logo.getWidth() / 2.),
-//                (float) (Gdx.grasphics.getHeight() / 2. - logo.getHeight() / 2.));
+//                (float) (Gdx.graphics.getHeight() / 2. - logo.getHeight() / 2.));
 //        batch.end();
 //
        super.render();
