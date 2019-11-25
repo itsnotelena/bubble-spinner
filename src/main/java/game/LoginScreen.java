@@ -21,10 +21,15 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class LoginScreen extends ScreenAdapter {
 
     private transient Stage stage;
-    private transient Game game;
+    private transient BubbleSpinner game;
     private transient Table table;
 
-    public LoginScreen(Game game) {
+    /**
+     * Login Screen.
+     * @param game BubbleSpinner instance.
+     */
+
+    public LoginScreen(BubbleSpinner game) {
         this.game = game;
     }
 
@@ -74,16 +79,32 @@ public class LoginScreen extends ScreenAdapter {
         table.add(forgotPass).colspan(1).width(w/2);
         stage.addActor(table);
     }
-
+    @Override
     public void resize(int w, int h) {
         stage.getViewport().update(w,h,true);
     }
 
+    @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
     }
 
     @Override
