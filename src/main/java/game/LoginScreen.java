@@ -23,6 +23,11 @@ public class LoginScreen extends ScreenAdapter {
     private transient Stage stage;
     private transient BubbleSpinner game;
     private transient Table table;
+    private transient TextField userTextField;
+    private transient TextField passTextField;
+    private transient TextButton playButton;
+    private transient Label register;
+    private transient Label forgotPass;
 
     /**
      * Login Screen.
@@ -37,16 +42,15 @@ public class LoginScreen extends ScreenAdapter {
         Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
         stage = new Stage(new ScreenViewport());
-
-
         Gdx.input.setInputProcessor(stage);
-        TextField userTextField = new TextField("Username", skin,"default");
-        TextField passTextField = new TextField("Password", skin, "default");
+        String def = "default";
+        userTextField = new TextField("Username", skin, def);
+        passTextField = new TextField("Password", skin, def);
 
-        TextButton playButton = new TextButton("Login", skin, "default");
-        Label register = new Label("Register", skin, "default");
+        playButton = new TextButton("Login", skin, def);
+        register = new Label("Register", skin, def);
         register.setColor(new Color(0.5f,0.5f,0.5f,1));
-        Label forgotPass = new Label("Forgot password", skin, "default");
+        forgotPass = new Label("Forgot password", skin, def);
         forgotPass.setColor(new Color(0.5f,0.5f,0.5f,1));
         playButton.addListener(new InputListener() {
             @Override

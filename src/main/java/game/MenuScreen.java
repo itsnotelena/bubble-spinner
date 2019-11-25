@@ -11,7 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -23,6 +25,10 @@ public class MenuScreen extends ScreenAdapter {
     private transient Stage stage;
     private transient BubbleSpinner game;
     private transient Table table;
+    private transient TextButton startButton;
+    private transient TextButton optionsButton;
+    private transient TextButton exitButton;
+    private transient TextButton loginButton;
 
     /**
      * Login Screen.
@@ -37,13 +43,12 @@ public class MenuScreen extends ScreenAdapter {
         Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
         stage = new Stage(new ScreenViewport());
-
-
         Gdx.input.setInputProcessor(stage);
-        TextButton startButton = new TextButton("Start game", skin, "default");
-        TextButton optionsButton = new TextButton("Difficulty: Hard", skin, "default");
-        TextButton exitButton = new TextButton("Exit", skin, "default");
-        TextButton loginButton = new TextButton("Login", skin, "default");
+        String def = "default";
+        startButton = new TextButton("Start game", skin, def);
+        optionsButton = new TextButton("Difficulty: Hard", skin, def);
+        loginButton = new TextButton("Login", skin, def);
+        exitButton = new TextButton("Exit", skin, def);
 
         startButton.addListener(new InputListener() {
             @Override
@@ -51,6 +56,7 @@ public class MenuScreen extends ScreenAdapter {
                 game.setScreen(new GameScreen(game));
                 dispose();
             }
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -62,6 +68,21 @@ public class MenuScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 optionsButton.setText("Diffulty: Easy");
             }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
+
+        loginButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new LoginScreen(game));
+                dispose();
+            }
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -73,20 +94,9 @@ public class MenuScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.dispose();
                 dispose();
-                System.exit(0);
+                Gdx.app.exit();
             }
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-        });
 
-        loginButton.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new LoginScreen(game));
-                dispose();
-            }
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
@@ -105,10 +115,9 @@ public class MenuScreen extends ScreenAdapter {
         table.row();
         table.add(optionsButton).colspan(2);
         table.row();
-        table.add(exitButton).colspan(2);
-        table.row();
         table.add(loginButton).colspan(2);
-
+        table.row();
+        table.add(exitButton).colspan(2);
         stage.addActor(table);
     }
     @Override
