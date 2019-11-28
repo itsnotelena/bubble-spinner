@@ -12,10 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class BubbleSpinner extends Game {
     protected transient SpriteBatch batch;
-    private transient Texture img;
-    private transient Game game = this;
-    private transient OrthographicCamera camera;
-    private transient Texture logo;
 
 
     @Override

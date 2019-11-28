@@ -28,6 +28,8 @@ public class LoginScreen extends ScreenAdapter {
     private transient TextButton playButton;
     private transient Label register;
     private transient Label forgotPass;
+    static final String def = "default";
+
 
     /**
      * Login Screen.
@@ -43,7 +45,6 @@ public class LoginScreen extends ScreenAdapter {
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        String def = "default";
         userTextField = new TextField("Username", skin, def);
         passTextField = new TextField("Password", skin, def);
 
