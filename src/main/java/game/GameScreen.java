@@ -5,18 +5,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class GameScreen implements Screen {
+
     private transient BubbleSpinner game;
     private transient Stage stage;
     private transient OrthographicCamera camera;
-    private transient Image img;
+    private transient BubbleSpinnerController bubbleSpinnerController;
 
     /**
      * This is Screen where the game is played.
@@ -28,18 +25,9 @@ public class GameScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        img = new Image(new Texture("assets/logo.png"));
-        img.setPosition(
-                Gdx.graphics.getWidth() / 2 - (int)img.getWidth() / 2,
-                Gdx.graphics.getHeight() / 2 - (int)img.getHeight() / 2);
-        img.setOrigin(img.getWidth() / 2, img.getHeight() / 2);
-        RepeatAction infinite = new RepeatAction();
-        infinite.setCount(RepeatAction.FOREVER);
-        infinite.setAction(Actions.rotateBy(30));
-        img.addAction(infinite);
-
         stage = new Stage(new ScreenViewport());
-        stage.addActor(img);
+
+        bubbleSpinnerController = new BubbleSpinnerController(this, stage);
     }
 
     @Override
@@ -61,6 +49,8 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             game.setScreen(new SplashScreen(game));
         }
+
+        bubbleSpinnerController.update();
     }
 
     @Override
@@ -86,5 +76,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+        game.setScreen(new SplashScreen(game));
     }
 }
