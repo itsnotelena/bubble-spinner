@@ -55,9 +55,8 @@ public class SplashScreen implements Screen {
                 Gdx.graphics.getHeight() / 4);
         game.batch.end();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)
-            || Gdx.input.isTouched()) {
-            game.setScreen(new GameScreen(game));
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            game.setScreen(new MenuScreen(game));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             this.dispose();
@@ -72,7 +71,6 @@ public class SplashScreen implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
