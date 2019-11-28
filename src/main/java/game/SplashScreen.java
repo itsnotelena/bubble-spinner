@@ -50,10 +50,17 @@ public class SplashScreen implements Screen {
         font.draw(game.batch, "Press SPACE to start the game.",
                 3 * Gdx.graphics.getWidth() / 4,
                 Gdx.graphics.getHeight() / 4);
+        font.draw(game.batch, "Press ESC to exit the game.",
+                Gdx.graphics.getWidth() / 8,
+                Gdx.graphics.getHeight() / 4);
         game.batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             game.setScreen(new MenuScreen(game));
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            this.dispose();
+            game.dispose();
         }
     }
 
