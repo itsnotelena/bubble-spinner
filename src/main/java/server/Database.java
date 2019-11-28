@@ -28,9 +28,12 @@ public class Database {
     /**
      * Creating the Schema of the database.
      */
-    public void createSchema() {
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    //Warning suppressed because to fix it a more severe one is created.
+    public final void createSchema() {
+        Statement schema = null;
         try {
-            Statement schema = connection.createStatement();
+            schema = connection.createStatement();
             schema.executeUpdate("create table if not exists users"
                     + "(username String not null constraint USER_pk primary key, "
                     + "email String not null, password String not null,score int not null, "
@@ -39,17 +42,24 @@ public class Database {
                     "create unique index if not exists USER_email_uindex on users (email)");
             schema.executeUpdate(
                     "create unique index if not exists USER_username_uindex on users (username)");
-            schema.close();
         } catch (SQLException e) {
             e.printStackTrace();
             closeData();
+        } finally {
+            if (schema != null) {
+                try {
+                    schema.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     /**
      * Closing and clean up the connection with Database.
      */
-    public void closeData() {
+    public final void closeData() {
         if (connection != null) {
             try {
                 connection.close();
@@ -75,14 +85,17 @@ public class Database {
     /**
      Add User to Table.
      */
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    //Warning suppressed because to fix it a more severe one is created.
     public boolean addUser(User1 user) {
         Optional<User1> optionalUser = getUserByUsername(user.getUsername());
         if (optionalUser.isPresent()) {
             return false;
         }
 
+        PreparedStatement statement = null;
         try {
-            PreparedStatement statement =
+            statement =
                     connection.prepareStatement("INSERT into users values(?,?,?,?,?,?)");
             statement.setString(1, user.getUsername());
             statement.setString(2,user.getEmail());
@@ -96,6 +109,14 @@ public class Database {
             e.printStackTrace();
             closeData();
             return false;
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -104,12 +125,15 @@ public class Database {
      * @param username as a parameter.
      * @return
      */
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    //Warning suppressed because to fix it a more severe one is created.
     public Optional<User1> getUserByUsername(String username) {
+        ResultSet result = null;
         try {
             PreparedStatement statement =
                     connection.prepareStatement("SELECT * FROM users where username = ?");
             statement.setString(1,username);
-            ResultSet result = statement.executeQuery();
+            result = statement.executeQuery();
             if (result.next()) {
                 return Optional.of(new User1(result.getString(1),
                                     result.getString(2),
@@ -125,6 +149,14 @@ public class Database {
             e.printStackTrace();
             closeData();
             return Optional.empty();
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

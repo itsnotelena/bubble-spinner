@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 
 
 public class DbImplementTest {
-    DbAdapter dbAdapter;
-    DbImplement dbImplement;
+    private transient DbAdapter dbAdapter;
+    private transient DbImplement dbImplement;
 
     @BeforeEach
     void setUp() throws FileNotFoundException {

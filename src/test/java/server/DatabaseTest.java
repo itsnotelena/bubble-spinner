@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 
 public class DatabaseTest {
 
-    Database db;
-    User1 user = new User1("mickey", "mickey@mouse", "abc", 2,3,1);
+    private transient Database db;
+    private transient User1 user = new User1("mickey", "mickey@mouse", "abc", 2,3,1);
 
     @BeforeEach
     public void buildEnvironment() throws SQLException {

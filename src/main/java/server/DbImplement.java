@@ -109,10 +109,13 @@ public class DbImplement {
      * @return List of top 5 entries in descending order of type Score class
      * @throws SQLException in case of connection failure
      */
-    public List<Score> getTopFiveScore(String column) throws SQLException {
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    //Warning suppressed because to fix it a more severe one is created.
+    public final List<Score> getTopFiveScore(String column) throws SQLException {
+        ResultSet result = null;
         String query = "SELECT * FROM score ORDER BY " + column + " DESC LIMIT 5";
         PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-        ResultSet result = statement.executeQuery();
+        result = statement.executeQuery();
         List<Score> res = new ArrayList<>(5);
 
         while (result.next()) {
@@ -121,6 +124,7 @@ public class DbImplement {
                     .getInt(2), result
                     .getInt(3)));
         }
+        result.close();
         return res;
     }
 
