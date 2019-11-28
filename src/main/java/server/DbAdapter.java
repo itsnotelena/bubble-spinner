@@ -3,6 +3,7 @@ package server;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -86,6 +87,28 @@ public class DbAdapter {
 
     }
 
+
+    /**
+     * Closing and clean up the connection with Database.
+     */
+    public final void closeData() throws SQLException {
+        if (getConn() != null) {
+            try {
+                getConn().close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Clear the Database.
+     */
+    public void clearData() throws SQLException {
+        PreparedStatement statement = getConn().prepareStatement("DELETE FROM users");
+        statement.executeUpdate();
+        statement.close();
+    }
 
 }
 

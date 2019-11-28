@@ -31,13 +31,4 @@ public class DbImplementTest {
         dbAdapter.getConn().close();
     }
 
-    @Test
-    void insertScore() throws SQLException {
-        Score a = new Score("lalalq",1,1);
-        dbImplement.removeUser(a.getUsername(),"score");
-        boolean resA = dbImplement.insertScore(a);
-        Assertions.assertThat(resA).isTrue();
-        dbAdapter.getConn().close();
-    }
-
 }

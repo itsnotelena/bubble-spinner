@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DbImplement {
 
@@ -113,19 +114,33 @@ public class DbImplement {
     //Warning suppressed because to fix it a more severe one is created.
     public final List<Score> getTopFiveScore(String column) throws SQLException {
         ResultSet result = null;
-        String query = "SELECT * FROM score ORDER BY " + column + " DESC LIMIT 5";
-        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-        result = statement.executeQuery();
-        List<Score> res = new ArrayList<>(5);
+        try {
+            String query = "SELECT * FROM score ORDER BY " + column + " DESC LIMIT 5";
+            PreparedStatement statement = dbAdapter.getConn ().prepareStatement (query);
+            result = statement.executeQuery ();
+            List<Score> res = new ArrayList<> (5);
 
-        while (result.next()) {
-            res.add(new Score(result
-                    .getString(1), result
-                    .getInt(2), result
-                    .getInt(3)));
+            if (result.next()) {
+                res.add (new Score (result
+                        .getString (1), result
+                        .getInt (2), result
+                        .getInt (3)));
+                return res;
+            } else {
+                Optional.empty();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        result.close();
-        return res;
+        return null;
     }
 
     /**
@@ -168,6 +183,43 @@ public class DbImplement {
 
         return !searchUser(username,table);
 
+    }
+
+    /**
+     * Returns all the usernames in the database.
+     * @param username as a parameter.
+     * @return
+     */
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    //Warning suppressed because to fix it a more severe one is created.
+    public Optional<User> getUserByUsername(String username) throws SQLException {
+        ResultSet result = null;
+        try {
+            PreparedStatement statement =
+                    dbAdapter.getConn().prepareStatement("SELECT * FROM users where username = ?");
+            statement.setString(1,username);
+            result = statement.executeQuery();
+            if (result.next()) {
+                return Optional.of(new User(result.getString(1),
+                        result.getString(2),
+                        result.getString(3)));
+            } else {
+                result.close();
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbAdapter.closeData();
+            return Optional.empty();
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }
