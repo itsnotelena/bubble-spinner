@@ -16,10 +16,15 @@ plugins {
 
     // FindBugs / SpotBugs
     id "com.github.spotbugs" version "2.0.1"
+
+    // Spring Boot
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
 group 'nl.tudelft.cse.sem.template'
 version '1.0-SNAPSHOT'
+
 
 sourceCompatibility = 12
 
@@ -39,7 +44,12 @@ test {
 
 dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
+    testCompile "org.mockito:mockito-core:1.+"
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.xerial:sqlite-jdbc:3.8.9.1'
+    testCompile "org.assertj:assertj-core:3.12.2"
 }
 
 jacocoTestCoverageVerification {
