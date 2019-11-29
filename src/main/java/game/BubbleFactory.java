@@ -3,14 +3,16 @@ package game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class BubbleFactory implements Iterator {
 
     private transient Random rnd;
     private transient Stage stage;
-    private transient String[] bubbles = { "assets/bubble.png" };
+    private transient List<Texture> texture = new ArrayList<>();
 
     public BubbleFactory(Stage stage) {
         this(stage, 42);
@@ -38,6 +40,14 @@ public class BubbleFactory implements Iterator {
     }
 
     private BubbleActor createBubble() {
-        return new BubbleActor(new Texture(bubbles[0]), stage);
+        return new BubbleActor(texture.get(rnd.nextInt(texture.size())), stage);
+    }
+
+    public void addTexture(Texture texture) {
+        this.texture.add(texture);
+    }
+
+    public void addTexture(String text) {
+        addTexture(new Texture(text));
     }
 }

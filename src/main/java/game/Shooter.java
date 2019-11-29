@@ -32,6 +32,7 @@ public class Shooter {
      * of the screen and adds them to the Stage.
      */
     public void initialize() {
+        this.bubbleFactory.addTexture("assets/bubble.png");
         refill();
         Stack<BubbleActor> stack = new Stack<>();
         assert available.size() > 5;
@@ -94,6 +95,10 @@ public class Shooter {
 
         Vector2 dir = newPos.sub(bubblePos).nor();
         current().setMovingDirection(new Vector2(5 * dir.x, 5 * dir.y));
+    }
+
+    public void setBubbleFactory(BubbleFactory bubbleFactory) {
+        this.bubbleFactory = bubbleFactory;
     }
 
 }

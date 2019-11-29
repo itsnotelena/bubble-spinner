@@ -21,6 +21,7 @@ public class HexagonController {
          * Change this to create the correct structure.
          */
         this.bubbleFactory = new BubbleFactory(stage);
+        this.bubbleFactory.addTexture("assets/bubble.png");
         this.bubbles = new ArrayList<>();
         BubbleActor b1 = bubbleFactory.next().center();
         b1.shiftX(true, 0);
