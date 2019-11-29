@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import game.ui.GameScreen;
 
 public class BubbleSpinnerController {
 

@@ -1,4 +1,4 @@
-package game;
+package game.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import game.BubbleSpinner;
 
 public class SplashScreen implements Screen {
     private transient BubbleSpinner game;

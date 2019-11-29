@@ -139,4 +139,8 @@ public class BubbleActor extends Image {
     public Vector2 vec(float x, float y) {
         return new Vector2(x, y);
     }
+
+    public Vector2 getPosition() {
+        return vec(circle.x, circle.y);
+    }
 }
