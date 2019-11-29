@@ -2,22 +2,21 @@ package server;
 
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
 public class DbImplementTest {
-    private transient DbAdapter dbAdapter;
-    private transient DbImplement dbImplement;
+    private static DbAdapter dbAdapter = new DbAdapter("test");
+    private transient DbImplement dbImplement = new DbImplement(dbAdapter);
 
-    @BeforeEach
-    void setUp() throws FileNotFoundException {
-        dbAdapter = new DbAdapter("test");
+    @BeforeAll
+    static void setUp() throws FileNotFoundException {
         dbAdapter.importTables();
-        dbImplement = new DbImplement(dbAdapter);
-        System.out.println("here");
     }
 
     @Test
@@ -28,7 +27,24 @@ public class DbImplementTest {
         boolean res = dbImplement.checkLogin(a);
         Assertions.assertThat(res).isTrue();
         Assertions.assertThat(resA).isTrue();
-        dbAdapter.getConn().close();
+        System.out.println(dbAdapter.getConn().isClosed());
+
+    }
+
+    @Test
+    void searchProperly() throws SQLException {
+        Score a = new Score("lalalq",1,1);
+        dbImplement.removeUser(a.getUsername(),DbImplement.SCORE);
+        boolean resA = dbImplement.insertScore(a);
+        Assertions.assertThat(resA).isTrue();
+        Assertions.assertThat(dbImplement.searchUser(a.getUsername(),DbImplement.SCORE));
+        dbImplement.removeUser(a.getUsername(),"score");
+    }
+
+    @Test
+    void searchFails() throws SQLException {
+        Assertions.assertThat(dbImplement.searchUser("lal", "users")).isFalse();
+        Assertions.assertThat(dbImplement.searchUser("lal", DbImplement.SCORE)).isFalse();
     }
 
 }

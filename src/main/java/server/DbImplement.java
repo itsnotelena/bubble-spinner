@@ -10,6 +10,7 @@ import java.util.Optional;
 public class DbImplement {
 
     private transient DbAdapter dbAdapter;
+    public static final String SCORE = "score";
 
     /**
      * Constructor.
@@ -39,8 +40,10 @@ public class DbImplement {
         PreparedStatement stat = dbAdapter.getConn().prepareStatement(query);
         stat.setString(1, details.getUsername());
         stat.setString(2, details.getPassword());
+        boolean result = stat.executeQuery().next();
+        stat.close();
 
-        return stat.executeQuery().next();
+        return result;
     }
 
     /**
@@ -51,7 +54,9 @@ public class DbImplement {
      */
     public boolean insertUser(User details) throws SQLException {
         assert details != null;
-        assert !searchUser(details.getUsername(),"users");
+        if (searchUser(details.getUsername(),"users")) {
+            return false;
+        }
 
         String query = "INSERT INTO users VALUES (?,?,?);";
         PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
@@ -59,6 +64,7 @@ public class DbImplement {
         statement.setString(2, details.getEmail());
         statement.setString(3, details.getPassword());
         statement.execute();
+        statement.close();
 
         return searchUser(details.getUsername(), "users");
 
@@ -79,6 +85,7 @@ public class DbImplement {
         statement.setInt(2, score.getScoreW());
         statement.setInt(3, score.getScoreA());
         statement.execute();
+        statement.close();
 
         return searchUser(score.getUsername(), "score");
 
@@ -98,7 +105,9 @@ public class DbImplement {
         String query = "SELECT username FROM " + table + "  WHERE username = ?";
         PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
         statement.setString(1,name);
-        return statement.executeQuery().next();
+        boolean result = statement.executeQuery().next();
+        statement.close();
+        return result;
     }
 
     /**
@@ -111,20 +120,19 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    //Warning suppressed because to fix it a more severe one is created.
     public final List<Score> getTopFiveScore(String column) throws SQLException {
         ResultSet result = null;
         try {
             String query = "SELECT * FROM score ORDER BY " + column + " DESC LIMIT 5";
-            PreparedStatement statement = dbAdapter.getConn ().prepareStatement (query);
-            result = statement.executeQuery ();
-            List<Score> res = new ArrayList<> (5);
+            PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
+            result = statement.executeQuery();
+            List<Score> res = new ArrayList<>(5);
 
             if (result.next()) {
-                res.add (new Score (result
-                        .getString (1), result
-                        .getInt (2), result
-                        .getInt (3)));
+                res.add(new Score(result
+                        .getString(1), result
+                        .getInt(2), result
+                        .getInt(3)));
                 return res;
             } else {
                 Optional.empty();
@@ -160,6 +168,7 @@ public class DbImplement {
         statement.setInt(3,game.getHighestLevel());
         statement.setString(4,game.getAward());
         statement.execute();
+        statement.close();
 
         return searchUser(game.getUsername(), "games");
     }
@@ -180,6 +189,7 @@ public class DbImplement {
         PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
         statement.setString(1,username);
         statement.execute();
+        statement.close();
 
         return !searchUser(username,table);
 
@@ -188,10 +198,9 @@ public class DbImplement {
     /**
      * Returns all the usernames in the database.
      * @param username as a parameter.
-     * @return
+     * @return Optional User
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    //Warning suppressed because to fix it a more severe one is created.
     public Optional<User> getUserByUsername(String username) throws SQLException {
         ResultSet result = null;
         try {

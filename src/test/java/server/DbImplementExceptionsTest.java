@@ -55,4 +55,36 @@ public class DbImplementExceptionsTest {
         Assertions.assertThatThrownBy(() -> dbImplement.insertUser(new User("LOL", "aaa", "aas")))
                 .isInstanceOf(SQLException.class);
     }
+
+
+    @Test
+    void searchNull() {
+        Assertions.assertThatThrownBy(() -> dbImplement.searchUser(null,"users"))
+                .isInstanceOf(java.lang.AssertionError.class);
+    }
+
+    @Test
+    void removeNull() {
+        Assertions.assertThatThrownBy(() -> dbImplement.removeUser(null,"users"))
+                .isInstanceOf(java.lang.AssertionError.class);
+    }
+
+    @Test
+    void insertUserNull() {
+        Assertions.assertThatThrownBy(() -> dbImplement.insertUser(null))
+                .isInstanceOf(java.lang.AssertionError.class);
+    }
+
+    @Test
+    void insertScoreNull() {
+        Assertions.assertThatThrownBy(() -> dbImplement.insertScore(null))
+                .isInstanceOf(java.lang.AssertionError.class);
+    }
+
+    @Test
+    void checkNull() {
+        Assertions.assertThatThrownBy(() -> dbImplement.checkLogin(null))
+                .isInstanceOf(java.lang.AssertionError.class);
+    }
+
 }
