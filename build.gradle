@@ -30,6 +30,18 @@ sourceCompatibility = 12
 
 repositories {
     mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    jcenter()
+    google()
+}
+
+ext {
+    gdxVersion = '1.9.10'
+    roboVMVersion = '2.3.7'
+    box2DLightsVersion = '1.4'
+    ashleyVersion = '1.7.0'
+    aiVersion = '1.8.0'
 }
 
 test {
@@ -37,19 +49,39 @@ test {
 
     jacoco {
         enabled = true
-        includes = ['nl.tudelft.cse.sem.*']
-        excludes = []
+        includes = ['game.*']
+        excludes = ['game.ui.*']
     }
 }
 
 dependencies {
+    apply plugin: "java-library"
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
     testCompile "org.mockito:mockito-core:1.+"
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
+
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+
+    compile "junit:junit:4.+"
+    compile "org.mockito:mockito-all:1.9.+"
+    compile "org.assertj:assertj-core:3.12.2"
+
+    testCompile "org.mockito:mockito-core:1.+"
+    testCompile "org.assertj:assertj-core:3.12.2"
+    testCompile "junit:junit:4.+"
+    testCompile "org.mockito:mockito-all:1.9.+"        
+    testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+    testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.xerial:sqlite-jdbc:3.8.9.1'
-    testCompile "org.assertj:assertj-core:3.12.2"
 }
 
 jacocoTestCoverageVerification {
@@ -57,20 +89,22 @@ jacocoTestCoverageVerification {
         rule {
             enabled = true
             element = 'CLASS'
-            includes = ['nl.tudelft.cse.sem.*']
+            includes = ['game.*']
+            excludes = ['game.ui.*']
 
             limit {
                 counter = 'LINE'
                 value = 'TOTALCOUNT'
-                maximum = 0.3
+                minimum = 0.3
             }
         }
     }
 }
 
+
 checkstyle {
     toolVersion "8.25"
-	configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
 }
 
 pmd {
