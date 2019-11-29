@@ -56,4 +56,9 @@ PMD:
 test:
   stage: test
   script:
-    gradle check
+    - gradle build
+    - gradle check
+    - gradle test
+    - gradle jacocoTestReport
+    - "awk -F\",\" '{ instructions += $4 + $5; covered += $5 } END { print covered, \"/\", instructions, \" instructions covered\"; print 100*covered/instructions, \"% covered\" }' build/reports/jacoco/test/jacocoTestReport.csv"
+  coverage: /\d+.\d+ \% covered/

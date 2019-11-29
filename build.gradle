@@ -25,7 +25,6 @@ plugins {
 group 'nl.tudelft.cse.sem.template'
 version '1.0-SNAPSHOT'
 
-
 sourceCompatibility = 12
 
 repositories {
@@ -49,15 +48,20 @@ test {
 
     jacoco {
         enabled = true
-        includes = ['game.*']
+        includes = ['game.*', 'server.*']
         excludes = ['game.ui.*']
+    }
+}
+
+jacocoTestReport {
+    reports {
+        csv.enabled true
     }
 }
 
 dependencies {
     apply plugin: "java-library"
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
-    testCompile "org.mockito:mockito-core:1.+"
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
 
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -71,10 +75,10 @@ dependencies {
     compile "org.mockito:mockito-all:1.9.+"
     compile "org.assertj:assertj-core:3.12.2"
 
-    testCompile "org.mockito:mockito-core:1.+"
     testCompile "org.assertj:assertj-core:3.12.2"
     testCompile "junit:junit:4.+"
-    testCompile "org.mockito:mockito-all:1.9.+"        
+    testCompile "org.mockito:mockito-all:1.9.+"
+
     testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
     testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
     testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
@@ -89,7 +93,7 @@ jacocoTestCoverageVerification {
         rule {
             enabled = true
             element = 'CLASS'
-            includes = ['game.*']
+            includes = ['game.*', 'server.*']
             excludes = ['game.ui.*']
 
             limit {
