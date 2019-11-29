@@ -16,10 +16,15 @@ plugins {
 
     // FindBugs / SpotBugs
     id "com.github.spotbugs" version "2.0.1"
+
+    // Spring Boot
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
 group 'nl.tudelft.cse.sem.template'
 version '1.0-SNAPSHOT'
+
 
 sourceCompatibility = 12
 
@@ -52,6 +57,7 @@ test {
 dependencies {
     apply plugin: "java-library"
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
+    testCompile "org.mockito:mockito-core:1.+"
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
 
     api "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -72,6 +78,10 @@ dependencies {
     testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
     testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
     testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.xerial:sqlite-jdbc:3.8.9.1'
 }
 
 jacocoTestCoverageVerification {
@@ -79,12 +89,13 @@ jacocoTestCoverageVerification {
         rule {
             enabled = true
             element = 'CLASS'
-            includes = ['nl.tudelft.cse.sem.*']
+            includes = ['game.*']
+            excludes = ['game.ui.*']
 
             limit {
                 counter = 'LINE'
                 value = 'TOTALCOUNT'
-                maximum = 0.3
+                minimum = 0.3
             }
         }
     }
