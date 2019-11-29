@@ -1,33 +1,24 @@
-package game;
+package game.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import game.BubbleSpinner;
 
-public class GameScreen implements Screen {
-
+public class LoginScreen implements Screen {
     private transient BubbleSpinner game;
-    private transient Stage stage;
     private transient OrthographicCamera camera;
-    private transient BubbleSpinnerController bubbleSpinnerController;
 
     /**
-     * This is Screen where the game is played.
+     * Login Screen.
      * @param game BubbleSpinner instance.
      */
-    public GameScreen(BubbleSpinner game) {
+    public LoginScreen(BubbleSpinner game) {
         this.game = game;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-        stage = new Stage(new ScreenViewport());
-
-        bubbleSpinnerController = new BubbleSpinnerController(this, stage);
     }
 
     @Override
@@ -43,19 +34,11 @@ public class GameScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
-        stage.act();
-        stage.draw();
-
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new SplashScreen(game));
-        }
-
-        bubbleSpinnerController.update();
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height);
+
     }
 
     @Override
@@ -75,7 +58,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose();
-        game.setScreen(new SplashScreen(game));
+
     }
 }

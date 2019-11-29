@@ -2,6 +2,7 @@ package game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import game.ui.SplashScreen;
 
 /**
  * BubbleSpinner class.
@@ -9,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * with the Game library.
  */
 public class BubbleSpinner extends Game {
-    protected transient SpriteBatch batch;
+    public transient SpriteBatch batch;
 
     @Override
     public void create() {
