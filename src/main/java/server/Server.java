@@ -36,13 +36,12 @@ public class Server {
     @PostMapping(value = "/login")
     public boolean checkLogin(final @RequestBody Map<String, Object> reqBody) {
         String username = (String) reqBody.get("username");
-        String email = (String) reqBody.get("email");
         String password = (String) reqBody.get("password");
-        if (username == null || password == null || email == null) {
+        if (username == null || password == null) {
             return false;
         }
         try {
-            return dbImplement.checkLogin(new User(username, email, password));
+            return dbImplement.checkLogin(new User(username, null, password));
         } catch (SQLException e) {
             return false;
         }
