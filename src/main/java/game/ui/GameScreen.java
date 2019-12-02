@@ -41,6 +41,7 @@ public class GameScreen implements Screen {
         timerFont = new BitmapFont();
         timerFont.setColor(Color.BLACK);
         timerFont.getData().setScale(2);
+        System.out.println(game.getUser().getUsername());
     }
 
     @Override

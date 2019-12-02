@@ -1,5 +1,6 @@
 package game.ui;
 
+import client.Client;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
+import server.User;
 
 public class RegisterScreen extends ScreenAdapter {
 
@@ -67,8 +69,14 @@ public class RegisterScreen extends ScreenAdapter {
         registerButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameScreen(game));
-                dispose();
+                User u = new User(emailTextField.getText() ,userTextField.getText(), passTextField.getText());
+                if (new Client().register(u)) {
+                    game.setUser(u);
+                    game.setScreen(new GameScreen(game));
+                    dispose();
+                }
+
+
             }
 
             @Override
