@@ -1,3 +1,4 @@
+import config.Config;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import game.BubbleSpinner;
@@ -14,9 +15,9 @@ public class Launcher {
      */
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-        config.setTitle("Bubble Spinner");
-        config.setWindowedMode(1280, 720);
-        config.setWindowIcon("assets/icon.png");
+        config.setTitle(Config.Game.TITLE);
+        config.setWindowedMode(Config.Game.WIDTH, Config.Game.HEIGHT);
+        config.setWindowIcon(Config.Game.ICON);
         config.setResizable(false);
         new Lwjgl3Application(new BubbleSpinner(), config);
     }

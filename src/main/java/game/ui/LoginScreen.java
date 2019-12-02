@@ -1,6 +1,7 @@
 package game.ui;
 
 
+import client.Client;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -57,8 +58,10 @@ public class LoginScreen extends ScreenAdapter {
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameScreen(game));
-                dispose();
+                if (new Client().authenticate(userTextField.getText(), passTextField.getText())) {
+                    game.setScreen(new GameScreen(game));
+                    dispose();
+                }
             }
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
