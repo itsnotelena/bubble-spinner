@@ -10,7 +10,6 @@ import java.util.Optional;
 public class DbImplement {
 
     private transient DbAdapter dbAdapter;
-    public static final String SCORE = "score";
 
     /**
      * Constructor.
@@ -54,7 +53,7 @@ public class DbImplement {
      */
     public boolean insertUser(User details) throws SQLException {
         assert details != null;
-        if (searchUser(details.getUsername(),"users")) {
+        if (searchInUsers(details.getUsername())) {
             return false;
         }
 
@@ -66,7 +65,7 @@ public class DbImplement {
         statement.execute();
         statement.close();
 
-        return searchUser(details.getUsername(), "users");
+        return searchInUsers(details.getUsername());
 
     }
 
@@ -87,7 +86,7 @@ public class DbImplement {
         statement.execute();
         statement.close();
 
-        return searchUser(score.getUsername(), "score");
+        return searchInScore(score.getUsername());
 
     }
 
@@ -100,7 +99,7 @@ public class DbImplement {
      * @return boolean if user exists in the specified table
      * @throws SQLException in case of connection failure
      */
-    public boolean searchUser(String name, String table) throws SQLException {
+    private boolean searchUser(String name, String table) throws SQLException {
         assert name != null;
         String query = "SELECT username FROM " + table + "  WHERE username = ?";
         PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
@@ -108,6 +107,48 @@ public class DbImplement {
         boolean result = statement.executeQuery().next();
         statement.close();
         return result;
+    }
+
+    /**
+     * search inside the users table.
+     * @param name String to search for
+     * @return if it exists or not
+     */
+    public boolean searchInUsers(String name) {
+        try {
+            return searchUser(name, "users");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * search inside the score table.
+     * @param name String to search for
+     * @return if it exists or not
+     */
+    public boolean searchInScore(String name) {
+        try {
+            return searchUser(name, "score");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * search inside the game table.
+     * @param name String to search for
+     * @return if it exists or not
+     */
+    public boolean searchInGame(String name) {
+        try {
+            return searchUser(name, "games");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -170,7 +211,7 @@ public class DbImplement {
         statement.execute();
         statement.close();
 
-        return searchUser(game.getUsername(), "games");
+        return searchInGame(game.getUsername());
     }
 
     /**
@@ -182,7 +223,7 @@ public class DbImplement {
      * @return true if it is removed or otherwise
      * @throws SQLException in case of connection failure
      */
-    public boolean removeUser(String username, String table) throws SQLException {
+    private boolean removeUser(String username, String table) throws SQLException {
         assert username != null;
 
         String query = "DELETE FROM " + table + " WHERE username = ? ";
@@ -194,6 +235,52 @@ public class DbImplement {
         return !searchUser(username,table);
 
     }
+
+    /**
+     * deletes username from Score.
+     *
+     * @param username String to remove from db
+     * @return true if it is removed or otherwise
+     */
+    public boolean removeFromScore(String username) {
+        try {
+            return removeUser(username, "score");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * deletes usernname from users.
+     *
+     * @param username String to remove from db
+     * @return true if it is removed or otherwise
+     */
+    public boolean removeFromUser(String username) {
+        try {
+            return removeUser(username, "users");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * deletes usernname from games.
+     *
+     * @param username String to remove from db
+     * @return true if it is removed or otherwise
+     */
+    public boolean removeFromGame(String username) {
+        try {
+            return removeUser(username, "games");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     /**
      * Returns all the usernames in the database.
@@ -230,6 +317,5 @@ public class DbImplement {
             }
         }
     }
-
 }
 
