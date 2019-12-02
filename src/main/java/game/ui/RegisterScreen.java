@@ -1,6 +1,5 @@
 package game.ui;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -11,9 +10,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -21,22 +22,24 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
 
-public class MenuScreen extends ScreenAdapter {
+public class RegisterScreen extends ScreenAdapter {
 
     private transient Stage stage;
     private transient BubbleSpinner game;
     private transient Table table;
-    private transient TextButton startButton;
-    private transient TextButton optionsButton;
-    private transient TextButton exitButton;
-    private transient TextButton loginButton;
+    private transient Label registerScreenLabel;
+    private transient TextField userTextField;
+    private transient TextField passTextField;
+    private transient TextField emailTextField;
+    private transient TextButton registerButton;
+    static final String def = "default";
+
 
     /**
-     * Login Screen.
+     * Registerss Screen.
      * @param game BubbleSpinner instance.
      */
-
-    public MenuScreen(BubbleSpinner game) {
+    public RegisterScreen(BubbleSpinner game) {
         this.game = game;
     }
 
@@ -46,56 +49,26 @@ public class MenuScreen extends ScreenAdapter {
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        String def = "default";
-        startButton = new TextButton("Start game", skin, def);
-        optionsButton = new TextButton("Difficulty: Hard", skin, def);
-        loginButton = new TextButton("Login", skin, def);
-        exitButton = new TextButton("Exit", skin, def);
 
-        startButton.addListener(new InputListener() {
+        registerScreenLabel = new Label("Please register below", skin, def);
+        registerScreenLabel.setColor(0.f,0.f,0.f,1.f);
+
+        emailTextField = new TextField("", skin, def);
+        emailTextField.setMessageText("Email");
+
+        userTextField = new TextField("", skin, def);
+        userTextField.setMessageText("Username");
+
+        passTextField = new TextField("", skin, def);
+        passTextField.setMessageText("Password");
+
+        registerButton = new TextButton("Register", skin, def);
+
+        registerButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new GameScreen(game));
                 dispose();
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-        });
-
-        optionsButton.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                optionsButton.setText("Diffulty: Easy");
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-        });
-
-
-        loginButton.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new LoginScreen(game));
-                dispose();
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-        });
-
-        exitButton.addListener(new InputListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                dispose();
-                Gdx.app.exit();
             }
 
             @Override
@@ -111,14 +84,17 @@ public class MenuScreen extends ScreenAdapter {
         table = new Table();
         table.setFillParent(true);
         table.defaults().size(w, h).pad(padding);
-
-        table.add(startButton).colspan(2);
+        table.setColor(new Color(0,0,0,1));
+        table.add(registerScreenLabel).colspan(2);
         table.row();
-        table.add(optionsButton).colspan(2);
+        table.add(emailTextField).colspan(2);
         table.row();
-        table.add(loginButton).colspan(2);
+        table.add(userTextField).colspan(2);
         table.row();
-        table.add(exitButton).colspan(2);
+        table.add(passTextField).colspan(2);
+        table.row();
+        table.row();
+        table.add(registerButton).colspan(2);
         stage.addActor(table);
     }
 
@@ -133,6 +109,7 @@ public class MenuScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+
     }
 
     @Override

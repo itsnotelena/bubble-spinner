@@ -23,15 +23,7 @@ public class BubbleSpinner extends Game {
 
     @Override
     public void render() {
-//        Gdx.gl.glClearColor(1, 1, 1, 1);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        batch.begin();
-//        batch.draw(logo,
-//                (float) (Gdx.graphics.getWidth() / 2. - logo.getWidth() / 2.),
-//                (float) (Gdx.graphics.getHeight() / 2. - logo.getHeight() / 2.));
-//        batch.end();
-//
-       super.render();
+        super.render();
     }
 
     @Override
