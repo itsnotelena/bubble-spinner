@@ -135,8 +135,6 @@ public class GameScreen implements Screen   {
      * position of the mouse.
      */
     private void drawArrow() {
-        final int bubbleSize = 64;
-
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.setColor(Color.BLACK);
@@ -145,38 +143,13 @@ public class GameScreen implements Screen   {
         Vector2 pos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         stage.screenToStageCoordinates(pos);
 
-        Vector2 intersection = new Vector2(-1, -1);
-        if (pos.x < Gdx.graphics.getWidth() / 2) {                      // Check left or right side
-            Intersector.intersectLines(Gdx.graphics.getWidth() / 2, // Bubble center X
-                    Gdx.graphics.getHeight() - bubbleSize / 2,      // Bubble center Y
-                    pos.x,                                              // Mouse position X
-                    pos.y,                                              // Mouse position Y
-                    bubbleSize / 2,                                 // Left Origin + half bubble X
-                    0,                                              // Left Origin Y
-                    bubbleSize / 2,                                 // Left wall + half bubble X
-                    Gdx.graphics.getHeight(),                           // Left wall Height
-                    intersection                                        // Intersection vector
-            );
-        } else {
-            Intersector.intersectLines(Gdx.graphics.getWidth() / 2, // Bubble center X
-                    Gdx.graphics.getHeight() - bubbleSize / 2,      // Bubble center Y
-                    pos.x,                                              // Mouse position X
-                    pos.y,                                              // Mouse position Y
-                    1280 - (bubbleSize / 2),                        // Right Origin - half bubble X
-                    0,                                              // Right Origin Y
-                    1280 - (bubbleSize / 2),                        // Right wall - half bubble X
-                    Gdx.graphics.getHeight(),                           // Right wall Height
-                    intersection                                        // Intersection vector
-            );
-        }
-        shapeRenderer.line(Gdx.graphics.getWidth() / 2,             // Bubble center X
-                Gdx.graphics.getHeight() - bubbleSize / 2,          // Bubble center Y, to:
-                intersection.x,                                        // Intersection X
-                intersection.y                                         // Intersection Y
-        );
+        Vector2 bubblePos = new Vector2(Gdx.graphics.getWidth() / 2,
+                Gdx.graphics.getHeight() - Config.Game.BUBBLE_SIZE / 2);
+        Vector2 intersection = intersectWall(bubblePos, pos);
+        shapeRenderer.line(bubblePos, intersection);
 
-        float m = -1 * (intersection.y - (Gdx.graphics.getHeight() - (bubbleSize / 2)))  // Delta Y
-                    / (intersection.x - (Gdx.graphics.getWidth() / 2));                  // Delta X
+        float m = -1 * (intersection.y - (Gdx.graphics.getHeight() - (Config.Game.BUBBLE_SIZE / 2)))
+                / (intersection.x - (Gdx.graphics.getWidth() / 2));
 
         if (pos.x < Gdx.graphics.getWidth() / 2) {              // Check left or right side
             float y = m * 1280 + intersection.y;                // Calculate y intersection
@@ -195,5 +168,23 @@ public class GameScreen implements Screen   {
         }
 
         shapeRenderer.end();
+    }
+
+    /**
+     * Check intersection between the line and the two walls.
+     * @param bubblePos Position of the bubble.
+     * @param mousePos Position of the mouse.
+     * @return a Vector2 representing the point of intersection.
+     */
+    private Vector2 intersectWall(Vector2 bubblePos, Vector2 mousePos) {
+        Vector2 intersection = new Vector2(-1, -1);
+        Vector2 wallOrigin = new Vector2(Config.Game.BUBBLE_SIZE / 2, 0);
+        Vector2 wallDirection = new Vector2(Config.Game.BUBBLE_SIZE / 2, Gdx.graphics.getHeight());
+        if (mousePos.x > Gdx.graphics.getHeight() / 2) {
+            wallOrigin.x = Gdx.graphics.getWidth() - wallOrigin.x;
+            wallDirection.x = Gdx.graphics.getWidth() - wallDirection.x;
+        }
+        Intersector.intersectLines(bubblePos, mousePos, wallOrigin, wallDirection, intersection);
+        return intersection;
     }
 }
