@@ -6,14 +6,27 @@ import server.User;
 
 public class Client {
 
-    public boolean authenticate(User u) {
+    /**
+     * Sends the object user to the db and it verifies the login.
+     *
+     * @param user Gets user Class from the client
+     * @return true if it can login or otherwise
+     */
+    public boolean authenticate(User user) {
         RestTemplate restTemplate = new RestTemplate();
         Boolean res = restTemplate.postForObject(Config.Api.URL + "/login",
-                                    new User(u.getUsername(), null, u.getPassword()),
+                                    new User(user.getUsername(), null, user.getPassword()),
                                 boolean.class);
         return res != null ? res : false;
     }
 
+    /**
+     * sends a user object to the db and checks if it
+     * can be registered.
+     *
+     * @param user Gets user Class from the client
+     * @return true if it was registered or otherwise
+     */
     public boolean register(User user) {
         RestTemplate restTemplate = new RestTemplate();
         Boolean res = restTemplate.postForObject(Config.Api.URL + "/register",

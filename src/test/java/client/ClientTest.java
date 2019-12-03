@@ -13,9 +13,4 @@ public class ClientTest {
         Server.main(args);
     }
 
-    @Test
-    public void testAuthFail() {
-        Assertions.assertThat(new Client().authenticate("test", "test"))
-                .isFalse();
-    }
 }

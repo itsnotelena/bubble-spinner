@@ -11,8 +11,8 @@ public class DbAdapterTest {
      * Simple test to check the database creation happens successfully.
      */
     @Test
-    public void testDatabaseConnection() throws SQLException {
-        DbAdapter dba = new DbAdapter();
+    public void testDatabaseConnection() throws SQLException, FileNotFoundException {
+        DbAdapter dba = new DbAdapter("database");
         Assertions.assertThat(dba.getConn()).isNotNull();
     }
 
@@ -21,7 +21,7 @@ public class DbAdapterTest {
      */
     @Test
     public void testImportTables() throws FileNotFoundException, SQLException {
-        DbAdapter db = new DbAdapter();
+        DbAdapter db = new DbAdapter("database");
         Assertions.assertThat(db.importTables()).isTrue();
     }
 

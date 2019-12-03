@@ -1,5 +1,6 @@
 package server;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 import java.util.Map;
@@ -13,19 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class Server {
     private static DbImplement dbImplement;
+    private static DbAdapter dbAdapter;
+
 
     /**
      * start the Server.
      * @param args String[] to use
      */
     public static void main(String[] args) {
-        SpringApplication.run(Server.class,args);
         final var len = 1;
-        if (args.length == len) {
-            dbImplement = new DbImplement(new DbAdapter(args[0]));
+        if (args.length > len) {
+            dbAdapter = new DbAdapter(args[0]);
         } else {
-            dbImplement = new DbImplement(new DbAdapter());
+            dbAdapter = new DbAdapter("database");
         }
+        dbImplement = new DbImplement(dbAdapter);
+        dbImplement.initialize();
+        SpringApplication.run(Server.class,args);
+
     }
 
     /**
@@ -66,4 +72,5 @@ public class Server {
             return false;
         }
     }
+
 }

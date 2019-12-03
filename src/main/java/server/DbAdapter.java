@@ -37,15 +37,11 @@ public class DbAdapter {
         String jdbUrl = "jdbc:sqlite:assets/db/" + name + ".db";
         dataSource = new SQLiteDataSource();
         dataSource.setUrl(jdbUrl);
+        //();
+
         System.out.println("database connection established");
     }
 
-    /**
-     * Default constructor.
-     */
-    public DbAdapter() {
-        this("database");
-    }
 
     /**
      * Get the Connection object to the database.

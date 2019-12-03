@@ -69,7 +69,8 @@ public class RegisterScreen extends ScreenAdapter {
         registerButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                User u = new User(userTextField.getText(), emailTextField.getText(), passTextField.getText());
+                User u = new User(userTextField.getText(),
+                        emailTextField.getText(), passTextField.getText());
                 if (new Client().register(u)) {
                     game.setUser(u);
                     game.setScreen(new GameScreen(game));
