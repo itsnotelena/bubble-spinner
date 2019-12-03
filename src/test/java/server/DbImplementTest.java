@@ -22,7 +22,7 @@ public class DbImplementTest {
     @Test
     void insertAndCheckLogin() throws SQLException {
         User a = new User("lalalq","nsg","zal");
-        dbImplement.removeUser(a.getUsername(),"users");
+        dbImplement.removeFromUser(a.getUsername());
         boolean resA = dbImplement.insertUser(a);
         boolean res = dbImplement.checkLogin(a);
         Assertions.assertThat(res).isTrue();
@@ -34,17 +34,17 @@ public class DbImplementTest {
     @Test
     void searchProperly() throws SQLException {
         Score a = new Score("lalalq",1,1);
-        dbImplement.removeUser(a.getUsername(),DbImplement.SCORE);
+        dbImplement.removeFromScore(a.getUsername());
         boolean resA = dbImplement.insertScore(a);
         Assertions.assertThat(resA).isTrue();
-        Assertions.assertThat(dbImplement.searchUser(a.getUsername(),DbImplement.SCORE));
-        dbImplement.removeUser(a.getUsername(),"score");
+        Assertions.assertThat(dbImplement.removeFromScore(a.getUsername()));
+        dbImplement.removeFromScore(a.getUsername());
     }
 
     @Test
-    void searchFails() throws SQLException {
-        Assertions.assertThat(dbImplement.searchUser("lal", "users")).isFalse();
-        Assertions.assertThat(dbImplement.searchUser("lal", DbImplement.SCORE)).isFalse();
+    void searchFails() {
+        Assertions.assertThat(dbImplement.searchInUsers("lal")).isFalse();
+        Assertions.assertThat(dbImplement.searchInScore("lal")).isFalse();
     }
 
 }

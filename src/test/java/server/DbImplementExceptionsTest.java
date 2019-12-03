@@ -59,13 +59,13 @@ public class DbImplementExceptionsTest {
 
     @Test
     void searchNull() {
-        Assertions.assertThatThrownBy(() -> dbImplement.searchUser(null,"users"))
+        Assertions.assertThatThrownBy(() -> dbImplement.removeFromUser(null))
                 .isInstanceOf(java.lang.AssertionError.class);
     }
 
     @Test
     void removeNull() {
-        Assertions.assertThatThrownBy(() -> dbImplement.removeUser(null,"users"))
+        Assertions.assertThatThrownBy(() -> dbImplement.removeFromUser(null))
                 .isInstanceOf(java.lang.AssertionError.class);
     }
 
