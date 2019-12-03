@@ -9,18 +9,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import config.Config;
 import game.BubbleSpinner;
 import game.BubbleSpinnerController;
 
-import java.util.Date;
-
-public class GameScreen implements Screen {
+public class GameScreen implements Screen   {
 
     private transient BubbleSpinner game;
     private transient Stage stage;
     private transient OrthographicCamera camera;
     private transient BubbleSpinnerController bubbleSpinnerController;
-    private transient Date startingTime;
+    private transient long startingTime;
     private transient BitmapFont timerFont;
 
     /**
@@ -37,7 +36,7 @@ public class GameScreen implements Screen {
 
         bubbleSpinnerController = new BubbleSpinnerController(this, stage);
 
-        startingTime = new Date();
+        startingTime = System.currentTimeMillis();
         timerFont = new BitmapFont();
         timerFont.setColor(Color.BLACK);
         timerFont.getData().setScale(2);
@@ -111,12 +110,16 @@ public class GameScreen implements Screen {
      * @return a String with format minutes:seconds.
      */
     public String calculateRemainingTime() {
-        long difference = (new Date().getTime() - startingTime.getTime()) / 1000;
-        long remainingTime = 600 - difference;
+        long difference = (System.currentTimeMillis() - startingTime) / 1000;
+        long remainingTime = Config.Game.GAME_TIME - difference;
         long minutes = remainingTime / 60;
         long seconds = remainingTime % 60;
-        String timer = (minutes < 10 ? "0" : "") + minutes + ":"
-                        + (seconds < 10 ? "0" : "") + seconds;
-        return timer;
+        return new StringBuilder()
+                .append((minutes < 10 ? '0' : ""))
+                .append(minutes)
+                .append(':')
+                .append((seconds < 10 ? '0' : ""))
+                .append(seconds)
+                .toString();
     }
 }
