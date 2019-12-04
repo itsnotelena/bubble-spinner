@@ -73,4 +73,16 @@ public class Server {
         }
     }
 
+
+    /**
+     * Remove User from the userTable inside the database.
+     *
+     * @param reqBody get the string from the user connection
+     * @return true if user is removed false if not
+     */
+    @PostMapping(value = "/removeUser")
+    public boolean removeUserFromUserTable(final @RequestBody String reqBody) {
+        String user = reqBody;
+        return dbImplement.removeFromUser(user);
+    }
 }
