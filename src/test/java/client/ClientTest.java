@@ -27,6 +27,4 @@ public class ClientTest {
         Assertions.assertThat(new Client().authenticate(new User("doesnt",
                 "exit","ever"))).isFalse();
     }
-
-
 }
