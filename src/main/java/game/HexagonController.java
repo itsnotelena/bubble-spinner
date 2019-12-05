@@ -23,18 +23,8 @@ public class HexagonController {
         this.bubbleFactory = new BubbleFactory(stage);
         this.bubbleFactory.addTexture("assets/bubble.png");
         this.bubbles = new ArrayList<>();
-        BubbleActor b1 = bubbleFactory.next().center();
-        b1.shiftX(true, 0);
-        BubbleActor b2 = bubbleFactory.next().center();
-        b2.shiftX(true);
-        BubbleActor b3 = bubbleFactory.next().center();
-        b3.shiftX(false);
-        bubbles.add(b1);
-        bubbles.add(b2);
-        bubbles.add(b3);
-        stage.addActor(b1);
-        stage.addActor(b2);
-        stage.addActor(b3);
+        this.bubbles.add(bubbleFactory.next().center());
+        stage.addActor(this.bubbles.get(0));
     }
 
     /**
