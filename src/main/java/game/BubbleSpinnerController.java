@@ -6,10 +6,10 @@ import game.ui.GameScreen;
 
 public class BubbleSpinnerController {
 
-    private transient GameScreen gameScreen;
-    private transient Stage stage;
-    private transient Shooter shooter;
-    private transient HexagonController hexagonController;
+    transient GameScreen gameScreen;
+    transient Stage stage;
+    transient Shooter shooter;
+    transient HexagonController hexagonController;
 
     /**
      * Constructor for the Controller of the Bubble Spinner game.
@@ -31,19 +31,32 @@ public class BubbleSpinnerController {
     public void update() {
         BubbleActor bubble = shooter.current();
 
-        if (Gdx.input.isTouched()) {
-            shooter.shootBubble();
-        }
+        checkShoot(bubble);
 
         bubble.update();
 
-        if (hexagonController.checkCollisions(bubble)) {
+        if (hexagonController.checkCollisions(bubble)
+            || bubble.belowScreen()) {
             shooter.poll();
             shooter.shiftBubbles();
+            if (bubble.belowScreen()) {
+                bubble.remove();
+            }
         }
 
         if (hexagonController.lostGame) {
             gameScreen.dispose();
+        }
+    }
+
+    /**
+     * The function checks whether the bubble can be
+     * shot from the shooter.
+     * @param bubble is the first Bubble to be shot.
+     */
+    public void checkShoot(BubbleActor bubble) {
+        if (Gdx.input.isTouched() && !bubble.isMoving()) {
+            shooter.shootBubble();
         }
     }
 }

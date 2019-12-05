@@ -6,10 +6,11 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import config.Config;
 
 public class BubbleActor extends Image {
 
-    private static final int SIZE = 64;
+    private static final int SIZE = Config.Game.BUBBLE_SIZE;
     private transient Circle circle;
     private transient Vector2 movingDirection = new Vector2(0, 0);
     private transient Stage stage;
@@ -136,11 +137,19 @@ public class BubbleActor extends Image {
         return getY() + 2 * SIZE > Gdx.graphics.getHeight() - SIZE;
     }
 
+    public boolean belowScreen() {
+        return getY() < -SIZE;
+    }
+
     public Vector2 vec(float x, float y) {
         return new Vector2(x, y);
     }
 
     public Vector2 getPosition() {
         return vec(circle.x, circle.y);
+    }
+
+    public boolean isMoving() {
+        return !movingDirection.isZero();
     }
 }
