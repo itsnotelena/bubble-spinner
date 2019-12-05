@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class DbImplement {
 
@@ -38,11 +38,11 @@ public class DbImplement {
 
         System.out.println("verifying User");
 
-        String query = "SELECT password FROM users WHERE username = ?";
+        String query = "SELECT username FROM users WHERE username = ?  AND password = ?";
         PreparedStatement stat = dbAdapter.getConn().prepareStatement(query);
         stat.setString(1, details.getUsername());
-        boolean result = BCrypt.checkpw(details.getPassword(),
-                    stat.executeQuery().getString(1));
+        stat.setString(2, details.getPassword());
+        boolean result = stat.executeQuery().next();
         stat.close();
 
         return result;
@@ -64,7 +64,7 @@ public class DbImplement {
         PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
         statement.setString(1, details.getUsername());
         statement.setString(2, details.getEmail());
-        statement.setString(3, BCrypt.hashpw(details.getPassword(), BCrypt.gensalt()));
+        statement.setString(3, details.getPassword());
         statement.execute();
         statement.close();
 

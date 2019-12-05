@@ -51,6 +51,10 @@ public class Shooter {
      * refill them.
      */
     public void refill() {
+        if (available.size() > MIN_BUBBLES) {
+            return;
+        }
+
         for (int i = 0; i < 2 * MIN_BUBBLES; ++i) {
             available.add(bubbleFactory.next());
         }
@@ -61,10 +65,11 @@ public class Shooter {
      * ones to the left and add a new one at the end.
      */
     public void shiftBubbles() {
+        refill();
         Stack<BubbleActor> stack = new Stack<>();
         for (int i = 0; i < 4; ++i) {
             current().shiftX(false);
-            stack.push(available.poll());
+            stack.push(poll());
         }
         current().shiftX(true, 4);
         stage.addActor(current());
@@ -86,9 +91,18 @@ public class Shooter {
      * by the mouse position.
      */
     public void shootBubble() {
+        shootBubbleScreenCoords(Gdx.input.getX(), Gdx.input.getY());
+    }
+
+    /**
+     * Shoot the first bubble given screen coordinates.
+     * @param x Axis of the new position.
+     * @param y Ordinate of the new position.
+     */
+    public void shootBubbleScreenCoords(int x, int y) {
         Vector2 newPos = new Vector2(
-                Gdx.input.getX() - current().getWidth() / 2,
-                Gdx.graphics.getHeight() - Gdx.input.getY() - current().getHeight() / 2);
+                x - current().getWidth() / 2,
+                Gdx.graphics.getHeight() - y - current().getHeight() / 2);
         Vector2 bubblePos = new Vector2(0, 0);
         current().localToStageCoordinates(bubblePos);
         stage.getViewport().project(bubblePos);
@@ -100,5 +114,4 @@ public class Shooter {
     public void setBubbleFactory(BubbleFactory bubbleFactory) {
         this.bubbleFactory = bubbleFactory;
     }
-
 }
