@@ -16,6 +16,10 @@ plugins {
 
     // FindBugs / SpotBugs
     id "com.github.spotbugs" version "2.0.1"
+
+    // Spring Boot
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
 group 'nl.tudelft.cse.sem.template'
@@ -25,6 +29,18 @@ sourceCompatibility = 12
 
 repositories {
     mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    jcenter()
+    google()
+}
+
+ext {
+    gdxVersion = '1.9.10'
+    roboVMVersion = '2.3.7'
+    box2DLightsVersion = '1.4'
+    ashleyVersion = '1.7.0'
+    aiVersion = '1.8.0'
 }
 
 test {
@@ -32,14 +48,55 @@ test {
 
     jacoco {
         enabled = true
-        includes = ['nl.tudelft.cse.sem.*']
-        excludes = []
+        includes = ['game.*', 'server.*']
+        excludes = ['game.ui.*']
+    }
+}
+
+jacocoTestReport {
+    reports {
+        csv.enabled true
+    }
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect({
+            fileTree(dir: it,
+                    exclude: [
+                            'game/ui/**',
+                            'Launcher.*'
+                    ]
+            )
+        }))
     }
 }
 
 dependencies {
+    apply plugin: "java-library"
     testImplementation('org.junit.jupiter:junit-jupiter:5.5.2')
     spotbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
+
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+
+    compile "junit:junit:4.+"
+    compile "org.mockito:mockito-all:1.9.+"
+    compile "org.assertj:assertj-core:3.12.2"
+
+    testCompile "org.assertj:assertj-core:3.12.2"
+    testCompile "junit:junit:4.+"
+    testCompile "org.mockito:mockito-all:1.9.+"
+
+    testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+    testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
+    testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mindrot:jbcrypt:0.4'
+    implementation 'org.xerial:sqlite-jdbc:3.8.9.1'
 }
 
 jacocoTestCoverageVerification {
@@ -47,20 +104,22 @@ jacocoTestCoverageVerification {
         rule {
             enabled = true
             element = 'CLASS'
-            includes = ['nl.tudelft.cse.sem.*']
+            includes = ['game.*', 'server.*']
+            excludes = ['game.ui.*']
 
             limit {
                 counter = 'LINE'
                 value = 'TOTALCOUNT'
-                maximum = 0.3
+                minimum = 0.3
             }
         }
     }
 }
 
+
 checkstyle {
     toolVersion "8.25"
-	configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
 }
 
 pmd {
