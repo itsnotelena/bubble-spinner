@@ -1,5 +1,6 @@
 package server;
 
+import java.io.FileNotFoundException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -317,6 +318,17 @@ public class DbImplement {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    /**
+     * initialize the tables for this db.
+     */
+    public void initialize() {
+        try {
+            dbAdapter.importTables();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }

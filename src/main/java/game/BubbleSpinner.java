@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.ui.SplashScreen;
+import server.User;
 
 /**
  * BubbleSpinner class.
@@ -13,7 +14,15 @@ import game.ui.SplashScreen;
  */
 public class BubbleSpinner extends Game {
     public transient SpriteBatch batch;
+    private transient User user;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public void create() {
@@ -30,4 +39,6 @@ public class BubbleSpinner extends Game {
     public void dispose() {
         batch.dispose();
     }
+
+
 }

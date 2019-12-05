@@ -12,7 +12,7 @@ public class DbAdapterTest {
      */
     @Test
     public void testDatabaseConnection() throws SQLException {
-        DbAdapter dba = new DbAdapter();
+        DbAdapter dba = new DbAdapter("test");
         Assertions.assertThat(dba.getConn()).isNotNull();
     }
 
@@ -20,8 +20,8 @@ public class DbAdapterTest {
      * Testing the table import method.
      */
     @Test
-    public void testImportTables() throws FileNotFoundException, SQLException {
-        DbAdapter db = new DbAdapter();
+    public void testImportTables() throws FileNotFoundException {
+        DbAdapter db = new DbAdapter("test");
         Assertions.assertThat(db.importTables()).isTrue();
     }
 

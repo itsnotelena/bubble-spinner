@@ -1,5 +1,6 @@
 package server;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 import java.util.Map;
@@ -13,19 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class Server {
     private static DbImplement dbImplement;
+    private static DbAdapter dbAdapter;
+
 
     /**
      * start the Server.
      * @param args String[] to use
      */
     public static void main(String[] args) {
-        SpringApplication.run(Server.class,args);
         final var len = 1;
-        if (args.length == len) {
-            dbImplement = new DbImplement(new DbAdapter(args[0]));
+        if (args.length > len) {
+            dbAdapter = new DbAdapter(args[0]);
         } else {
-            dbImplement = new DbImplement(new DbAdapter());
+            dbAdapter = new DbAdapter("database");
         }
+        dbImplement = new DbImplement(dbAdapter);
+        dbImplement.initialize();
+        SpringApplication.run(Server.class,args);
+
     }
 
     /**
@@ -36,13 +42,12 @@ public class Server {
     @PostMapping(value = "/login")
     public boolean checkLogin(final @RequestBody Map<String, Object> reqBody) {
         String username = (String) reqBody.get("username");
-        String email = (String) reqBody.get("email");
         String password = (String) reqBody.get("password");
-        if (username == null || password == null || email == null) {
+        if (username == null || password == null) {
             return false;
         }
         try {
-            return dbImplement.checkLogin(new User(username, email, password));
+            return dbImplement.checkLogin(new User(username, null, password));
         } catch (SQLException e) {
             return false;
         }
@@ -66,5 +71,18 @@ public class Server {
         } catch (SQLException e) {
             return false;
         }
+    }
+
+
+    /**
+     * Remove User from the userTable inside the database.
+     *
+     * @param reqBody get the string from the user connection
+     * @return true if user is removed false if not
+     */
+    @PostMapping(value = "/removeUser")
+    public boolean removeUserFromUserTable(final @RequestBody String reqBody) {
+        String user = reqBody;
+        return dbImplement.removeFromUser(user);
     }
 }
