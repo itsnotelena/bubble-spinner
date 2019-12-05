@@ -21,7 +21,8 @@ public class HexagonController {
          * Change this to create the correct structure.
          */
         this.bubbleFactory = new BubbleFactory(stage);
-        this.bubbleFactory.addTexture("assets/bubble.png");
+        //Max is the Difficulty of the Game
+        this.bubbleFactory.addAllTextures(4);
         this.bubbles = new ArrayList<>();
         this.bubbles.add(bubbleFactory.next().center());
         stage.addActor(this.bubbles.get(0));
