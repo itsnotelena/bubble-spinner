@@ -17,12 +17,12 @@ public class Config {
 
     public static class Bubbles {
         public static final String[] textures = {
-                "assets/Bubbles/Blue.png",
-                "assets/Bubbles/Green.png",
-                "assets/Bubbles/Pink.png",
-                "assets/Bubbles/Red.png",
-                "assets/Bubbles/Lavender.png",
-                "assets/Bubbles/NavyBlue.png"
+            "assets/Bubbles/Blue.png",
+            "assets/Bubbles/Green.png",
+            "assets/Bubbles/Pink.png",
+            "assets/Bubbles/Red.png",
+            "assets/Bubbles/Lavender.png",
+            "assets/Bubbles/NavyBlue.png"
         };
     }
 

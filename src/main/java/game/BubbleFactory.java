@@ -4,9 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import config.Config;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class BubbleFactory implements Iterator {
 
@@ -43,13 +44,23 @@ public class BubbleFactory implements Iterator {
         this.texture.add(texture);
     }
 
+    /**
+     * Adds the png file to the list of textures.
+     * @param text file path
+     */
     public void addTexture(String text) {
         addTexture(new Texture(text));
     }
 
+    /**
+     * import the colors to the list of textures to be shown
+     * to the user.
+     *
+     * @param max threshold to pick certain colors only
+     */
     public void addAllTextures(int max) {
         String[] list = Config.Bubbles.textures;
-        for(int i = 0; i < list.length && i <= max; i++ ) {
+        for (int i = 0; i < list.length && i <= max; i++) {
             addTexture(list[i]);
         }
     }
