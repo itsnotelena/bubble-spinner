@@ -32,7 +32,7 @@ public class Shooter {
      * of the screen and adds them to the Stage.
      */
     public void initialize() {
-        this.bubbleFactory.addTexture("assets/bubble.png");
+        this.bubbleFactory.addAllTextures();
         refill();
         Stack<BubbleActor> stack = new Stack<>();
         assert available.size() > 5;

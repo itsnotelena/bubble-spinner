@@ -2,11 +2,11 @@ package game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import config.Config;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 public class BubbleFactory implements Iterator {
 
@@ -15,12 +15,8 @@ public class BubbleFactory implements Iterator {
     private transient List<Texture> texture = new ArrayList<>();
 
     public BubbleFactory(Stage stage) {
-        this(stage, 42);
-    }
-
-    public BubbleFactory(Stage stage, int seed) {
         this.stage = stage;
-        this.rnd = new Random(seed);
+        this.rnd = new Random();
     }
 
     @Override
@@ -50,4 +46,11 @@ public class BubbleFactory implements Iterator {
     public void addTexture(String text) {
         addTexture(new Texture(text));
     }
+
+    public void addAllTextures() {
+        for(String name : Config.Bubbles.textures) {
+                addTexture(name);
+        }
+    }
+
 }
