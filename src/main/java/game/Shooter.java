@@ -32,7 +32,8 @@ public class Shooter {
      * of the screen and adds them to the Stage.
      */
     public void initialize() {
-        this.bubbleFactory.addAllTextures();
+        //max is the Difficulty of the level
+        this.bubbleFactory.addAllTextures(4);
         refill();
         Stack<BubbleActor> stack = new Stack<>();
         assert available.size() > 5;

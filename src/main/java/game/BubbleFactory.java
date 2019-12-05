@@ -47,9 +47,10 @@ public class BubbleFactory implements Iterator {
         addTexture(new Texture(text));
     }
 
-    public void addAllTextures() {
-        for(String name : Config.Bubbles.textures) {
-                addTexture(name);
+    public void addAllTextures(int max) {
+        String[] list = Config.Bubbles.textures;
+        for(int i = 0; i < list.length && i <= max; i++ ) {
+            addTexture(list[i]);
         }
     }
 
