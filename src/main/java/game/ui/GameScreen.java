@@ -83,11 +83,10 @@ public class GameScreen implements Screen {
         stage.draw();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new SplashScreen(game));
+            game.setScreen(new MenuScreen(game));
         }
 
         if (calculateRemainingTime().equals("00:00")) {
-            game.setScreen(new MenuScreen(game));
             dispose();
         }
 
@@ -120,7 +119,7 @@ public class GameScreen implements Screen {
         if (bubbleSpinnerController instanceof BotController) {
             game.setScreen(new GameScreen(game, true));
         } else {
-            game.setScreen(new SplashScreen(game));
+            game.setScreen(new MenuScreen(game));
         }
     }
 

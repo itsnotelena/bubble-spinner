@@ -46,4 +46,9 @@ public class HexagonController {
         }
         return false;
     }
+
+    public List<BubbleActor> getBubbles() {
+        return bubbles;
+    }
+
 }
