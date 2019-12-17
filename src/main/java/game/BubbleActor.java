@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import config.Config;
 
-public class BubbleActor extends Image {
+public class BubbleActor extends Image implements Observer {
 
     private static final int SIZE = Config.Game.BUBBLE_SIZE;
     private transient Circle circle;
@@ -52,6 +52,7 @@ public class BubbleActor extends Image {
      * Update the bubble position if it's moving or it
      * needs to bounce off the screen.
      */
+    @Override
     public void update() {
         if (!movingDirection.isZero()) {
             moveBy(movingDirection.x, movingDirection.y);
