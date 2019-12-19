@@ -1,6 +1,5 @@
 package server;
 
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 import java.util.Map;

@@ -1,23 +1,14 @@
 package game.ui;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
 
@@ -29,7 +20,8 @@ public class MenuScreen extends ScreenAdapter {
     private transient TextButton startButton;
     private transient TextButton optionsButton;
     private transient TextButton exitButton;
-    private transient TextButton loginButton;
+    private transient TextButton logoutButton;
+    private transient TextButton loggedIn;
 
     /**
      * Login Screen.
@@ -49,8 +41,9 @@ public class MenuScreen extends ScreenAdapter {
         String def = "default";
         startButton = new TextButton("Start game", skin, def);
         optionsButton = new TextButton("Difficulty: Hard", skin, def);
-        loginButton = new TextButton("Login", skin, def);
+        logoutButton = new TextButton("Logout", skin, def);
         exitButton = new TextButton("Exit", skin, def);
+
 
         startButton.addListener(new InputListener() {
             @Override
@@ -78,7 +71,7 @@ public class MenuScreen extends ScreenAdapter {
         });
 
 
-        loginButton.addListener(new InputListener() {
+        logoutButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new LoginScreen(game));
@@ -116,8 +109,13 @@ public class MenuScreen extends ScreenAdapter {
         table.row();
         table.add(optionsButton).colspan(2);
         table.row();
-        table.add(loginButton).colspan(2);
+        table.add(logoutButton).colspan(2);
         table.row();
+        loggedIn = new TextButton("Player : " + game.getUser().getUsername(), skin, def);
+        loggedIn.setPosition(Gdx.graphics.getHeight() / 8,
+                7 * Gdx.graphics.getHeight() / 8);
+        stage.addActor(loggedIn);
+
         table.add(exitButton).colspan(2);
         stage.addActor(table);
     }
