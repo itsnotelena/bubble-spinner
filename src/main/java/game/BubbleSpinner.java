@@ -14,6 +14,7 @@ import server.User;
  */
 public class BubbleSpinner extends Game {
     public transient SpriteBatch batch;
+    public transient SpriteBatch tutorialBatch;
     private transient User user;
 
     public User getUser() {
@@ -27,6 +28,7 @@ public class BubbleSpinner extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
+        tutorialBatch = new SpriteBatch();
         setScreen(new SplashScreen(this));
     }
 

@@ -26,6 +26,7 @@ public class GameScreen implements Screen {
     private transient long startingTime;
     private transient BitmapFont timerFont;
     private transient ShapeRenderer shapeRenderer;
+    private transient TutorialHelpBox tutorialHelpBox;
 
     /**
      * This is Screen where the game is played.
@@ -41,6 +42,7 @@ public class GameScreen implements Screen {
 
         if (computer) {
             bubbleSpinnerController = new BotController(this, stage);
+            tutorialHelpBox = new TutorialHelpBox(game.tutorialBatch);
         } else {
             bubbleSpinnerController = new BubbleSpinnerController(this, stage);
         }
@@ -55,6 +57,11 @@ public class GameScreen implements Screen {
 
     public GameScreen(BubbleSpinner game) {
         this(game, false);
+    }
+
+    public GameScreen(BubbleSpinner game, boolean computer, TutorialHelpBox state) {
+        this(game, computer);
+        this.tutorialHelpBox = state;
     }
 
     @Override
@@ -91,6 +98,10 @@ public class GameScreen implements Screen {
         }
 
         bubbleSpinnerController.update();
+
+        if (bubbleSpinnerController instanceof BotController) {
+            tutorialHelpBox.update();
+        }
     }
 
     @Override
@@ -117,7 +128,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         stage.dispose();
         if (bubbleSpinnerController instanceof BotController) {
-            game.setScreen(new GameScreen(game, true));
+            game.setScreen(new GameScreen(game, true, tutorialHelpBox));
         } else {
             game.setScreen(new MenuScreen(game));
         }
