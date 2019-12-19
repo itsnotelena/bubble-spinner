@@ -1,16 +1,23 @@
 package client;
 
 import config.Config;
+import java.util.List;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import server.Score;
 import server.User;
+
 
 public class Client {
 
     /**
-     * Sends the object user to the db and it verifies the login.
-     *
-     * @param user Gets user Class from the client
-     * @return true if it can login or otherwise
+     * Allows the user to authenticate.
+     * @param username parameter.
+     * @param password parameter.
+     * @return boolean.
      */
     public boolean authenticate(User user) {
         RestTemplate restTemplate = new RestTemplate();
@@ -18,6 +25,34 @@ public class Client {
                                     new User(user.getUsername(), null, user.getPassword()),
                                 boolean.class);
         return res != null ? res : false;
+    }
+
+    public boolean addScore(Score score) {
+        RestTemplate restTemplate = new RestTemplate();
+        Boolean user = restTemplate.postForObject (Config.Api.URL + "/addScore", score, boolean.class);
+        return user;
+    }
+
+    public boolean addUser(User user) {
+        RestTemplate restTemplate = new RestTemplate();
+        Boolean result = restTemplate.postForObject (Config.Api.URL + "/addUser", user, boolean.class);
+        return result;
+
+    }
+
+    /**
+     * Get the Top 5 User's scores.
+     * @return usernames.
+     */
+    public List<User> getTop5() {
+        RestTemplate restTemplate = new RestTemplate ();
+        ResponseEntity<List<User>> users =
+                restTemplate.exchange (Config.Api.URL + "/top5",
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<User>> () {
+                        });
+        return users.getBody ();
     }
 
     /**

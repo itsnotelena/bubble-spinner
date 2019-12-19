@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,6 +46,62 @@ public class DbImplementTest {
     void searchFails() {
         Assertions.assertThat(dbImplement.searchInUsers("lal")).isFalse();
         Assertions.assertThat(dbImplement.searchInScore("lal")).isFalse();
+    }
+
+    @Test
+    void getScoreByUsername() throws SQLException {
+        Score a = new Score("cardi", 3, 55);
+        dbImplement.removeFromScore(a.getUsername());
+        boolean resA = dbImplement.insertScore(a);
+        Assertions.assertThat(resA).isTrue();
+
+        Optional<Score> scoreOptional = dbImplement.getScoreByUser(a.getUsername());
+        Assertions.assertThat(scoreOptional.isPresent()).isTrue();
+        Assertions.assertThat(scoreOptional.get()).isEqualTo(a);
+    }
+
+    @Test
+    void getTop5Score() throws SQLException {
+        Score one = new Score("cardi", 3, 55);
+        Score two = new Score("anitta", 4, 31);
+        Score three = new Score("Lady Gaga", 2, 30);
+        Score four = new Score("Taylor Swift", 2, 30);
+        Score five = new Score("Rosalia", 2, 29);
+
+        dbImplement.removeFromScore(one.getUsername());
+        dbImplement.removeFromScore(two.getUsername());
+        dbImplement.removeFromScore(three.getUsername());
+        dbImplement.removeFromScore(four.getUsername());
+        dbImplement.removeFromScore(five.getUsername());
+
+        User cardi = new User("cardi", "cardi@me", "abc");
+        User anitta = new User("anitta", "anitta@me", "123");
+        User ladygaga = new User("Lady Gaga", "ladygaga@me", "456");
+        User taylorswift = new User("Taylor Swift", "taylor@me", "789");
+        User rosalia = new User("Rosalia", "rosalia@me", "000");
+
+        dbImplement.insertUser(cardi);
+        dbImplement.insertUser(anitta);
+        dbImplement.insertUser(ladygaga);
+        dbImplement.insertUser(taylorswift);
+        dbImplement.insertUser(rosalia);
+
+        dbImplement.insertScore(one);
+        dbImplement.insertScore(two);
+        dbImplement.insertScore(three);
+        dbImplement.insertScore(four);
+        dbImplement.insertScore(five);
+
+
+        final List<User> scoreOptional = dbImplement.getTop5Score();
+        List<User> list = new ArrayList<>();
+        list.add(dbImplement.getUserByUsername(one.getUsername()).get());
+        list.add(dbImplement.getUserByUsername(two.getUsername()).get());
+        list.add(dbImplement.getUserByUsername(three.getUsername()).get());
+        list.add(dbImplement.getUserByUsername(four.getUsername()).get());
+        list.add(dbImplement.getUserByUsername(five.getUsername()).get());
+
+        Assertions.assertThat(scoreOptional).isEqualTo(list);
     }
 
 }
