@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import config.Config;
 import game.BubbleSpinner;
@@ -22,7 +25,8 @@ public class GameScreen implements Screen {
     private transient BubbleSpinnerController bubbleSpinnerController;
     private transient long startingTime;
     private transient BitmapFont timerFont;
-
+    private transient PauseMenu pauseMenu;
+    private transient boolean paused;
     /**
      * This is Screen where the game is played.
      * @param game BubbleSpinner instance.
@@ -30,10 +34,14 @@ public class GameScreen implements Screen {
     public GameScreen(BubbleSpinner game) {
         this.game = game;
 
+        this.paused = false;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         stage = new Stage(new ScreenViewport());
+
+        Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+
 
         bubbleSpinnerController = new BubbleSpinnerController(this, stage);
 
@@ -41,6 +49,10 @@ public class GameScreen implements Screen {
         timerFont = new BitmapFont();
         timerFont.setColor(Color.BLACK);
         timerFont.getData().setScale(2);
+        this.pauseMenu = new PauseMenu(skin);
+        this.pauseMenu.setVisible(false);
+        this.stage.addActor(pauseMenu);
+
     }
 
     @Override
@@ -67,15 +79,17 @@ public class GameScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            dispose();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            this.paused = !paused;
+            this.pauseMenu.setVisible(this.paused);
+            //dispose();
         }
 
         if (calculateRemainingTime().equals("00:00")) {
             dispose();
         }
 
-        bubbleSpinnerController.update();
+        if(!paused){bubbleSpinnerController.update();}
     }
 
     @Override
