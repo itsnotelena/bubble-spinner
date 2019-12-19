@@ -8,12 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import config.Config;
 
+import java.util.ArrayList;
+
 public class BubbleActor extends Image {
 
     private static final int SIZE = Config.Game.BUBBLE_SIZE;
     private transient Circle circle;
     private transient Vector2 movingDirection = new Vector2(0, 0);
     private transient Stage stage;
+    ArrayList<BubbleActor> neighbours;
 
     /**
      * Constructor for the Bubble Actor in the stage.
