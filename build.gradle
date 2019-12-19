@@ -48,7 +48,7 @@ test {
 
     jacoco {
         enabled = true
-        includes = ['game.*', 'server.*']
+        includes = ['game.*', 'server.*', 'client.*']
         excludes = ['game.ui.*']
     }
 }
@@ -104,7 +104,7 @@ jacocoTestCoverageVerification {
         rule {
             enabled = true
             element = 'CLASS'
-            includes = ['game.*', 'server.*']
+            includes = ['game.*', 'server.*', 'client.*']
             excludes = ['game.ui.*']
 
             limit {
