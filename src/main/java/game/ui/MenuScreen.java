@@ -18,8 +18,10 @@ public class MenuScreen extends ScreenAdapter {
     private transient BubbleSpinner game;
     private transient Table table;
     private transient TextButton startButton;
+    private transient TextButton computerButton;
     private transient TextButton optionsButton;
     private transient TextButton exitButton;
+    private transient boolean computerPlayer;
     private transient TextButton logoutButton;
     private transient TextButton loggedIn;
 
@@ -44,17 +46,28 @@ public class MenuScreen extends ScreenAdapter {
         logoutButton = new TextButton("Logout", skin, def);
         exitButton = new TextButton("Exit", skin, def);
 
-
+        computerButton = new TextButton("Computer Player OFF", skin, def);
+        computerPlayer = false;
+        
         startButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen(game, computerPlayer));
                 dispose();
             }
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 return true;
+            }
+        });
+
+        computerButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                computerPlayer = !computerPlayer;
+                computerButton.setText("Computer Player " + (computerPlayer ? "ON" : "OFF"));
+                return computerPlayer;
             }
         });
 
@@ -105,6 +118,8 @@ public class MenuScreen extends ScreenAdapter {
         table.defaults().size(w, h).pad(padding);
 
         table.add(startButton).colspan(2);
+        table.row();
+        table.add(computerButton).colspan(2);
         table.row();
         table.add(optionsButton).colspan(2);
         table.row();

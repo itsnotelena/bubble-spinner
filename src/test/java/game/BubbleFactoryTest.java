@@ -73,20 +73,17 @@ public class BubbleFactoryTest {
 
     @Test
     public void testBubbleFactoryNext() {
-        AtomicBoolean hasNext = new AtomicBoolean(false);
         AtomicReference<BubbleActor> next = new AtomicReference<>();
         AtomicBoolean done = new AtomicBoolean(false);
         Gdx.app.postRunnable(() -> {
             BubbleFactory bubbleFactory = new BubbleFactory(stage);
             bubbleFactory.addTexture(texture);
-            hasNext.set(bubbleFactory.hasNext());
-            next.set(bubbleFactory.next());
+            next.set(bubbleFactory.createBubble());
             done.set(true);
         });
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(hasNext.get()).isTrue();
         Assertions.assertThat(next.get()).isInstanceOf(BubbleActor.class);
     }
 

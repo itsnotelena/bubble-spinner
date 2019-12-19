@@ -107,7 +107,7 @@ public class ShooterTest {
         Gdx.app.postRunnable(() -> {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.next()).thenReturn(bubbleActor);
+            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
             shooter.refill();
             result.set(shooter.current());
             done.set(true);
@@ -124,7 +124,7 @@ public class ShooterTest {
         Gdx.app.postRunnable(() -> {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.next()).thenReturn(bubbleActor);
+            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
             shooter.initialize();
             done.set(true);
         });
@@ -143,7 +143,7 @@ public class ShooterTest {
         Gdx.app.postRunnable(() -> {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.next()).thenReturn(bubbleActor);
+            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
             shooter.initialize();
             shooter.poll();
             shooter.shiftBubbles();
@@ -166,7 +166,7 @@ public class ShooterTest {
             Mockito.when(stage.getViewport()).thenReturn(viewport);
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.next()).thenReturn(bubbleActor);
+            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
             shooter.initialize();
             shooter.shootBubble();
             current.set(shooter.current());
