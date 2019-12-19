@@ -21,8 +21,9 @@ public class MenuScreen extends ScreenAdapter {
     private transient TextButton computerButton;
     private transient TextButton optionsButton;
     private transient TextButton exitButton;
-    private transient TextButton loginButton;
     private transient boolean computerPlayer;
+    private transient TextButton logoutButton;
+    private transient TextButton loggedIn;
 
     /**
      * Login Screen.
@@ -42,12 +43,12 @@ public class MenuScreen extends ScreenAdapter {
         String def = "default";
         startButton = new TextButton("Start game", skin, def);
         optionsButton = new TextButton("Difficulty: Hard", skin, def);
-        loginButton = new TextButton("Login", skin, def);
+        logoutButton = new TextButton("Logout", skin, def);
         exitButton = new TextButton("Exit", skin, def);
 
         computerButton = new TextButton("Computer Player OFF", skin, def);
         computerPlayer = false;
-
+        
         startButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -83,7 +84,7 @@ public class MenuScreen extends ScreenAdapter {
         });
 
 
-        loginButton.addListener(new InputListener() {
+        logoutButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 game.setScreen(new LoginScreen(game));
@@ -100,7 +101,6 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                Gdx.app.exit();
             }
 
             @Override
@@ -123,8 +123,13 @@ public class MenuScreen extends ScreenAdapter {
         table.row();
         table.add(optionsButton).colspan(2);
         table.row();
-        table.add(loginButton).colspan(2);
+        table.add(logoutButton).colspan(2);
         table.row();
+        loggedIn = new TextButton("Player : " + game.getUser().getUsername(), skin, def);
+        loggedIn.setPosition(Gdx.graphics.getHeight() / 8,
+                7 * Gdx.graphics.getHeight() / 8);
+        stage.addActor(loggedIn);
+
         table.add(exitButton).colspan(2);
         stage.addActor(table);
     }
@@ -158,7 +163,7 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        super.dispose();
         stage.dispose();
+        game.dispose();
     }
 }

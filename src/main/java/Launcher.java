@@ -2,6 +2,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import config.Config;
 import game.BubbleSpinner;
+import server.Server;
 
 /**
  * Launcher class.
@@ -14,6 +15,9 @@ public class Launcher {
      * @param args no arguments needed.
      */
     public static void main(String[] args) {
+        if (Config.Api.URL.contains("localhost")) {
+            Server.main(new String[0]);
+        }
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle(Config.Game.TITLE);
         config.setWindowedMode(Config.Game.WIDTH, Config.Game.HEIGHT);

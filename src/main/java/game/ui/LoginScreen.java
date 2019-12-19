@@ -74,7 +74,8 @@ public class LoginScreen extends ScreenAdapter {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 User u = new User(userTextField.getText(), null, passTextField.getText());
                 if (new Client().authenticate(u)) {
-                    game.setScreen(new GameScreen(game));
+                    game.setUser(u);
+                    game.setScreen(new MenuScreen(game));
                     dispose();
                 }
             }
