@@ -27,6 +27,7 @@ public class GameScreen implements Screen {
     private transient BitmapFont timerFont;
     private transient PauseMenu pauseMenu;
     private transient boolean paused;
+
     /**
      * This is Screen where the game is played.
      * @param game BubbleSpinner instance.
@@ -49,10 +50,7 @@ public class GameScreen implements Screen {
         timerFont = new BitmapFont();
         timerFont.setColor(Color.BLACK);
         timerFont.getData().setScale(2);
-        this.pauseMenu = new PauseMenu(skin);
-        this.pauseMenu.setVisible(false);
-        this.stage.addActor(pauseMenu);
-
+        this.pauseMenu = new PauseMenu(this, skin);
     }
 
     @Override
@@ -80,16 +78,17 @@ public class GameScreen implements Screen {
         stage.draw();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            this.paused = !paused;
-            this.pauseMenu.setVisible(this.paused);
-            //dispose();
+            this.togglePause();
         }
 
         if (calculateRemainingTime().equals("00:00")) {
             dispose();
         }
 
-        if(!paused){bubbleSpinnerController.update();}
+        if(!paused){bubbleSpinnerController.update();}else{
+            pauseMenu.act();
+            pauseMenu.draw();
+        }
     }
 
     @Override
@@ -135,5 +134,9 @@ public class GameScreen implements Screen {
                 .append((seconds < 10 ? '0' : ""))
                 .append(seconds)
                 .toString();
+    }
+
+    public void togglePause(){
+        this.paused = !this.paused;
     }
 }
