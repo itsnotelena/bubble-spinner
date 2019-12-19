@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Server {
     private static DbImplement dbImplement;
     private static DbAdapter dbAdapter;
+    private static ConfigurableApplicationContext ctx;
 
 
     /**
@@ -29,7 +31,7 @@ public class Server {
         }
         dbImplement = new DbImplement(dbAdapter);
         dbImplement.initialize();
-        SpringApplication.run(Server.class,args);
+        ctx = SpringApplication.run(Server.class,args);
 
     }
 
@@ -83,5 +85,9 @@ public class Server {
     public boolean removeUserFromUserTable(final @RequestBody String reqBody) {
         String user = reqBody;
         return dbImplement.removeFromUser(user);
+    }
+
+    public static void stop() {
+        ctx.close();
     }
 }

@@ -88,7 +88,6 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                Gdx.app.exit();
             }
 
             @Override
@@ -149,7 +148,7 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        super.dispose();
         stage.dispose();
+        game.dispose();
     }
 }
