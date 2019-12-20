@@ -155,47 +155,6 @@ public class DbImplement {
     }
 
     /**
-     * By passing the Specified column name either as String
-     * ("scoreW" or "scoreA") this method will return the top 5
-     * entries of type Score class in descending order.
-     *
-     * @param column either scoreW or scoreA
-     * @return List of top 5 entries in descending order of type Score class
-     * @throws SQLException in case of connection failure
-     */
-    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public final List<Score> getTopFiveScore(String column) throws SQLException {
-        ResultSet result = null;
-        try {
-            String query = "SELECT * FROM score ORDER BY " + column + " DESC LIMIT 5";
-            PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-            result = statement.executeQuery();
-            List<Score> res = new ArrayList<>(5);
-
-            if (result.next()) {
-                res.add(new Score(result
-                        .getString(1), result
-                        .getInt(2), result
-                        .getInt(3)));
-                return res;
-            } else {
-                Optional.empty();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (result != null) {
-                try {
-                    result.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
      * Insert Game Object to the database.
      *
      * @param game using Game class object
@@ -284,12 +243,54 @@ public class DbImplement {
         }
     }
 
+    /**
+     * Get the Top 5 User's Scores.
+     * @return usernames.
+     */
+    public List<User> getTop5Score() {
+        try {
+            return getTopXScores(5);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    //We want to access "result" in this method and get the users from it, so we want to suppress warnings for it.
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    private List<User> getTopXScores(int amount) throws SQLException {
+        ResultSet result = null;
+        List<User> users = new ArrayList<>();
+        try {
+            PreparedStatement statement = dbAdapter.getConn().prepareStatement(
+                    "SELECT * FROM score ORDER BY - scoreA LIMIT ?");
+            statement.setInt(1,amount);
+            result = statement.executeQuery();
+            while (result.next()) {
+                users.add(getUserByUsername(result.getString(1)).get());
+            }
+            return users;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbAdapter.closeData();
+            return users;
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     /**
      * Returns all the usernames in the database.
      * @param username as a parameter.
      * @return Optional User
      */
+    //We want to access "result" in this method, so we want to suppress warnings for it.
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public Optional<User> getUserByUsername(String username) throws SQLException {
         ResultSet result = null;
@@ -316,6 +317,43 @@ public class DbImplement {
                     result.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the score by Username.
+     * @param username as a parameter.
+     * @return Score.
+     * @throws SQLException if no score.
+     */
+    //We want to access "result" in this method and get the score from it, so we want to suppress warnings for it.
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    public Optional<Score> getScoreByUser(String username) throws SQLException {
+        ResultSet result = null;
+        try {
+            PreparedStatement statement = dbAdapter
+                    .getConn ()
+                    .prepareStatement ("SELECT * FROM score where username = ? ");
+            statement.setString (1, username);
+            result = statement.executeQuery ();
+            if (result.next ()) {
+                return Optional.of (new Score (result.getString (1),
+                        result.getInt (2),
+                        result.getInt (3)));
+            }
+            return Optional.empty ();
+        } catch (SQLException e) {
+            e.printStackTrace ();
+            dbAdapter.closeData ();
+            return Optional.empty ();
+        } finally {
+            if (result != null) {
+                try {
+                    result.close ();
+                } catch (SQLException e) {
+                    e.printStackTrace ();
                 }
             }
         }
