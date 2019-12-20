@@ -76,8 +76,7 @@ public class User {
         }
         User user = (User) o;
         return email.equals(user.email)
-                && username.equals(user.username)
-                && password.equals(user.password);
+                && username.equals(user.username);
     }
 
 

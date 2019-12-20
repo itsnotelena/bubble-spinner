@@ -60,19 +60,19 @@ public class UserTest {
     }
 
     @Test
-    void equalsPasswordFalse() {
-        User one = new User("Lady Gaga", "ladygaga@me", "bcc");
-        User two = new User("Lady Gaga", "ladygaga@me", "123");
-
-        Assert.assertNotEquals(one, two);
-    }
-
-    @Test
     void testHashCode() {
         User one = new User("WAAAAA", "waaa@me", "waa");
         User two = new User("WAAAAA", "waaa@me", "waa");
 
         Assertions.assertTrue(one.equals(two) && two.equals(one));
         Assertions.assertTrue(one.hashCode() == two.hashCode());
+    }
+
+    @Test
+    void testToString() {
+        User one = new User("WAAAAA", "waaa@me", "waa");
+        User two = new User("WAAAAA", "waaa@me", "waa");
+
+        Assertions.assertEquals(one.toString(), two.toString());
     }
 }
