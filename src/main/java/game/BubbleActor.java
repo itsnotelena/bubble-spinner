@@ -40,6 +40,7 @@ public class BubbleActor extends Image {
      */
     public BubbleActor(Texture texture, Stage stage, int x, int y) {
         super(texture);
+        neighbours = new ArrayList<>();
         this.stage = stage;
         setSize(SIZE, SIZE);
         setOrigin(SIZE / 2, SIZE / 2);
@@ -109,6 +110,36 @@ public class BubbleActor extends Image {
         setPosition(Gdx.graphics.getWidth() / 2 - SIZE / 2,
                     Gdx.graphics.getHeight() / 2 - SIZE / 2);
         return this;
+    }
+
+    public void setRelativeTo(BubbleActor relative, double angle, boolean sc){
+        //float ofY = relative.getHeight();
+        this.center();
+        float ofX = relative.getX();
+        float cos = 0;
+        float sin = (float)Math.sin(angle);
+        if(sc==false) {
+            cos = (float)Math.cos(angle);
+        }
+        float x = ofX*sin;
+        float y = ofX*cos;
+        if(x>0) {
+            x = x-400;
+        } else {
+            x = x+ 400;
+        }
+        if(y>0){
+            y = y -400;
+        } else {
+            y = y +400;
+        }
+        x = ofX+x;
+        y= ofX+y;
+        System.out.println("Sin of angle is" + Math.sin(angle));
+        System.out.println("Cos of angle is" + cos);
+        System.out.println("OfX is" + ofX);
+        System.out.println("Positions of bubble are "+x +" and "+y);
+        this.setPosition(x, y);
     }
 
     @Override
