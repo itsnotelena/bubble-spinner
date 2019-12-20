@@ -18,8 +18,7 @@ public class Timer {
      * @return a String with format minutes:seconds.
      */
     public String calculateRemainingTime() {
-        long difference = ((pauseTime != 0 ? pauseTime : System.currentTimeMillis()) - startingTime) / 1000;
-        long remainingTime = Config.Game.GAME_TIME - difference;
+        long remainingTime = timeLeft();
         long minutes = remainingTime / 60;
         long seconds = remainingTime % 60;
         return new StringBuilder()
@@ -32,7 +31,12 @@ public class Timer {
     }
 
     public boolean isOver() {
-        return calculateRemainingTime().equals("00:00");
+        return timeLeft() <= 0;
+    }
+
+    public long timeLeft() {
+        long difference = ((pauseTime != 0 ? pauseTime : System.currentTimeMillis()) - startingTime) / 1000;
+        return Config.Game.GAME_TIME - difference;
     }
 
     public void pause() {
@@ -43,5 +47,9 @@ public class Timer {
         resumeTime = System.currentTimeMillis();
         startingTime += resumeTime - pauseTime;
         pauseTime = 0;
+    }
+
+    public void setStartingTime(long startingTime) {
+        this.startingTime = startingTime;
     }
 }
