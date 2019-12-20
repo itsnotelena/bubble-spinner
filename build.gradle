@@ -48,7 +48,7 @@ test {
 
     jacoco {
         enabled = true
-        includes = ['game.*', 'server.*']
+        includes = ['game.*', 'server.*', 'client.*']
         excludes = ['game.ui.*']
     }
 }

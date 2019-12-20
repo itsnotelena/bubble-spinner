@@ -42,6 +42,5 @@ public class BubbleSpinner extends Game {
         Server.stop();
         Gdx.app.exit();
     }
-
-
+    
 }
