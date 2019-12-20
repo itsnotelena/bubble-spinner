@@ -88,10 +88,10 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "User{"
+                + "email='" + email + '\''
+                + ", username='" + username + '\''
+                + ", password='" + password + '\''
+                + '}';
     }
 }

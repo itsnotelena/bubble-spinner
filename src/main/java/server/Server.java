@@ -39,19 +39,25 @@ public class Server {
 
     }
 
+    /**
+     * Initialize the database schema.
+     */
     public static void schemaCreate() {
         try {
             dbImplement.getDbAdapter().importTables();
         } catch (FileNotFoundException e) {
-            e.printStackTrace ();
+            e.printStackTrace();
         }
     }
 
+    /**
+     * Clear the data from the database.
+     */
     public static void deleteData() {
         try {
             dbImplement.getDbAdapter().clearData();
         } catch (SQLException e) {
-            e.printStackTrace ();
+            e.printStackTrace();
         }
     }
 
@@ -103,6 +109,11 @@ public class Server {
         return dbImplement.getTop5Score();
     }
 
+    /**
+     * Add a new score to the database.
+     * @param score is the Score object.
+     * @return true if successful, false otherwise.
+     */
     @PostMapping(value = "/addScore")
     public boolean addScore(final @RequestBody Score score) {
         try {
@@ -113,12 +124,17 @@ public class Server {
         }
     }
 
+    /**
+     * Add user api endpoint.
+     * @param user User object containing its information.
+     * @return true if successful, false otherwise.
+     */
     @PostMapping(value = "/addUser")
     public boolean addUser(final @RequestBody User user) {
         try {
-            return dbImplement.insertUser (user);
+            return dbImplement.insertUser(user);
         } catch (SQLException e) {
-            e.printStackTrace ();
+            e.printStackTrace();
             return false;
         }
     }

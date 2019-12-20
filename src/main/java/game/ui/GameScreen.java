@@ -52,9 +52,6 @@ public class GameScreen implements Screen {
             bubbleSpinnerController = new BubbleSpinnerController(this, stage);
         }
 
-
-        Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
-
         timer = new Timer();
         timerFont = new BitmapFont();
         timerFont.setColor(Color.BLACK);
@@ -62,6 +59,7 @@ public class GameScreen implements Screen {
 
         shapeRenderer = new ShapeRenderer();
 
+        Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
         this.pauseMenu = new PauseMenu(this, skin);
     }
 
@@ -69,7 +67,7 @@ public class GameScreen implements Screen {
         this(game, false);
     }
 
-        @Override
+    @Override
     public void show() {
 
     }
@@ -103,7 +101,7 @@ public class GameScreen implements Screen {
             dispose();
         }
 
-        if(!paused){
+        if (!paused) {
             bubbleSpinnerController.update();
             drawArrow();
         } else {
@@ -213,10 +211,13 @@ public class GameScreen implements Screen {
 
     }
 
-    public void togglePause(){
+    /**
+     * Switch between pause and resume states.
+     */
+    public void togglePause() {
         this.paused = !this.paused;
 
-        if (this.paused){
+        if (this.paused) {
             timer.pause();
         } else {
             timer.resume();

@@ -256,8 +256,9 @@ public class DbImplement {
         }
     }
 
-    //We want to access "result" in this method and get the users from it, so we want to suppress warnings for it.
+
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
     private List<User> getTopXScores(int amount) throws SQLException {
         ResultSet result = null;
         List<User> users = new ArrayList<>();
@@ -290,8 +291,8 @@ public class DbImplement {
      * @param username as a parameter.
      * @return Optional User
      */
-    //We want to access "result" in this method, so we want to suppress warnings for it.
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
     public Optional<User> getUserByUsername(String username) throws SQLException {
         ResultSet result = null;
         try {
@@ -328,32 +329,32 @@ public class DbImplement {
      * @return Score.
      * @throws SQLException if no score.
      */
-    //We want to access "result" in this method and get the score from it, so we want to suppress warnings for it.
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
     public Optional<Score> getScoreByUser(String username) throws SQLException {
         ResultSet result = null;
         try {
             PreparedStatement statement = dbAdapter
-                    .getConn ()
-                    .prepareStatement ("SELECT * FROM score where username = ? ");
-            statement.setString (1, username);
-            result = statement.executeQuery ();
-            if (result.next ()) {
-                return Optional.of (new Score (result.getString (1),
-                        result.getInt (2),
-                        result.getInt (3)));
+                    .getConn()
+                    .prepareStatement("SELECT * FROM score where username = ? ");
+            statement.setString(1, username);
+            result = statement.executeQuery();
+            if (result.next()) {
+                return Optional.of(new Score(result.getString(1),
+                        result.getInt(2),
+                        result.getInt(3)));
             }
-            return Optional.empty ();
+            return Optional.empty();
         } catch (SQLException e) {
-            e.printStackTrace ();
-            dbAdapter.closeData ();
-            return Optional.empty ();
+            e.printStackTrace();
+            dbAdapter.closeData();
+            return Optional.empty();
         } finally {
             if (result != null) {
                 try {
-                    result.close ();
+                    result.close();
                 } catch (SQLException e) {
-                    e.printStackTrace ();
+                    e.printStackTrace();
                 }
             }
         }
