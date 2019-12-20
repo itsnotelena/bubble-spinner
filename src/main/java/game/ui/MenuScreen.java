@@ -21,6 +21,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
 
+import java.io.FileNotFoundException;
+
 public class MenuScreen extends ScreenAdapter {
 
     private transient Stage stage;
@@ -55,7 +57,11 @@ public class MenuScreen extends ScreenAdapter {
         startButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new GameScreen(game));
+                try {
+                    game.setScreen(new GameScreen(game));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 dispose();
             }
 

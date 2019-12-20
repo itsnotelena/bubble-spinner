@@ -25,6 +25,4 @@ public class Config {
             "assets/Bubbles/NavyBlue.png"
         };
     }
-
-
 }

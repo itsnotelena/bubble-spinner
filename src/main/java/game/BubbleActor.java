@@ -16,7 +16,7 @@ public class BubbleActor extends Image {
     private transient Circle circle;
     private transient Vector2 movingDirection = new Vector2(0, 0);
     private transient Stage stage;
-    ArrayList<BubbleActor> neighbours;
+    public transient ArrayList<BubbleActor> neighbours;
 
     /**
      * Constructor for the Bubble Actor in the stage.
@@ -68,7 +68,7 @@ public class BubbleActor extends Image {
         }
     }
 
-    public void shiftX(boolean positive, int scale) {
+    public void shiftX(boolean positive, float scale) {
         shiftAxis(positive, scale, true);
     }
 
@@ -76,7 +76,7 @@ public class BubbleActor extends Image {
         shiftX(positive, 1);
     }
 
-    public void shiftY(boolean positive, int scale) {
+    public void shiftY(boolean positive, float scale) {
         shiftAxis(positive, scale, false);
     }
 
@@ -90,7 +90,7 @@ public class BubbleActor extends Image {
      * @param scale The number of times to shift.
      * @param axis True for X axis, False for Y axis.
      */
-    public void shiftAxis(boolean positive, int scale, boolean axis) {
+    public void shiftAxis(boolean positive, float scale, boolean axis) {
         if (axis) {
             moveBy((positive ? 1 : -1) * scale * SIZE, 0);
         } else {
@@ -110,36 +110,6 @@ public class BubbleActor extends Image {
         setPosition(Gdx.graphics.getWidth() / 2 - SIZE / 2,
                     Gdx.graphics.getHeight() / 2 - SIZE / 2);
         return this;
-    }
-
-    public void setRelativeTo(BubbleActor relative, double angle, boolean sc){
-        //float ofY = relative.getHeight();
-        this.center();
-        float ofX = relative.getX();
-        float cos = 0;
-        float sin = (float)Math.sin(angle);
-        if(sc==false) {
-            cos = (float)Math.cos(angle);
-        }
-        float x = ofX*sin;
-        float y = ofX*cos;
-        if(x>0) {
-            x = x-400;
-        } else {
-            x = x+ 400;
-        }
-        if(y>0){
-            y = y -400;
-        } else {
-            y = y +400;
-        }
-        x = ofX+x;
-        y= ofX+y;
-        System.out.println("Sin of angle is" + Math.sin(angle));
-        System.out.println("Cos of angle is" + cos);
-        System.out.println("OfX is" + ofX);
-        System.out.println("Positions of bubble are "+x +" and "+y);
-        this.setPosition(x, y);
     }
 
     @Override

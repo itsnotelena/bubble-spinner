@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
+import java.io.FileNotFoundException;
 import server.User;
 
 public class RegisterScreen extends ScreenAdapter {
@@ -73,7 +74,11 @@ public class RegisterScreen extends ScreenAdapter {
                         emailTextField.getText(), passTextField.getText());
                 if (new Client().register(u)) {
                     game.setUser(u);
-                    game.setScreen(new GameScreen(game));
+                    try {
+                        game.setScreen(new GameScreen(game));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     dispose();
                 }
             }

@@ -14,6 +14,8 @@ import config.Config;
 import game.BubbleSpinner;
 import game.BubbleSpinnerController;
 
+import java.io.FileNotFoundException;
+
 public class GameScreen implements Screen {
 
     private transient BubbleSpinner game;
@@ -27,7 +29,7 @@ public class GameScreen implements Screen {
      * This is Screen where the game is played.
      * @param game BubbleSpinner instance.
      */
-    public GameScreen(BubbleSpinner game) {
+    public GameScreen(BubbleSpinner game) throws FileNotFoundException {
         this.game = game;
 
         camera = new OrthographicCamera();

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.ui.GameScreen;
 
+import java.io.FileNotFoundException;
+
 public class BubbleSpinnerController {
 
     transient GameScreen gameScreen;
@@ -16,7 +18,8 @@ public class BubbleSpinnerController {
      * @param gameScreen GameScreen the game is currently played in.
      * @param stage Stage where all objects reside.
      */
-    public BubbleSpinnerController(GameScreen gameScreen, Stage stage) {
+    public BubbleSpinnerController(GameScreen gameScreen, Stage stage)
+                                        throws FileNotFoundException {
         this.gameScreen = gameScreen;
         this.stage = stage;
         this.shooter = new Shooter(stage);
