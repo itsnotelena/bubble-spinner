@@ -9,7 +9,7 @@ public class Timer {
     private transient long resumeTime;
 
     public Timer() {
-        startingTime = System.currentTimeMillis();
+        startingTime = now();
     }
 
     /**
@@ -30,26 +30,54 @@ public class Timer {
                 .toString();
     }
 
+    /**
+     * Check if the timer ended.
+     * @return true if it's over, false otherwise.
+     */
     public boolean isOver() {
         return timeLeft() <= 0;
     }
 
+    /**
+     * Milliseconds left until the time is over.
+     * @return long number with milliseconds left.
+     */
     public long timeLeft() {
-        long difference = ((pauseTime != 0 ? pauseTime : System.currentTimeMillis()) - startingTime) / 1000;
+        long difference = ((pauseTime != 0 ? pauseTime : now()) - startingTime) / 1000;
         return Config.Game.GAME_TIME - difference;
     }
 
+    /**
+     * Pause the timer.
+     */
     public void pause() {
-        pauseTime = System.currentTimeMillis();
+        pauseTime = now();
     }
 
+    /**
+     * Resume the timer from a pause.
+     */
     public void resume() {
-        resumeTime = System.currentTimeMillis();
+        if (pauseTime == 0) {
+            return;
+        }
+        resumeTime = now();
         startingTime += resumeTime - pauseTime;
         pauseTime = 0;
     }
 
+    /**
+     * Set a new starting time for testing.
+     * @param startingTime long with milliseconds start time.
+     */
     public void setStartingTime(long startingTime) {
         this.startingTime = startingTime;
+    }
+
+    /**
+     * Return current millis.
+     */
+    private long now() {
+        return System.currentTimeMillis();
     }
 }

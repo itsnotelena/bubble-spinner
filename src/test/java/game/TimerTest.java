@@ -8,6 +8,7 @@ public class TimerTest {
     @Test
     public void testCalculateTime() {
         Timer t = new Timer();
+        t.resume();
         Assertions.assertThat(t.calculateRemainingTime()).isEqualTo("10:00");
     }
 
