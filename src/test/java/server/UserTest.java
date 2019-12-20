@@ -70,8 +70,8 @@ public class UserTest {
 
     @Test
     void testToString() {
-        User one = new User("WAAAAA", "waaa@me", "waa");
-        User two = new User("WAAAAA", "waaa@me", "waa");
+        User one = new User("user", "user@user", "pass");
+        User two = new User("user", "user@user", "pass");
 
         Assertions.assertEquals(one.toString(), two.toString());
     }
