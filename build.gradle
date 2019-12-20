@@ -53,6 +53,8 @@ test {
     }
 }
 
+test.finalizedBy(jacocoTestReport)
+
 jacocoTestReport {
     reports {
         csv.enabled true

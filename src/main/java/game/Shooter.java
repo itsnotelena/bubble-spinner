@@ -57,7 +57,7 @@ public class Shooter {
         }
 
         for (int i = 0; i < 2 * MIN_BUBBLES; ++i) {
-            available.add(bubbleFactory.next());
+            available.add(bubbleFactory.createBubble());
         }
     }
 

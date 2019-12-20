@@ -24,7 +24,7 @@ public class HexagonController {
         //Max is the Difficulty of the Game
         this.bubbleFactory.addAllTextures(4);
         this.bubbles = new ArrayList<>();
-        this.bubbles.add(bubbleFactory.next().center());
+        this.bubbles.add(bubbleFactory.createBubble().center());
         stage.addActor(this.bubbles.get(0));
     }
 
@@ -46,4 +46,9 @@ public class HexagonController {
         }
         return false;
     }
+
+    public List<BubbleActor> getBubbles() {
+        return bubbles;
+    }
+
 }

@@ -2,6 +2,9 @@ package server;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,6 +88,66 @@ public class DbImplementExceptionsTest {
     void checkNull() {
         Assertions.assertThatThrownBy(() -> dbImplement.checkLogin(null))
                 .isInstanceOf(java.lang.AssertionError.class);
+    }
+
+    @Test
+    void errorGettingTop5() throws SQLException {
+        Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
+
+        List<User> list = dbImplement.getTop5Score();
+        Assertions.assertThat(list.isEmpty()).isTrue();
+    }
+
+    @Test
+    void errorGettingScoreByUsername() throws SQLException {
+        Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
+
+        Assertions.assertThatThrownBy(() -> dbImplement.getScoreByUser("lol"))
+                .isInstanceOf(SQLException.class);
+    }
+
+    @Test
+    void errorGettingUserByUsername() throws SQLException {
+        Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
+
+        Assertions.assertThatThrownBy(() -> dbImplement.getUserByUsername("baba"))
+                .isInstanceOf(SQLException.class);
+    }
+
+    @Test
+    void exceptionByGettingTopXScores() throws SQLException {
+        Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
+
+        List<User> list = dbImplement.getTop5Score();
+        Assertions.assertThatThrownBy(() -> dbImplement.getDbAdapter().getConn().close())
+                .isInstanceOf(SQLException.class);
+        Assertions.assertThat(list.isEmpty()).isTrue();
+    }
+
+    @Test
+    void notGettingUserByUsername() throws SQLException {
+        dbImplement = new DbImplement(new DbAdapter("Test"));
+
+        dbImplement.removeFromUser("baka");
+        Optional<User> optional = dbImplement.getUserByUsername("baka");
+        Assertions.assertThat(optional.isEmpty()).isTrue();
+
+        dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
+        Mockito.when(dbImplement.getDbAdapter().getConn())
+                .thenReturn(Mockito.mock(Connection.class));
+    }
+
+    @Test
+    void emptyScoreByGettingScoreByUser() throws SQLException {
+        dbImplement = new DbImplement(new DbAdapter("Test"));
+
+        dbImplement.removeFromUser("naruto");
+        Optional<Score> optional = dbImplement.getScoreByUser("naruto");
+        Assertions.assertThat(optional.isEmpty()).isTrue();
+
+        dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
+        Mockito.when(dbImplement.getDbAdapter().getConn())
+                .thenReturn(Mockito.mock(Connection.class));
     }
 
 }

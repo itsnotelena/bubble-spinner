@@ -101,7 +101,8 @@ public class DbAdapter {
      * Clear the Database.
      */
     public void clearData() throws SQLException {
-        PreparedStatement statement = getConn().prepareStatement("DELETE FROM users");
+        PreparedStatement statement = getConn().prepareStatement(
+                "DELETE FROM users; DELETE FROM score; DELETE FROM games; DELETE FROM badges");
         statement.executeUpdate();
         statement.close();
     }
