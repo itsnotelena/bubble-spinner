@@ -19,7 +19,7 @@ public class HexagonController {
      * Constructor for the HexagonController.
      * @param stage Stage where objects reside.
      */
-    public HexagonController(Stage stage) throws FileNotFoundException {
+    public HexagonController(Stage stage) {
         /*
          * TODO
          * Change this to create the correct structure.
@@ -65,12 +65,14 @@ public class HexagonController {
 
         File file = new File("C:\\Users\\Ana\\Documents\\bubble2"
                 + "\\template\\src\\main\\java\\config\\hexagon_easy.txt");
-        Scanner sc = new Scanner(file);
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         sc.useDelimiter(", |\n|\r");
         sc.useLocale(Locale.US);
-        if (file == null) {
-            return;
-        }
         for (BubbleActor bubble: bubbles) {
             if (!(sc.hasNext())) {
                 break;
