@@ -1,8 +1,6 @@
 package game.ui;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -10,13 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class PauseMenu extends Stage {
-    private transient GameScreen game;
+    private transient GameScreen gameScreen;
     private transient int width = 300;
     private transient int height = 50;
 
-    public PauseMenu(GameScreen game, Skin skin) {
+    public PauseMenu(GameScreen gameScreen, Skin skin) {
         super(new ScreenViewport());
-        this.game = game;
+        this.gameScreen = gameScreen;
         Gdx.input.setInputProcessor(this);
 
         String def = "default";
@@ -29,7 +27,7 @@ public class PauseMenu extends Stage {
         resumeButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.togglePause();
+                gameScreen.togglePause();
             }
 
             @Override
@@ -52,12 +50,12 @@ public class PauseMenu extends Stage {
             }
         });
 
-        // Setup a third button, one to exit the current game
+        // Setup a third button, one to exit the current gameScreen
         TextButton exitButton = new TextButton("Exit", skin, def);
         exitButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.dispose();
+                gameScreen.game.setScreen(new MenuScreen(gameScreen.game));
             }
 
             @Override

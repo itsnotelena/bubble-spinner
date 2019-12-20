@@ -23,19 +23,14 @@ import game.Timer;
 
 public class GameScreen implements Screen {
 
-    private transient BubbleSpinner game;
+    protected transient BubbleSpinner game;
     private transient Stage stage;
     private transient OrthographicCamera camera;
     private transient BubbleSpinnerController bubbleSpinnerController;
-    private transient long startingTime;
     private transient BitmapFont timerFont;
     private transient PauseMenu pauseMenu;
     private transient boolean paused;
     private transient ShapeRenderer shapeRenderer;
-
-    private transient long pauseTime;
-    private transient long resumeTime;
-
     private transient Timer timer;
 
     /**
@@ -140,7 +135,11 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        game.setScreen(new MenuScreen(game));
+        if (bubbleSpinnerController instanceof BotController) {
+            game.setScreen(new GameScreen(game, true));
+        } else {
+            game.setScreen(new MenuScreen(game));
+        }
     }
 
     /**
