@@ -15,8 +15,7 @@ public class Client {
 
     /**
      * Allows the user to authenticate.
-     * @param username parameter.
-     * @param password parameter.
+     * @param user User object containing the details.
      * @return boolean.
      */
     public boolean authenticate(User user) {
@@ -27,17 +26,28 @@ public class Client {
         return res != null ? res : false;
     }
 
+    /**
+     * Add score for a user to the database.
+     * @param score is an object containing the score.
+     * @return true if successful, false otherwise.
+     */
     public boolean addScore(Score score) {
         RestTemplate restTemplate = new RestTemplate();
-        Boolean user = restTemplate.postForObject (Config.Api.URL + "/addScore", score, boolean.class);
+        Boolean user = restTemplate.postForObject(Config.Api.URL + "/addScore", score,
+                                                    boolean.class);
         return user;
     }
 
+    /**
+     * Add a new user to the database.
+     * @param user is the new User object.
+     * @return true if successful, false otherwise.
+     */
     public boolean addUser(User user) {
         RestTemplate restTemplate = new RestTemplate();
-        Boolean result = restTemplate.postForObject (Config.Api.URL + "/addUser", user, boolean.class);
+        Boolean result = restTemplate.postForObject(Config.Api.URL + "/addUser", user,
+                                                boolean.class);
         return result;
-
     }
 
     /**
@@ -45,14 +55,13 @@ public class Client {
      * @return usernames.
      */
     public List<User> getTop5() {
-        RestTemplate restTemplate = new RestTemplate ();
+        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<User>> users =
-                restTemplate.exchange (Config.Api.URL + "/top5",
+                restTemplate.exchange(Config.Api.URL + "/top5",
                         HttpMethod.GET,
                         null,
-                        new ParameterizedTypeReference<List<User>> () {
-                        });
-        return users.getBody ();
+                        new ParameterizedTypeReference<>(){});
+        return users.getBody();
     }
 
     /**

@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class PauseMenu extends Stage {
@@ -12,6 +15,11 @@ public class PauseMenu extends Stage {
     private transient int width = 300;
     private transient int height = 50;
 
+    /**
+     * Pause menu constructor.
+     * @param gameScreen is the GameScreen instance.
+     * @param skin Layout for the menu.
+     */
     public PauseMenu(GameScreen gameScreen, Skin skin) {
         super(new ScreenViewport());
         this.gameScreen = gameScreen;
@@ -77,9 +85,10 @@ public class PauseMenu extends Stage {
         table.row();
         this.addActor(table);
 
-        float newWidth = width, newHeight = height * 5;
-        table.setBounds((Gdx.graphics.getWidth() - newWidth ) / 2,
-              (Gdx.graphics.getHeight() - newHeight ) / 2, newWidth , newHeight ); // Center on screen.
+        float newWidth = width;
+        float newHeight = height * 5;
+        table.setBounds((Gdx.graphics.getWidth() - newWidth) / 2,
+              (Gdx.graphics.getHeight() - newHeight) / 2, newWidth, newHeight); // Screen center.
     }
 
 }

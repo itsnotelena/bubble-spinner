@@ -76,8 +76,7 @@ public class User {
         }
         User user = (User) o;
         return email.equals(user.email)
-                && username.equals(user.username)
-                && password.equals(user.password);
+                && username.equals(user.username);
     }
 
 
@@ -88,10 +87,10 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return "User{"
+                + "email='" + email + '\''
+                + ", username='" + username + '\''
+                + ", password='" + password + '\''
+                + '}';
     }
 }
