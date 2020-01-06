@@ -47,6 +47,10 @@ public class BubbleSpinnerController {
         if (hexagonController.lostGame) {
             gameScreen.dispose();
         }
+
+        if (hexagonController.getBubbles().isEmpty()) {
+            gameScreen.nextLevel();
+        }
     }
 
     /**

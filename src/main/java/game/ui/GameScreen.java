@@ -141,6 +141,13 @@ public class GameScreen implements Screen {
     }
 
     /**
+     * If the game is won move to the next level.
+     */
+    public void nextLevel() {
+        game.setScreen(new GameScreen(game, bubbleSpinnerController instanceof BotController));
+    }
+
+    /**
      * Draw an arrow based on the current
      * position of the mouse.
      */
