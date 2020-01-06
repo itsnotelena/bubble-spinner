@@ -32,12 +32,13 @@ public class GameScreen implements Screen {
     private transient boolean paused;
     private transient ShapeRenderer shapeRenderer;
     private transient Timer timer;
+    private transient int level;
 
     /**
      * This is Screen where the game is played.
      * @param game BubbleSpinner instance.
      */
-    public GameScreen(BubbleSpinner game, boolean computer) {
+    public GameScreen(BubbleSpinner game, boolean computer, int level) {
         this.game = game;
 
         this.paused = false;
@@ -61,6 +62,12 @@ public class GameScreen implements Screen {
 
         Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
         this.pauseMenu = new PauseMenu(this, skin);
+
+        this.level = level;
+    }
+
+    public GameScreen(BubbleSpinner game, boolean computer) {
+        this(game, computer, 0);
     }
 
     public GameScreen(BubbleSpinner game) {
@@ -144,7 +151,9 @@ public class GameScreen implements Screen {
      * If the game is won move to the next level.
      */
     public void nextLevel() {
-        game.setScreen(new GameScreen(game, bubbleSpinnerController instanceof BotController));
+        game.setScreen(new GameScreen(game,
+                bubbleSpinnerController instanceof BotController,
+                level + 1));
     }
 
     /**
