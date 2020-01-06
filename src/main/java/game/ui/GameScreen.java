@@ -32,14 +32,15 @@ public class GameScreen implements Screen {
     private transient boolean paused;
     private transient ShapeRenderer shapeRenderer;
     private transient Timer timer;
-    private transient int level;
+    private transient GameSettings gameSettings;
 
     /**
      * This is Screen where the game is played.
      * @param game BubbleSpinner instance.
      */
-    public GameScreen(BubbleSpinner game, boolean computer, int level) {
+    public GameScreen(BubbleSpinner game, GameSettings gameSettings) {
         this.game = game;
+        this.gameSettings = gameSettings;
 
         this.paused = false;
         camera = new OrthographicCamera();
@@ -47,31 +48,23 @@ public class GameScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
-        if (computer) {
+        if (gameSettings.isComputerPlayer()) {
             bubbleSpinnerController = new BotController(this, stage);
         } else {
             bubbleSpinnerController = new BubbleSpinnerController(this, stage);
         }
 
-        timer = new Timer();
-        timerFont = new BitmapFont();
-        timerFont.setColor(Color.BLACK);
-        timerFont.getData().setScale(2);
+        if (!gameSettings.isInfinite()) {
+            timer = new Timer();
+            timerFont = new BitmapFont();
+            timerFont.setColor(Color.BLACK);
+            timerFont.getData().setScale(2);
+        }
 
         shapeRenderer = new ShapeRenderer();
 
         Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
         this.pauseMenu = new PauseMenu(this, skin);
-
-        this.level = level;
-    }
-
-    public GameScreen(BubbleSpinner game, boolean computer) {
-        this(game, computer, 0);
-    }
-
-    public GameScreen(BubbleSpinner game) {
-        this(game, false);
     }
 
     @Override
@@ -87,15 +80,17 @@ public class GameScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
-        game.batch.begin();
+        if (!gameSettings.isInfinite()) {
+            game.batch.begin();
 
-        timerFont.draw(game.batch,
-                timer.calculateRemainingTime(),
-                Gdx.graphics.getHeight() / 8,
-                7 * Gdx.graphics.getHeight() / 8
-        );
+            timerFont.draw(game.batch,
+                    timer.calculateRemainingTime(),
+                    Gdx.graphics.getHeight() / 8,
+                    7 * Gdx.graphics.getHeight() / 8
+            );
 
-        game.batch.end();
+            game.batch.end();
+        }
 
         stage.act();
         stage.draw();
@@ -104,7 +99,7 @@ public class GameScreen implements Screen {
             this.togglePause();
         }
 
-        if (timer.isOver()) {
+        if (!gameSettings.isInfinite() && timer.isOver()) {
             dispose();
         }
 
@@ -141,7 +136,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         stage.dispose();
         if (bubbleSpinnerController instanceof BotController) {
-            game.setScreen(new GameScreen(game, true));
+            game.setScreen(new GameScreen(game, gameSettings));
         } else {
             game.setScreen(new MenuScreen(game));
         }
@@ -151,9 +146,8 @@ public class GameScreen implements Screen {
      * If the game is won move to the next level.
      */
     public void nextLevel() {
-        game.setScreen(new GameScreen(game,
-                bubbleSpinnerController instanceof BotController,
-                level + 1));
+        gameSettings.incrementLevel();
+        game.setScreen(new GameScreen(game, gameSettings));
     }
 
     /**
@@ -233,10 +227,12 @@ public class GameScreen implements Screen {
     public void togglePause() {
         this.paused = !this.paused;
 
-        if (this.paused) {
-            timer.pause();
-        } else {
-            timer.resume();
+        if (!gameSettings.isInfinite()) {
+            if (this.paused) {
+                timer.pause();
+            } else {
+                timer.resume();
+            }
         }
     }
 }

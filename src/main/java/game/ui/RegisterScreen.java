@@ -73,7 +73,13 @@ public class RegisterScreen extends ScreenAdapter {
                         emailTextField.getText(), passTextField.getText());
                 if (new Client().register(u)) {
                     game.setUser(u);
-                    game.setScreen(new GameScreen(game));
+                    GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
+                            .withComputerPlayer(false)
+                            .withLevel(0)
+                            .withDifficulty(0)
+                            .withInfinite(false)
+                            .build();
+                    game.setScreen(new GameScreen(game, gameSettings));
                     dispose();
                 }
             }
