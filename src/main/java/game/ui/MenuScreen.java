@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import config.Config.Game;
 import config.Config.Time;
 import game.BubbleSpinner;
+import game.GameSettings;
 
 public class MenuScreen extends ScreenAdapter {
 

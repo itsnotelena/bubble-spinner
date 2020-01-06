@@ -12,14 +12,9 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import config.Config;
-import game.BotController;
-import game.BubbleSpinner;
-import game.BubbleSpinnerController;
-import game.Timer;
+import game.*;
 
 public class GameScreen implements Screen {
 
