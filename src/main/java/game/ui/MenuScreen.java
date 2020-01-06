@@ -64,6 +64,7 @@ public class MenuScreen extends ScreenAdapter {
                             .withLevel(0)
                             .withDifficulty(0)
                             .withInfinite(Game.GAME_TIME == 0)
+                            .withHelpBox(computerPlayer ? new TutorialHelpBox(game.batch) : null)
                             .build();
                 game.setScreen(new GameScreen(game, gameSettings));
                 dispose();
@@ -88,8 +89,8 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Game.GAME_TIME = (Game.GAME_TIME + Time.DEFAULT) % Time.HOUR;
-                String time = Game.GAME_TIME == 0 ?
-                            "infinite" :
+                String time = Game.GAME_TIME == 0
+                            ? "infinite" :
                             Integer.toString(Game.GAME_TIME / Time.MINUTE);
                 timerButton.setText("Timer: " + time + " minutes");
                 return true;

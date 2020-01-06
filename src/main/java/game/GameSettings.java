@@ -1,18 +1,25 @@
 package game;
 
+import game.ui.TutorialHelpBox;
+
 public class GameSettings {
 
     private transient boolean computerPlayer;
     private transient int level;
     private transient boolean infinite;
     private transient int difficulty;
+    private transient TutorialHelpBox helpBox;
 
-
+    /**
+     * Constructor for GameSettings which copies the builder instance.
+     * @param gameSettingsBuilder builder instance.
+     */
     public GameSettings(GameSettingsBuilder gameSettingsBuilder) {
         this.computerPlayer = gameSettingsBuilder.computerPlayer;
         this.level = gameSettingsBuilder.level;
         this.infinite = gameSettingsBuilder.infinite;
         this.difficulty = gameSettingsBuilder.difficulty;
+        this.helpBox = gameSettingsBuilder.helpBox;
     }
 
     public boolean isComputerPlayer() {
@@ -31,9 +38,14 @@ public class GameSettings {
         return this.difficulty;
     }
 
+    public TutorialHelpBox getHelpBox() {
+        return this.helpBox;
+    }
+
     public void incrementLevel() {
         this.level++;
     }
+
 
     public static class GameSettingsBuilder {
 
@@ -41,6 +53,7 @@ public class GameSettings {
         private transient int level;
         private transient boolean infinite;
         private transient int difficulty;
+        private transient TutorialHelpBox helpBox;
 
         public GameSettingsBuilder() {
 
@@ -63,6 +76,11 @@ public class GameSettings {
 
         public GameSettingsBuilder withDifficulty(int difficulty) {
             this.difficulty = difficulty;
+            return this;
+        }
+
+        public GameSettingsBuilder withHelpBox(TutorialHelpBox helpBox) {
+            this.helpBox = helpBox;
             return this;
         }
 

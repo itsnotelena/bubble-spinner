@@ -17,6 +17,15 @@ public class Config {
         public static final int HOUR = 3600;
     }
 
+    public static class HelpBox {
+        public static final String[] text = {
+            "",
+            "",
+            "",
+            ""
+        };
+    }
+
     public static class Api {
         public static final String URL = "http://localhost:8080";
     }

@@ -14,7 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import config.Config;
-import game.*;
+import game.BotController;
+import game.BubbleSpinner;
+import game.BubbleSpinnerController;
+import game.GameSettings;
+import game.Timer;
+
 
 public class GameScreen implements Screen {
 
@@ -104,6 +109,11 @@ public class GameScreen implements Screen {
         } else {
             pauseMenu.act();
             pauseMenu.draw();
+        }
+
+        if (bubbleSpinnerController instanceof BotController
+            && gameSettings.getHelpBox() != null) {
+            gameSettings.getHelpBox().update();
         }
     }
 
