@@ -14,7 +14,7 @@ public class GameSettings {
      * Constructor for GameSettings which copies the builder instance.
      * @param gameSettingsBuilder builder instance.
      */
-    public GameSettings(GameSettingsBuilder gameSettingsBuilder) {
+    private GameSettings(GameSettingsBuilder gameSettingsBuilder) {
         this.computerPlayer = gameSettingsBuilder.computerPlayer;
         this.level = gameSettingsBuilder.level;
         this.infinite = gameSettingsBuilder.infinite;

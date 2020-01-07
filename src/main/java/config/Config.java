@@ -19,10 +19,19 @@ public class Config {
 
     public static class HelpBox {
         public static final String[] text = {
-            "",
-            "",
-            "",
-            ""
+                "Press right or left arrow to navigate this menu or C to close it.",
+                "At the top of the screen you can see there are 5 balls of which the first one is"
+                        + " the one you are allowed to use. You can shoot it in any direction as long"
+                        + " as it points towards the bottom of the screen.",
+                "The central structure is the hexagon containing the bubbles you need to shoot and"
+                        + " in order to win the game. You can use the aiming arrow line to adjust your"
+                        + " shots to be perfectly aligned with your target.",
+                "If the bubble shot hits the hexagon and 3 or more bubbles of the same color are"
+                        + " connected together they will pop and you will get points for it.",
+                "If you miss the hexagon structure you will lose points but you will not lose points"
+                        + " if you don't hit a bubble of he same color.",
+                "In order to win the game you need to pop all the bubbles from the hexagon structure.",
+                "Have fun!"
         };
     }
 

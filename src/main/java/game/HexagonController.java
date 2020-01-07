@@ -1,5 +1,6 @@
 package game;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class HexagonController {
         //Max is the Difficulty of the Game
         this.bubbleFactory.addAllTextures(4);
         this.bubbles = new ArrayList<>();
-        this.bubbles.add(bubbleFactory.createBubble().center());
+        this.bubbles.add(new BubbleActor(new Texture("assets/Bubbles/Black.png"), stage).center());
         this.bubbles.add(bubbleFactory.createBubble().center());
         stage.addActor(this.bubbles.get(0));
     }
