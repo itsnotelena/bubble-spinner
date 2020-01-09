@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -20,6 +22,7 @@ public class Server {
     private static DbImplement dbImplement;
     private static DbAdapter dbAdapter;
     private static ConfigurableApplicationContext ctx;
+    private String username;
 
 
     /**
@@ -110,6 +113,22 @@ public class Server {
     }
 
     /**
+     * Get the badges of the users.
+     * @param reqBody is the username.
+     * @return the badges.
+     */
+    @GetMapping(value = "/getBadges")
+    public Optional<Badge> getBadges(final @RequestBody String reqBody) {
+        String username = reqBody;
+        try {
+            return dbImplement.getBadgeByUser(username);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    /**
      * Add a new score to the database.
      * @param score is the Score object.
      * @return true if successful, false otherwise.
@@ -118,6 +137,21 @@ public class Server {
     public boolean addScore(final @RequestBody Score score) {
         try {
             return dbImplement.insertScore(score);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Add a new badge to the database.
+     * @param badge is the Badge object.
+     * @return true if successful, false otherwise.
+     */
+    @PostMapping(value = "/addBadge")
+    public boolean addBadge(final @RequestBody Badge badge) {
+        try {
+            return dbImplement.insertBadge(badge);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

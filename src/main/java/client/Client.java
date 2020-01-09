@@ -1,12 +1,13 @@
 package client;
 
 import config.Config;
+
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import server.Badge;
 import server.Score;
 import server.User;
 
@@ -34,7 +35,7 @@ public class Client {
     public boolean addScore(Score score) {
         RestTemplate restTemplate = new RestTemplate();
         Boolean user = restTemplate.postForObject(Config.Api.URL + "/addScore", score,
-                                                    boolean.class);
+                                                boolean.class);
         return user;
     }
 
@@ -46,6 +47,18 @@ public class Client {
     public boolean addUser(User user) {
         RestTemplate restTemplate = new RestTemplate();
         Boolean result = restTemplate.postForObject(Config.Api.URL + "/addUser", user,
+                                                boolean.class);
+        return result;
+    }
+
+    /**
+     * Add a new badge to the database.
+     * @param badge is the new Badge object.
+     * @return true if successful, false otherwise.
+     */
+    public boolean addBadge(Badge badge) {
+        RestTemplate restTemplate = new RestTemplate();
+        Boolean result = restTemplate.postForObject(Config.Api.URL + "/addBadge", badge,
                                                 boolean.class);
         return result;
     }
@@ -90,6 +103,22 @@ public class Client {
                 username,
                 boolean.class);
         return res != null ? res : false;
+    }
+
+
+    /**
+     * Get the badges of the user.
+     * @return badges.
+     */
+    public List<Badge> getBadges() {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<List<Badge>> badges =
+                restTemplate.exchange(Config.Api.URL + "/getBadges",
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<Badge>>() {
+                        });
+        return badges.getBody();
     }
 
 }

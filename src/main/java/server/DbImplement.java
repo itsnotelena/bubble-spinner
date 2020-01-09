@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 public class DbImplement {
@@ -94,6 +93,27 @@ public class DbImplement {
     }
 
     /**
+     * Insert the badge class object to the database.
+     *
+     * @param badge using the Badge class Object.
+     * @return true if the object is inserted.
+     * @throws SQLException in case of connection failure.
+     */
+    public boolean insertBadge(Badge badge) throws SQLException {
+        assert badge != null;
+
+        PreparedStatement statement = dbAdapter
+                .getConn()
+                .prepareStatement("INSERT INTO badges VALUES(?,?)");
+        statement.setString(1, badge.getUsername());
+        statement.setString(2, badge.getAward());
+        statement.execute();
+        statement.close();
+
+        return searchInBadges(badge.getUsername());
+    }
+
+    /**
      * Searches for the user in the specified table ("users" OR "score" OR "games") as a string
      * and return true if found or otherwise.
      *
@@ -148,6 +168,20 @@ public class DbImplement {
     public boolean searchInGame(String name) {
         try {
             return searchUser(name, "games");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * search inside the badge table.
+     * @param name String to search for.
+     * @return if it exists or not.
+     */
+    public boolean searchInBadges(String name) {
+        try {
+            return searchUser(name, "badges");
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -256,8 +290,7 @@ public class DbImplement {
         }
     }
 
-
-    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.DataflowAnomalyAnalysis"})
     // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
     private List<User> getTopXScores(int amount) throws SQLException {
         ResultSet result = null;
@@ -343,6 +376,42 @@ public class DbImplement {
                 return Optional.of(new Score(result.getString(1),
                         result.getInt(2),
                         result.getInt(3)));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbAdapter.closeData();
+            return Optional.empty();
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Get badges by username.
+     * @param username as a parameter.
+     * @return Badge.
+     * @throws SQLException if no badge.
+     */
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
+    public Optional<Badge> getBadgeByUser(String username) throws SQLException {
+        ResultSet result = null;
+        try {
+            PreparedStatement statement = dbAdapter
+                    .getConn()
+                    .prepareStatement("SELECT * FROM badge where username = ? ");
+            statement.setString(1, username);
+            result = statement.executeQuery();
+            if (result.next()) {
+                return Optional.of(new Badge(result.getString(1),
+                        result.getString(2)));
             }
             return Optional.empty();
         } catch (SQLException e) {
