@@ -72,27 +72,6 @@ public class DbImplement {
     }
 
     /**
-     * Insert the Score class object to the database.
-     *
-     * @param score using the Score class Object
-     * @return true if the object is inserted
-     * @throws SQLException in case of connection failure
-     */
-    public boolean insertScore(Score score) throws SQLException {
-        assert score != null;
-        String query = "INSERT INTO score VALUES(?,?,?)";
-        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-        statement.setString(1, score.getUsername());
-        statement.setInt(2, score.getScoreW());
-        statement.setInt(3, score.getScoreA());
-        statement.execute();
-        statement.close();
-
-        return searchInScore(score.getUsername());
-
-    }
-
-    /**
      * Insert the badge class object to the database.
      *
      * @param badge using the Badge class Object.
@@ -101,6 +80,9 @@ public class DbImplement {
      */
     public boolean insertBadge(Badge badge) throws SQLException {
         assert badge != null;
+        if (searchInBadges(badge.getUsername())) {
+            return false;
+        }
 
         PreparedStatement statement = dbAdapter
                 .getConn()
@@ -111,6 +93,30 @@ public class DbImplement {
         statement.close();
 
         return searchInBadges(badge.getUsername());
+    }
+
+    /**
+     * Insert the Score class object to the database.
+     *
+     * @param score using the Score class Object
+     * @return true if the object is inserted
+     * @throws SQLException in case of connection failure
+     */
+    public boolean insertScore(Score score) throws SQLException {
+        assert score != null;
+        if (searchInScore(score.getUsername())) {
+            return false;
+        }
+        String query = "INSERT INTO score VALUES(?,?,?)";
+        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
+        statement.setString(1, score.getUsername());
+        statement.setInt(2, score.getScoreW());
+        statement.setInt(3, score.getScoreA());
+        statement.execute();
+        statement.close();
+
+        return searchInScore(score.getUsername());
+
     }
 
     /**
@@ -242,11 +248,17 @@ public class DbImplement {
         try {
             return removeUser(username, "score");
         } catch (SQLException e) {
-            e.printStackTrace() ;
+            e.printStackTrace();
             return false;
         }
     }
 
+    /**
+     * deletes username from Badges.
+     *
+     * @param username String to remove from db.
+     * @return true if it is removed or otherwise.
+     */
     public boolean removeFromBadge(String username) {
         try {
             return removeUser(username, "badges");

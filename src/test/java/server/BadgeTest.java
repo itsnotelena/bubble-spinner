@@ -25,7 +25,7 @@ public class BadgeTest {
 
     @Test
     void equalsFalseTest2() {
-        Badge one = new Badge("Beyonce", "LEVEL2");
+        Badge one = new Badge("Beyonce", "LEVEL9");
         Badge two = new Badge("Anitta", "LEVEL3");
         Assert.assertNotEquals(one,two);
     }
@@ -51,7 +51,7 @@ public class BadgeTest {
 
     @Test
     void equalsUsernameFalse() {
-        Badge one = new Badge("Selena Gomez", "LEVEL2");
+        Badge one = new Badge("Selena Gomez", "LEVEL7");
         Badge two = new Badge("Hayley Kiyoko", "LEVEL3");
 
         Assert.assertNotEquals(one, two);

@@ -57,7 +57,7 @@ public class ClientTest {
         Client client = new Client();
         Badge badge = new Badge("sasuke", "LEVEL2");
         Assertions.assertThat(client.addBadge(badge)).isTrue();
-        }
+    }
     **/
 
     @Test
@@ -102,7 +102,7 @@ public class ClientTest {
         Assertions.assertThat(result).isEqualTo(users);
     }
 
-   /** @Test
+    /*@Test
     void getBadges() {
         User billie = new User("billie", "billie@me", "badguy");
         List<User> users = new ArrayList<>();

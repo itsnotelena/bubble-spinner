@@ -1,7 +1,6 @@
 package client;
 
 import config.Config;
-
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
