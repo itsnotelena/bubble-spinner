@@ -85,6 +85,12 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
+    void insertBadgeNull() {
+        Assertions.assertThatThrownBy(() -> dbImplement.insertBadge(null))
+                .isInstanceOf(java.lang.AssertionError.class);
+    }
+
+    @Test
     void checkNull() {
         Assertions.assertThatThrownBy(() -> dbImplement.checkLogin(null))
                 .isInstanceOf(java.lang.AssertionError.class);
@@ -150,4 +156,24 @@ public class DbImplementExceptionsTest {
                 .thenReturn(Mockito.mock(Connection.class));
     }
 
+    @Test
+    void emptyBadgesByGettingBadgesByUser() throws  SQLException {
+        dbImplement = new DbImplement(new DbAdapter("Test"));
+
+        dbImplement.removeFromUser("elena");
+        Optional<Badge> optional = dbImplement.getBadgeByUser("elena");
+        Assertions.assertThat(optional.isEmpty()).isTrue();
+
+        dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
+        Mockito.when(dbImplement.getDbAdapter().getConn())
+                .thenReturn(Mockito.mock(Connection.class)); 
+    }
+
+    @Test
+    void errorGettingBadgeByUsername() throws SQLException {
+        Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
+
+        Assertions.assertThatThrownBy(() -> dbImplement.getBadgeByUser("lol"))
+                .isInstanceOf(SQLException.class);
+    }
 }

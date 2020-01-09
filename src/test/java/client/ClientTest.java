@@ -3,9 +3,11 @@ package client;
 import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import server.Badge;
 import server.Score;
 import server.Server;
 import server.User;
@@ -34,6 +36,29 @@ public class ClientTest {
     public void testAuthFail() {
         Assertions.assertThat(new Client().authenticate(new User("test", null, "test"))).isFalse();
     }
+
+    @Test
+    void testAddUser() {
+        Client client = new Client();
+        User user = new User("jesus", "jesus@amen", "carpediem");
+        Assertions.assertThat(client.addUser(user)).isTrue();
+    }
+
+    /*@Test
+    void testAddScore() {
+        Client client = new Client();
+        Score score = new Score("rie", 0, 0);
+        Assertions.assertThat(client.addScore(score)).isTrue();
+    }
+    **/
+
+    /*@Test
+    void testAddBadge() {
+        Client client = new Client();
+        Badge badge = new Badge("sasuke", "LEVEL2");
+        Assertions.assertThat(client.addBadge(badge)).isTrue();
+        }
+    **/
 
     @Test
     public void getTop5() {
@@ -76,6 +101,24 @@ public class ClientTest {
 
         Assertions.assertThat(result).isEqualTo(users);
     }
+
+   /** @Test
+    void getBadges() {
+        User billie = new User("billie", "billie@me", "badguy");
+        List<User> users = new ArrayList<>();
+        users.add(billie);
+
+        Client client = new Client();
+        client.addUser(billie);
+
+        client.addBadge(new Badge("billie", "LEVEL3"));
+
+        List<Badge> result = client.getBadges();
+
+        Assertions.assertThat(users.get(0).equals(result.get(0))).isTrue();
+        Assertions.assertThat(result).isEqualTo(users);
+    }
+    **/
 
     @Test
     void login() {

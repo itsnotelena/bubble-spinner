@@ -242,6 +242,15 @@ public class DbImplement {
         try {
             return removeUser(username, "score");
         } catch (SQLException e) {
+            e.printStackTrace() ;
+            return false;
+        }
+    }
+
+    public boolean removeFromBadge(String username) {
+        try {
+            return removeUser(username, "badges");
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -406,7 +415,7 @@ public class DbImplement {
         try {
             PreparedStatement statement = dbAdapter
                     .getConn()
-                    .prepareStatement("SELECT * FROM badge where username = ? ");
+                    .prepareStatement("SELECT * FROM badges where username = ? ");
             statement.setString(1, username);
             result = statement.executeQuery();
             if (result.next()) {

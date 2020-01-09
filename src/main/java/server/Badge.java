@@ -42,7 +42,7 @@ public class Badge {
             return false;
         }
         Badge badge = (Badge) o;
-        return award == badge.award
+        return award.equals(badge.award)
                 && username.equals(badge.username);
     }
 
