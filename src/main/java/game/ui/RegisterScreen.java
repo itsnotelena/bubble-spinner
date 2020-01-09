@@ -5,9 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,12 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
+import game.GameSettings;
 import server.User;
 
 public class RegisterScreen extends ScreenAdapter {
@@ -73,7 +67,13 @@ public class RegisterScreen extends ScreenAdapter {
                         emailTextField.getText(), passTextField.getText());
                 if (new Client().register(u)) {
                     game.setUser(u);
-                    game.setScreen(new GameScreen(game));
+                    GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
+                            .withComputerPlayer(false)
+                            .withLevel(0)
+                            .withDifficulty(0)
+                            .withInfinite(false)
+                            .build();
+                    game.setScreen(new GameScreen(game, gameSettings));
                     dispose();
                 }
             }
