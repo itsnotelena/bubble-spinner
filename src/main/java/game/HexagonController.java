@@ -42,29 +42,7 @@ public class HexagonController {
         int lastneigh = 7;
         int temp;
 
-        for (int k = 0; k < 6; k++) {
-            int whichneigh = k;
-            this.bubbles.get(k).neighbours.add(center);
-            temp = ((whichneigh - 1) % 6 + 6) % 6;
-            System.out.println(temp);
-            this.bubbles.get(k).neighbours.add(this.bubbles.get(temp));
-            this.bubbles.get(temp).neighbours.add(this.bubbles.get(k));
-            temp = ((whichneigh + 1) % 6 + 6) % 6;
-            this.bubbles.get(k).neighbours.add(this.bubbles.get(temp));
-            this.bubbles.get(temp).neighbours.add(this.bubbles.get(k));
-            temp = (lastneigh % 18 + 18) % 18;
-            this.bubbles.get(k).neighbours.add(this.bubbles.get(temp));
-            this.bubbles.get(temp).neighbours.add(this.bubbles.get(k));
-            temp = ((temp + 1) % 18 + 18) % 18;
-            this.bubbles.get(k).neighbours.add(this.bubbles.get(temp));
-            this.bubbles.get(temp).neighbours.add(this.bubbles.get(k));
-            temp = ((temp + 1) % 18 + 18) % 18;
-            this.bubbles.get(k).neighbours.add(this.bubbles.get(temp));
-            this.bubbles.get(temp).neighbours.add(this.bubbles.get(k));
-        }
-
-        File file = new File("C:\\Users\\Ana\\Documents\\bubble2"
-                + "\\template\\src\\main\\java\\config\\hexagon_easy.txt");
+        File file = new File("assets\\hexagon_easy.txt");
         Scanner sc = null;
         try {
             sc = new Scanner(file);
@@ -82,6 +60,31 @@ public class HexagonController {
             bubble.center().shiftX(true, (float)x);
             bubble.shiftY(true, (float)y);
             sc.next();
+        }
+        int num2 = 0;
+        for(BubbleActor a: bubbles){
+            int num = 0;
+            for(BubbleActor b: bubbles){
+
+                if(!a.collide(b)) {
+                    float xa = a.getX();
+                    float ya = a.getY();
+                    float xb = b.getX();
+                    float yb = b.getY();
+                    float lenx = (float) Math.pow((xa - xb), 2);
+                    float leny = (float) Math.pow((ya - yb), 2);
+                    float len = (float) Math.sqrt(lenx + leny);
+                    if(len<=120.0 && len>=65.0){
+                        a.neighbours.add(b);
+                        System.out.println("Added neighbour num "+ num);
+                        num++;
+
+                    }
+
+                }
+            }
+            System.out.println("Done with bubble "+num2);
+            num2++;
         }
     }
 
