@@ -34,7 +34,7 @@ public class Server {
             dbAdapter = new DbAdapter("database");
         }
         dbImplement = new DbImplement(dbAdapter);
-        dbImplement.initialize();
+        //dbImplement.initialize();
         ctx = SpringApplication.run(Server.class,args);
 
     }
@@ -43,11 +43,7 @@ public class Server {
      * Initialize the database schema.
      */
     public static void schemaCreate() {
-        try {
-            dbImplement.getDbAdapter().importTables();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        dbImplement.getDbAdapter().importTables();
     }
 
     /**

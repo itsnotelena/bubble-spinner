@@ -63,6 +63,6 @@ public class Score {
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, scoreW, scoreA);
+        return super.hashCode();
     }
 }

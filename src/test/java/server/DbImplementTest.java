@@ -46,6 +46,7 @@ public class DbImplementTest {
     void searchFails() {
         Assertions.assertThat(dbImplement.searchInUsers("lal")).isFalse();
         Assertions.assertThat(dbImplement.searchInScore("lal")).isFalse();
+        Assertions.assertThat(dbImplement.searchInGame("lal")).isFalse();
     }
 
     @Test

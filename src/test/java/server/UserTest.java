@@ -26,6 +26,14 @@ public class UserTest {
     }
 
     @Test
+    void equalsFalseTest21() {
+        User one = new User("Cardi", "cardi@me", "abc");
+        User two = new User("Carrdi", "cardi@me", "abc");
+
+        Assert.assertNotEquals(one, two);
+    }
+
+    @Test
     void equalsFalseTest2() {
         User one = new User("Beyonce", "Beyonce@me", "jesus");
         User two = new User("Anitta", "anitta@me", "anitta");

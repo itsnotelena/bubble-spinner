@@ -107,6 +107,17 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
+    void searchUserFails() {
+        Assertions.assertThatThrownBy(() -> dbImplement.searchInScore(null))
+                .isInstanceOf(AssertionError.class);
+        Assertions.assertThatThrownBy(() -> dbImplement.searchInUsers(null))
+                .isInstanceOf(AssertionError.class);
+        Assertions.assertThatThrownBy(() -> dbImplement.searchInGame(null))
+                .isInstanceOf(AssertionError.class);
+    }
+
+
+    @Test
     void errorGettingUserByUsername() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 

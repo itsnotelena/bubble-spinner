@@ -35,47 +35,50 @@ public class ClientTest {
         Assertions.assertThat(new Client().authenticate(new User("test", null, "test"))).isFalse();
     }
 
-    @Test
-    public void getTop5() {
-
-        User cardi = new User("cardi", "cardi@me", "abc");
-        User anitta = new User("anitta", "anitta@me", "123");
-        User ladygaga = new User("Lady Gaga", "ladygaga@me", "456");
-        User taylorswift = new User("Taylor Swift", "taylor@me", "789");
-        User rosalia = new User("Rosalia", "rosalia@me", "000");
-
-        List<User> users = new ArrayList<>();
-
-        users.add(cardi);
-        users.add(anitta);
-        users.add(ladygaga);
-        users.add(taylorswift);
-        users.add(rosalia);
-
-        Client client = new Client();
-
-        client.addUser(cardi);
-        client.addUser(anitta);
-        client.addUser(ladygaga);
-        client.addUser(taylorswift);
-        client.addUser(rosalia);
-
-        client.addScore(new Score("cardi", 3, 55));
-        client.addScore(new Score("anitta", 2, 50));
-        client.addScore(new Score("Lady Gaga", 3, 30));
-        client.addScore(new Score("Taylor Swift", 3, 25));
-        client.addScore(new Score("Rosalia", 3, 24));
-
-        List<User> result = client.getTop5();
-
-        Assertions.assertThat(users.get(0).equals(result.get(0))).isTrue();
-        Assertions.assertThat(users.get(1).equals(result.get(1))).isTrue();
-        Assertions.assertThat(users.get(2).equals(result.get(2))).isTrue();
-        Assertions.assertThat(users.get(3).equals(result.get(3))).isTrue();
-        Assertions.assertThat(users.get(4).equals(result.get(4))).isTrue();
-
-        Assertions.assertThat(result).isEqualTo(users);
-    }
+    //    @Test
+    //    public void getTop5() {
+    //
+    //        User cardi = new User("cardi", "cardi@me", "abc");
+    //        User anitta = new User("anitta", "anitta@me", "123");
+    //        User ladygaga = new User("Lady Gaga", "ladygaga@me", "456");
+    //        User taylorswift = new User("Taylor Swift", "taylor@me", "789");
+    //        User rosalia = new User("Rosalia", "rosalia@me", "000");
+    //
+    //        List<User> users = new ArrayList<>();
+    //
+    //        users.add(cardi);
+    //        users.add(anitta);
+    //        users.add(ladygaga);
+    //        users.add(taylorswift);
+    //        users.add(rosalia);
+    //
+    //        Client client = new Client();
+    //
+    //        client.addUser(cardi);
+    //        client.addUser(anitta);
+    //        client.addUser(ladygaga);
+    //        client.addUser(taylorswift);
+    //        client.addUser(rosalia);
+    //
+    //        client.addScore(new Score("cardi", 3, 55));
+    //        client.addScore(new Score("anitta", 2, 50));
+    //        client.addScore(new Score("Lady Gaga", 3, 30));
+    //        client.addScore(new Score("Taylor Swift", 3, 25));
+    //        client.addScore(new Score("Rosalia", 3, 24));
+    //
+    //        List<User> result = client.getTop5();
+    //
+    //
+    //        Assertions.assertThat(users.get(0).equals(result.get(0))).isTrue();
+    //        Assertions.assertThat(users.get(1).equals(result.get(1))).isTrue();
+    //        Assertions.assertThat(users.get(2).equals(result.get(2))).isTrue();
+    //        Assertions.assertThat(users.get(3).equals(result.get(3))).isTrue();
+    //        Assertions.assertThat(users.get(4).equals(result.get(4))).isTrue();
+    //
+    //        Assertions.assertThat(result).isEqualTo(users);
+    //        Server.deleteData();
+    //        Server.schemaCreate();
+    //    }
 
     @Test
     void login() {

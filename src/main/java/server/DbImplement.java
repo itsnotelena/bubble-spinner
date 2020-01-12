@@ -21,6 +21,7 @@ public class DbImplement {
      */
     public DbImplement(DbAdapter dbAdapter) {
         this.dbAdapter = dbAdapter;
+        this.initialize();
     }
 
     public DbAdapter getDbAdapter() {
@@ -363,12 +364,8 @@ public class DbImplement {
     /**
      * initialize the tables for this db.
      */
-    public void initialize() {
-        try {
-            dbAdapter.importTables();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    private void initialize() {
+        dbAdapter.importTables();
     }
 }
 

@@ -56,31 +56,29 @@ public class DbAdapter {
      * Import all the tables into the database
      * if they weren't imported yet.
      */
-    public boolean importTables() throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("assets/db/schema.sql"))
-                .useDelimiter(";");
+    public void importTables() {
+        try (Scanner scanner = new Scanner(new File("assets/db/schema.sql"))
+                .useDelimiter(";")) {
+            try (Statement stmt = getConn().createStatement()) {
 
-        try (Statement stmt = getConn().createStatement()) {
-
-            while (scanner.hasNext()) {
+                while (scanner.hasNext()) {
+                    try {
+                        stmt.execute(scanner.next());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
                 try {
-                    stmt.execute(scanner.next());
+                    stmt.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            }
-            try {
-                stmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } catch (SQLException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        scanner.close();
-        return true;
-
     }
 
 
