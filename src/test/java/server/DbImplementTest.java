@@ -62,6 +62,18 @@ public class DbImplementTest {
     }
 
     @Test
+    void getBadgesByUsername() throws SQLException {
+        Badge beyhive = new Badge("beyonce", "LEVEL1");
+        dbImplement.removeFromBadge(beyhive.getUsername());
+        boolean resA = dbImplement.insertBadge(beyhive);
+        Assertions.assertThat(resA).isTrue();
+
+        Optional<Badge> badgeOptional = dbImplement.getBadgeByUser(beyhive.getUsername());
+        Assertions.assertThat(badgeOptional.isPresent()).isTrue();
+        Assertions.assertThat(badgeOptional.get()).isEqualTo(beyhive);
+    }
+
+    @Test
     void getTop5Score() throws SQLException {
         Score one = new Score("cardi", 3, 55);
         Score two = new Score("anitta", 4, 31);
