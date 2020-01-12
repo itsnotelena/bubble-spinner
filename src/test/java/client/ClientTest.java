@@ -3,9 +3,8 @@ package client;
 import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.util.VisibleForTesting;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.Badge;
 import server.Score;
@@ -14,27 +13,25 @@ import server.User;
 
 public class ClientTest {
 
-    /**
-     * Database Test Set up.
-     */
-    @BeforeAll
-    public static void before() {
-        String[] args = {"testClient"};
-        Server.main(args);
-        Server.schemaCreate();
-        Server.deleteData();
+    static Server server = new Server();
+
+    @BeforeEach
+    void start() {
+        server.main(new String[]{"test"});
+        server.schemaCreate();
     }
 
     @AfterEach
-    public void cleanUp() {
-        Server.deleteData();
-        Server.schemaCreate();
+    public void stop() {
+        server.deleteData();
+        server.stop();
     }
 
 
     @Test
     public void testAuthFail() {
-        Assertions.assertThat(new Client().authenticate(new User("test", null, "test"))).isFalse();
+        Assertions.assertThat(new Client().authenticate(new User("test",
+                null, "test"))).isFalse();
     }
 
 
@@ -45,21 +42,21 @@ public class ClientTest {
         Assertions.assertThat(client.addUser(user)).isTrue();
     }
 
-    /*@Test
+    @Test
     void testAddScore() {
         Client client = new Client();
         Score score = new Score("rie", 0, 0);
         Assertions.assertThat(client.addScore(score)).isTrue();
     }
-    **/
 
-    /*@Test
+
+    @Test
     void testAddBadge() {
         Client client = new Client();
         Badge badge = new Badge("sasuke", "LEVEL2");
         Assertions.assertThat(client.addBadge(badge)).isTrue();
     }
-    **/
+
 
     @Test
     public void getTop5() {
@@ -88,9 +85,9 @@ public class ClientTest {
 
         client.addScore(new Score("cardi", 3, 55));
         client.addScore(new Score("anitta", 2, 50));
-        client.addScore(new Score("Lady Gaga", 3, 30));
-        client.addScore(new Score("Taylor Swift", 3, 25));
-        client.addScore(new Score("Rosalia", 3, 24));
+        client.addScore(new Score("Lady Gaga", 1, 30));
+        client.addScore(new Score("Taylor Swift", 11, 25));
+        client.addScore(new Score("Rosalia", 4, 24));
 
         List<User> result = client.getTop5();
 

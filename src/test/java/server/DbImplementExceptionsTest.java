@@ -120,6 +120,8 @@ public class DbImplementExceptionsTest {
                 .isInstanceOf(AssertionError.class);
         Assertions.assertThatThrownBy(() -> dbImplement.searchInGame(null))
                 .isInstanceOf(AssertionError.class);
+        Assertions.assertThatThrownBy(() -> dbImplement.searchInBadges(null))
+                .isInstanceOf(AssertionError.class);
     }
 
 
@@ -143,7 +145,7 @@ public class DbImplementExceptionsTest {
 
     @Test
     void notGettingUserByUsername() throws SQLException {
-        dbImplement = new DbImplement(new DbAdapter("Test"));
+        dbImplement = new DbImplement(new DbAdapter(new String[]{"Test"}));
 
         dbImplement.removeFromUser("baka");
         Optional<User> optional = dbImplement.getUserByUsername("baka");
@@ -156,7 +158,7 @@ public class DbImplementExceptionsTest {
 
     @Test
     void emptyScoreByGettingScoreByUser() throws SQLException {
-        dbImplement = new DbImplement(new DbAdapter("Test"));
+        dbImplement = new DbImplement(new DbAdapter(new String[] {"Test"}));
 
         dbImplement.removeFromUser("naruto");
         Optional<Score> optional = dbImplement.getScoreByUser("naruto");
@@ -169,7 +171,7 @@ public class DbImplementExceptionsTest {
 
     @Test
     void emptyBadgesByGettingBadgesByUser() throws  SQLException {
-        dbImplement = new DbImplement(new DbAdapter("Test"));
+        dbImplement = new DbImplement(new DbAdapter(new String[] {"Test"}));
 
         dbImplement.removeFromUser("elena");
         Optional<Badge> optional = dbImplement.getBadgeByUser("elena");

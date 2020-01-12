@@ -1,10 +1,8 @@
 package server;
 
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 public class DbAdapterTest {
 
@@ -13,7 +11,7 @@ public class DbAdapterTest {
      */
     @Test
     public void testDatabaseConnection() throws SQLException {
-        DbAdapter dba = new DbAdapter("test");
+        DbAdapter dba = new DbAdapter(new String[]{"test"});
         Assertions.assertThat(dba.getConn()).isNotNull();
     }
 

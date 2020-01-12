@@ -1,6 +1,5 @@
 package server;
 
-import java.io.FileNotFoundException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -103,21 +102,22 @@ public class DbImplement {
      * @return true if the object is inserted
      * @throws SQLException in case of connection failure
      */
-    public boolean insertScore(Score score) throws SQLException {
+    public boolean insertScore(Score score) {
         assert score != null;
         if (searchInScore(score.getUsername())) {
             return false;
         }
-        String query = "INSERT INTO score VALUES(?,?,?)";
-        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-        statement.setString(1, score.getUsername());
-        statement.setInt(2, score.getScoreW());
-        statement.setInt(3, score.getScoreA());
-        statement.execute();
-        statement.close();
-
-        return searchInScore(score.getUsername());
-
+        try (PreparedStatement statement = dbAdapter.getConn()
+                .prepareStatement("INSERT INTO score VALUES(?,?,?)")) {
+            statement.setString(1, score.getUsername());
+            statement.setInt(2, score.getScoreW());
+            statement.setInt(3, score.getScoreA());
+            statement.execute();
+            statement.close();
+            return searchInScore(score.getUsername());
+        } catch (SQLException e ) {
+            return false;
+        }
     }
 
     /**
@@ -125,18 +125,22 @@ public class DbImplement {
      * and return true if found or otherwise.
      *
      * @param name set users name needs to be searched using String
-     * @param table either users / score / games as string
+     * @param table either users / score / games / badges as string
      * @return boolean if user exists in the specified table
      * @throws SQLException in case of connection failure
      */
-    private boolean searchUser(String name, String table) throws SQLException {
+    private boolean searchUser(String name, String table) {
         assert name != null;
-        String query = "SELECT username FROM " + table + "  WHERE username = ?";
-        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-        statement.setString(1,name);
-        boolean result = statement.executeQuery().next();
-        statement.close();
-        return result;
+
+        try (PreparedStatement statement = dbAdapter.getConn()
+                .prepareStatement("SELECT username FROM " + table + "  WHERE username = ?")) {
+            statement.setString(1,name);
+            boolean result =  statement.executeQuery().next();
+            statement.close();
+            return result;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     /**
@@ -145,12 +149,7 @@ public class DbImplement {
      * @return if it exists or not
      */
     public boolean searchInUsers(String name) {
-        try {
-            return searchUser(name, "users");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return searchUser(name, "users");
     }
 
     /**
@@ -159,12 +158,7 @@ public class DbImplement {
      * @return if it exists or not
      */
     public boolean searchInScore(String name) {
-        try {
-            return searchUser(name, "score");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return searchUser(name, "score");
     }
 
     /**
@@ -173,12 +167,7 @@ public class DbImplement {
      * @return if it exists or not
      */
     public boolean searchInGame(String name) {
-        try {
-            return searchUser(name, "games");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return searchUser(name, "games");
     }
 
     /**
@@ -187,12 +176,7 @@ public class DbImplement {
      * @return if it exists or not.
      */
     public boolean searchInBadges(String name) {
-        try {
-            return searchUser(name, "badges");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return searchUser(name, "badges");
     }
 
     /**
@@ -202,19 +186,22 @@ public class DbImplement {
      * @return true if it is added to the table or otherwise
      * @throws SQLException in case of connection failure
      */
-    public boolean insertGame(Game game) throws SQLException {
+    public boolean insertGame(Game game) {
         assert game != null;
 
-        String query = "INSERT INTO games VALUES(?,?,?,?)";
-        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-        statement.setString(1,game.getUsername());
-        statement.setInt(2,game.getGamesPlayed());
-        statement.setInt(3,game.getHighestLevel());
-        statement.setString(4,game.getAward());
-        statement.execute();
-        statement.close();
+        try (PreparedStatement statement = dbAdapter.getConn()
+                .prepareStatement("INSERT INTO games VALUES(?,?,?,?)")) {
+            statement.setString(1,game.getUsername());
+            statement.setInt(2,game.getGamesPlayed());
+            statement.setInt(3,game.getHighestLevel());
+            statement.setString(4,game.getAward());
+            statement.execute();
+            statement.close();
+            return searchInGame(game.getUsername());
+        } catch (SQLException e) {
+            return false;
+        }
 
-        return searchInGame(game.getUsername());
     }
 
     /**
@@ -226,17 +213,19 @@ public class DbImplement {
      * @return true if it is removed or otherwise
      * @throws SQLException in case of connection failure
      */
-    private boolean removeUser(String username, String table) throws SQLException {
+    private boolean removeUser(String username, String table) {
         assert username != null;
 
         String query = "DELETE FROM " + table + " WHERE username = ? ";
-        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-        statement.setString(1,username);
-        statement.execute();
-        statement.close();
 
-        return !searchUser(username,table);
-
+        try (PreparedStatement statement = dbAdapter.getConn().prepareStatement(query)) {
+            statement.setString(1,username);
+            statement.execute();
+            statement.close();
+            return !searchUser(username,table);
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     /**
@@ -246,12 +235,7 @@ public class DbImplement {
      * @return true if it is removed or otherwise
      */
     public boolean removeFromScore(String username) {
-        try {
-            return removeUser(username, "score");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return removeUser(username, "score");
     }
 
     /**
@@ -261,12 +245,7 @@ public class DbImplement {
      * @return true if it is removed or otherwise.
      */
     public boolean removeFromBadge(String username) {
-        try {
-            return removeUser(username, "badges");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return removeUser(username, "badges");
     }
 
     /**
@@ -276,12 +255,7 @@ public class DbImplement {
      * @return true if it is removed or otherwise
      */
     public boolean removeFromUser(String username) {
-        try {
-            return removeUser(username, "users");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return removeUser(username, "users");
     }
 
     /**
@@ -291,12 +265,7 @@ public class DbImplement {
      * @return true if it is removed or otherwise
      */
     public boolean removeFromGame(String username) {
-        try {
-            return removeUser(username, "games");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return removeUser(username, "games");
     }
 
     /**

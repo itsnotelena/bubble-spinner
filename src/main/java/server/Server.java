@@ -22,19 +22,16 @@ public class Server {
     private static DbImplement dbImplement;
     private static DbAdapter dbAdapter;
     private static ConfigurableApplicationContext ctx;
-    private String username;
-
 
     /**
      * start the Server.
      * @param args String[] to use
      */
     public static void main(String[] args) {
-        final var len = 1;
-        if (args.length > len) {
-            dbAdapter = new DbAdapter(args[0]);
+        if (!args.toString().isBlank()) {
+            dbAdapter = new DbAdapter(args);
         } else {
-            dbAdapter = new DbAdapter("database");
+            dbAdapter = new DbAdapter(new String[]{"database"});
         }
         dbImplement = new DbImplement(dbAdapter);
         //dbImplement.initialize();
@@ -53,11 +50,7 @@ public class Server {
      * Clear the data from the database.
      */
     public static void deleteData() {
-        try {
-            dbImplement.getDbAdapter().clearData();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        dbImplement.getDbAdapter().clearData();
     }
 
     /**
@@ -131,12 +124,7 @@ public class Server {
      */
     @PostMapping(value = "/addScore")
     public boolean addScore(final @RequestBody Score score) {
-        try {
-            return dbImplement.insertScore(score);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return dbImplement.insertScore(score);
     }
 
     /**

@@ -1,23 +1,28 @@
 package server;
 
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
 public class DbImplementTest {
-    private static DbAdapter dbAdapter = new DbAdapter("test");
+    private static DbAdapter dbAdapter = new DbAdapter(new String[]{"test"});
     private transient DbImplement dbImplement = new DbImplement(dbAdapter);
 
     @BeforeAll
-    static void setUp() throws FileNotFoundException {
+    static void setUp() {
         dbAdapter.importTables();
+    }
+
+    @AfterEach
+    void clean() {
+        dbAdapter.clearData();
     }
 
     @Test
@@ -33,9 +38,8 @@ public class DbImplementTest {
     }
 
     @Test
-    void searchProperly() throws SQLException {
+    void searchProperly() {
         Score a = new Score("lalalq",1,1);
-        dbImplement.removeFromScore(a.getUsername());
         boolean resA = dbImplement.insertScore(a);
         Assertions.assertThat(resA).isTrue();
         Assertions.assertThat(dbImplement.removeFromScore(a.getUsername()));

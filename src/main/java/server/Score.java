@@ -1,7 +1,5 @@
 package server;
 
-import java.util.Objects;
-
 public class Score {
     private String username;
     private int scoreW;

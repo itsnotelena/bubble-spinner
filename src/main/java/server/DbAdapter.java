@@ -28,18 +28,18 @@ public class DbAdapter {
      * Class Constructor.
      * @param name The name of the database.
      */
-    public DbAdapter(String name) {
+    public DbAdapter(String[] name) {
         //try {
         //    Class.forName("org.sqlite.jdbc");
         //} catch (ClassNotFoundException ignored) {
         //    ignored.printStackTrace();
         //}
-        String jdbUrl = "jdbc:sqlite:assets/db/" + name + ".db";
+        String jdbUrl = "jdbc:sqlite:assets/db/" + name[0] + ".db";
         dataSource = new SQLiteDataSource();
         dataSource.setUrl(jdbUrl);
         //();
 
-        System.out.println("database connection established");
+        System.out.println("database connection established for db : " + name[0]);
     }
 
 
@@ -98,11 +98,24 @@ public class DbAdapter {
     /**
      * Clear the Database.
      */
-    public void clearData() throws SQLException {
-        PreparedStatement statement = getConn().prepareStatement(
-                "DELETE FROM users; DELETE FROM score; DELETE FROM games; DELETE FROM badges");
-        statement.executeUpdate();
-        statement.close();
+    public void clearData() {
+        String[] tables  = new String[]{
+            "users",
+            "score",
+            "games",
+            "badges"
+        };
+        for (int i = 0; i < tables.length; i++) {
+
+            try (PreparedStatement statement = getConn().prepareStatement(
+                    "DELETE FROM " + tables[i] + ";") ) {
+                statement.executeUpdate();
+                statement.close();
+                System.out.println("here everything is deleted from " + tables[i]);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

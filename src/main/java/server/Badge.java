@@ -7,6 +7,10 @@ public class Badge {
     private String username;
     private String award;
 
+    public Badge() {
+
+    }
+
     /**
      * Constructor.
      * @param username set username using string.

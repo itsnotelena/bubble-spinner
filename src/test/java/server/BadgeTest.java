@@ -58,6 +58,14 @@ public class BadgeTest {
     }
 
     @Test
+    void equalsUsernameFalse2() {
+        Badge one = new Badge("Selena Gomez", "LEVEL7");
+        Badge two = new Badge("Hayley Kiyoko", "LEVEL7");
+
+        Assert.assertNotEquals(one, two);
+    }
+
+    @Test
     void testHashCode() {
         Badge one = new Badge("Jennifer", "LEVEL4");
         Badge two = new Badge("Jennifer", "LEVEL4");
