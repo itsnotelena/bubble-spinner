@@ -106,4 +106,24 @@ public class HexagonController {
         }
         return false;
     }
+
+    /**
+     * Recursive method to find how many neighbouring
+     * bubbles will be popped after hit.
+     * @return number of bubbles
+     */
+    public int bubblePop(){
+        //TO DO
+        return 0;
+    }
+
+    /**
+     * Method calculates score based on how many
+     * bubbles have been popped.
+     * @return the score due to the
+     */
+    public int calculateScore(){
+        //TO DO
+        return 0;
+    }
 }
