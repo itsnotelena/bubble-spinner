@@ -29,17 +29,6 @@ public class DbImplementExceptionsTest {
                 .thenReturn(Mockito.mock(Connection.class));
     }
 
-    @Test
-    void insertNullUser() {
-        Assertions.assertThatThrownBy(() -> dbImplement.insertUser(null))
-                .isInstanceOf(AssertionError.class);
-    }
-
-    @Test
-    void checkNullUser() {
-        Assertions.assertThatThrownBy(() -> dbImplement.checkLogin(null))
-                .isInstanceOf(AssertionError.class);
-    }
 
     @Test
     void catchSqlExceptionCheckLogin() throws SQLException {
@@ -59,43 +48,6 @@ public class DbImplementExceptionsTest {
                 .isInstanceOf(SQLException.class);
     }
 
-
-    @Test
-    void searchNull() {
-        Assertions.assertThatThrownBy(() -> dbImplement.removeFromUser(null))
-                .isInstanceOf(java.lang.AssertionError.class);
-    }
-
-    @Test
-    void removeNull() {
-        Assertions.assertThatThrownBy(() -> dbImplement.removeFromUser(null))
-                .isInstanceOf(java.lang.AssertionError.class);
-    }
-
-    @Test
-    void insertUserNull() {
-        Assertions.assertThatThrownBy(() -> dbImplement.insertUser(null))
-                .isInstanceOf(java.lang.AssertionError.class);
-    }
-
-    @Test
-    void insertScoreNull() {
-        Assertions.assertThatThrownBy(() -> dbImplement.insertScore(null))
-                .isInstanceOf(java.lang.AssertionError.class);
-    }
-
-    @Test
-    void insertBadgeNull() {
-        Assertions.assertThatThrownBy(() -> dbImplement.insertBadge(null))
-                .isInstanceOf(java.lang.AssertionError.class);
-    }
-
-    @Test
-    void checkNull() {
-        Assertions.assertThatThrownBy(() -> dbImplement.checkLogin(null))
-                .isInstanceOf(java.lang.AssertionError.class);
-    }
-
     @Test
     void errorGettingTop5() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
@@ -113,17 +65,11 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void searchUserFails() {
-        Assertions.assertThatThrownBy(() -> dbImplement.searchInScore(null))
-                .isInstanceOf(AssertionError.class);
-        Assertions.assertThatThrownBy(() -> dbImplement.searchInUsers(null))
-                .isInstanceOf(AssertionError.class);
-        Assertions.assertThatThrownBy(() -> dbImplement.searchInGame(null))
-                .isInstanceOf(AssertionError.class);
-        Assertions.assertThatThrownBy(() -> dbImplement.searchInBadges(null))
-                .isInstanceOf(AssertionError.class);
-    }
+    void errorRemovingUser() throws SQLException {
+        Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
+        Assertions.assertThat(dbImplement.removeFromBadge("a")).isFalse();
+    }
 
     @Test
     void errorGettingUserByUsername() throws SQLException {

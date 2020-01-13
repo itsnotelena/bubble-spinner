@@ -27,12 +27,8 @@ public class Server {
      * start the Server.
      * @param args String[] to use
      */
-    public static void main(String[] args) throws FileNotFoundException, SQLException {
-        if (!args.toString().isBlank()) {
-            dbAdapter = new DbAdapter(args);
-        } else {
-            dbAdapter = new DbAdapter(new String[]{"database"});
-        }
+    public static void main(String[] args) throws FileNotFoundException {
+        dbAdapter = new DbAdapter(args);
         dbImplement = new DbImplement(dbAdapter);
         //dbImplement.initialize();
         ctx = SpringApplication.run(Server.class,args);

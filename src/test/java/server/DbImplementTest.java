@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,12 +26,8 @@ public class DbImplementTest {
     }
 
     @AfterEach
-    void clean() {
-        try {
-            dbAdapter.clearData();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    void clean() throws SQLException {
+        dbAdapter.clearData();
     }
 
     @Test

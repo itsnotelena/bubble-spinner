@@ -1,9 +1,12 @@
 package server;
 
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.sqlite.SQLiteDataSource;
 
@@ -29,25 +32,16 @@ public class DbAdapterTest {
                 .isInstanceOf(SQLException.class);
     }
 
-    /*@Test
-    void testGetConnectionFails() throws SQLException {
-        DbAdapter dbAdapter = new DbAdapter(new String[]{"test"});
-        SQLiteDataSource dataSource = Mockito.mock(SQLiteDataSource.class);
-        Connection conn = Mockito.mock(Connection.class);
-        Mockito.when(dataSource.getConnection()).thenReturn(conn);
-        Mockito.doThrow(new SQLException())
-                .when(conn)
-                .close();
-        dbAdapter.setDataSource(dataSource);
-        Assertions.assertThatThrownBy(() -> dbAdapter.closeData())
-                .isInstanceOf(SQLException.class);
-    }*/
+    @Test
+    void nullInClosingData() throws SQLException {
+        DbAdapter dba = Mockito.mock(DbAdapter.class);
+        Mockito.when(dba.getConn()).thenReturn(null);
+        dba.closeData();
+    }
 
-    /*@Test
-    void errorGettingTop5() {
-        Mockito.when(getDbAdapter().getConn()).thenThrow(new SQLException());
-
-        List<User> list = dbImplement.getTop5Score();
-        Assertions.assertThat(list.isEmpty()).isTrue();
-    }*/
+    @Test
+    void noNullInClosingData() throws SQLException {
+        DbAdapter dba = new DbAdapter(new String[]{"test"});
+        dba.closeData();
+    }
 }

@@ -18,7 +18,7 @@ public class DbImplement {
      *
      * @param dbAdapter Object dbAdapter
      */
-    public DbImplement(DbAdapter dbAdapter) throws FileNotFoundException, SQLException {
+    public DbImplement(DbAdapter dbAdapter) throws FileNotFoundException {
         this.dbAdapter = dbAdapter;
         this.initialize();
     }
@@ -34,8 +34,6 @@ public class DbImplement {
      * @return returns whether the user is in the database.
      */
     public boolean checkLogin(User details) throws SQLException {
-        assert details != null;
-
         System.out.println("verifying User");
 
         String query = "SELECT password FROM users WHERE username = ?";
@@ -56,7 +54,6 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     public boolean insertUser(User details) throws SQLException {
-        assert details != null;
         if (searchInUsers(details.getUsername())) {
             return false;
         }
@@ -80,7 +77,6 @@ public class DbImplement {
      * @throws SQLException in case of connection failure.
      */
     public boolean insertBadge(Badge badge) throws SQLException {
-        assert badge != null;
         if (searchInBadges(badge.getUsername())) {
             return false;
         }
@@ -104,7 +100,6 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     public boolean insertScore(Score score) throws SQLException {
-        assert score != null;
         if (searchInScore(score.getUsername())) {
             return false;
         }
@@ -128,8 +123,6 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     private boolean searchUser(String name, String table) {
-        assert name != null;
-
         try (PreparedStatement statement = dbAdapter.getConn()
                 .prepareStatement("SELECT username FROM " + table + "  WHERE username = ?")) {
             statement.setString(1,name);
@@ -185,7 +178,6 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     public boolean insertGame(Game game) throws SQLException {
-        assert game != null;
         if (searchInGame(game.getUsername())) {
             return false;
         }
@@ -209,14 +201,12 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     private boolean removeUser(String username, String table) {
-        assert username != null;
-
         try (PreparedStatement statement = dbAdapter.getConn()
                 .prepareStatement("DELETE FROM " + table + " WHERE username = ? ")) {
             statement.setString(1,username);
             statement.execute();
             statement.close();
-            return !searchUser(username,table);
+            return true;
         } catch (SQLException e) {
             return false;
         }

@@ -115,7 +115,20 @@ public class ClientTest {
 
     @Test
     void loginFail() {
-        Assertions.assertThat(new Client().authenticate(new User("doesnt",
+        Assertions.assertThat(new Client().authenticate(new User(null,
                 "exit","ever"))).isFalse();
+    }
+
+    @Test
+    void loginFailAgain() {
+        Assertions.assertThat(new Client().authenticate(new User("doesnt",
+                "exit",null))).isFalse();
+    }
+
+    @Test
+    void registerFalse() {
+        Assertions.assertThat(new Client().register(new User(null,"s","a"))).isFalse();
+        Assertions.assertThat(new Client().register(new User("a",null,"a"))).isFalse();
+        Assertions.assertThat(new Client().register(new User("a","s",null))).isFalse();
     }
 }

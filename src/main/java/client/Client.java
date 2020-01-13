@@ -23,7 +23,7 @@ public class Client {
         Boolean res = restTemplate.postForObject(Config.Api.URL + "/login",
                                     new User(user.getUsername(), null, user.getPassword()),
                                 boolean.class);
-        return res != null ? res : false;
+        return res;
     }
 
     /**
@@ -88,7 +88,7 @@ public class Client {
         Boolean res = restTemplate.postForObject(Config.Api.URL + "/register",
                 user,
                 boolean.class);
-        return res != null ? res : false;
+        return res;
     }
 
 

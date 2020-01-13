@@ -19,7 +19,7 @@ public class Launcher {
      */
     public static void main(String[] args) throws FileNotFoundException, SQLException {
         if (Config.Api.URL.contains("localhost")) {
-            Server.main(new String[0]);
+            Server.main(new String[]{"database"});
         }
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle(Config.Game.TITLE);
