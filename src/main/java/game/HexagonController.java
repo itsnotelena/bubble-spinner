@@ -111,8 +111,10 @@ public class HexagonController {
      * Recursive method to find how many neighbouring
      * bubbles will be popped after hit.
      * @return number of bubbles
+     * @param hit bubble whose neighbours we check for
+     *            matching color id.
      */
-    public int bubblePop(){
+    public static int bubblePop(BubbleActor hit){
         //TO DO
         return 0;
     }
@@ -120,10 +122,16 @@ public class HexagonController {
     /**
      * Method calculates score based on how many
      * bubbles have been popped.
-     * @return the score due to the
+     * @return the score due to the hit
+     * @param hitter is the bubble shot under the user's command
      */
-    public int calculateScore(){
-        //TO DO
-        return 0;
+    public int calculateScore(BubbleActor hitter){
+        int num = 0;
+        for(BubbleActor hit: bubbles){
+            if(hit.collide(hitter)){
+                num = bubblePop(hit);
+            }
+        }
+        return num;
     }
 }
