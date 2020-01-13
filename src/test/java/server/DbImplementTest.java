@@ -1,5 +1,6 @@
 package server;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +16,21 @@ public class DbImplementTest {
     private static DbAdapter dbAdapter = new DbAdapter(new String[]{"test"});
     private transient DbImplement dbImplement = new DbImplement(dbAdapter);
 
+    public DbImplementTest() throws FileNotFoundException, SQLException {
+    }
+
     @BeforeAll
-    static void setUp() {
+    static void setUp() throws FileNotFoundException {
         dbAdapter.importTables();
     }
 
     @AfterEach
     void clean() {
-        dbAdapter.clearData();
+        try {
+            dbAdapter.clearData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -38,7 +46,7 @@ public class DbImplementTest {
     }
 
     @Test
-    void searchProperly() {
+    void searchProperly() throws SQLException {
         Score a = new Score("lalalq",1,1);
         boolean resA = dbImplement.insertScore(a);
         Assertions.assertThat(resA).isTrue();
@@ -119,6 +127,23 @@ public class DbImplementTest {
         list.add(dbImplement.getUserByUsername(five.getUsername()).get());
 
         Assertions.assertThat(scoreOptional).isEqualTo(list);
+    }
+
+    @Test
+    void alreadyExists() throws SQLException {
+        User a = new User("h","h","h");
+        Game b = new Game("a",1,1);
+        Score c = new Score("a",1,1);
+        Badge d = new Badge("a","b");
+        dbImplement.insertUser(a);
+        dbImplement.insertGame(b);
+        dbImplement.insertScore(c);
+        dbImplement.insertBadge(d);
+        Assertions.assertThat(dbImplement.insertUser(a)).isFalse();
+        Assertions.assertThat(dbImplement.insertGame(b)).isFalse();
+        Assertions.assertThat(dbImplement.insertScore(c)).isFalse();
+        Assertions.assertThat(dbImplement.insertBadge(d)).isFalse();
+
     }
 
 }

@@ -1,8 +1,8 @@
 package server;
 
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +23,7 @@ public class DbImplementExceptionsTest {
      *                      something goes from the connection class
      */
     @BeforeEach
-    public void setUp() throws SQLException {
+    public void setUp() throws SQLException, FileNotFoundException {
         dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
         Mockito.when(dbImplement.getDbAdapter().getConn())
                 .thenReturn(Mockito.mock(Connection.class));
@@ -144,7 +144,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void notGettingUserByUsername() throws SQLException {
+    void notGettingUserByUsername() throws SQLException, FileNotFoundException {
         dbImplement = new DbImplement(new DbAdapter(new String[]{"Test"}));
 
         dbImplement.removeFromUser("baka");
@@ -157,7 +157,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void emptyScoreByGettingScoreByUser() throws SQLException {
+    void emptyScoreByGettingScoreByUser() throws SQLException, FileNotFoundException {
         dbImplement = new DbImplement(new DbAdapter(new String[] {"Test"}));
 
         dbImplement.removeFromUser("naruto");
@@ -170,7 +170,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void emptyBadgesByGettingBadgesByUser() throws  SQLException {
+    void emptyBadgesByGettingBadgesByUser() throws SQLException, FileNotFoundException {
         dbImplement = new DbImplement(new DbAdapter(new String[] {"Test"}));
 
         dbImplement.removeFromUser("elena");

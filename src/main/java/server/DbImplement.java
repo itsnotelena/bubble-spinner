@@ -1,5 +1,6 @@
 package server;
 
+import java.io.FileNotFoundException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +18,7 @@ public class DbImplement {
      *
      * @param dbAdapter Object dbAdapter
      */
-    public DbImplement(DbAdapter dbAdapter) {
+    public DbImplement(DbAdapter dbAdapter) throws FileNotFoundException, SQLException {
         this.dbAdapter = dbAdapter;
         this.initialize();
     }
@@ -102,22 +103,19 @@ public class DbImplement {
      * @return true if the object is inserted
      * @throws SQLException in case of connection failure
      */
-    public boolean insertScore(Score score) {
+    public boolean insertScore(Score score) throws SQLException {
         assert score != null;
         if (searchInScore(score.getUsername())) {
             return false;
         }
-        try (PreparedStatement statement = dbAdapter.getConn()
-                .prepareStatement("INSERT INTO score VALUES(?,?,?)")) {
-            statement.setString(1, score.getUsername());
-            statement.setInt(2, score.getScoreW());
-            statement.setInt(3, score.getScoreA());
-            statement.execute();
-            statement.close();
-            return searchInScore(score.getUsername());
-        } catch (SQLException e) {
-            return false;
-        }
+        PreparedStatement statement = dbAdapter.getConn()
+                .prepareStatement("INSERT INTO score VALUES(?,?,?)");
+        statement.setString(1, score.getUsername());
+        statement.setInt(2, score.getScoreW());
+        statement.setInt(3, score.getScoreA());
+        statement.execute();
+        statement.close();
+        return searchInScore(score.getUsername());
     }
 
     /**
@@ -186,22 +184,19 @@ public class DbImplement {
      * @return true if it is added to the table or otherwise
      * @throws SQLException in case of connection failure
      */
-    public boolean insertGame(Game game) {
+    public boolean insertGame(Game game) throws SQLException {
         assert game != null;
-
-        try (PreparedStatement statement = dbAdapter.getConn()
-                .prepareStatement("INSERT INTO games VALUES(?,?,?,?)")) {
-            statement.setString(1,game.getUsername());
-            statement.setInt(2,game.getGamesPlayed());
-            statement.setInt(3,game.getHighestLevel());
-            statement.setString(4,game.getAward());
-            statement.execute();
-            statement.close();
-            return searchInGame(game.getUsername());
-        } catch (SQLException e) {
+        if (searchInGame(game.getUsername())) {
             return false;
         }
-
+        PreparedStatement statement = dbAdapter.getConn()
+                .prepareStatement("INSERT INTO games VALUES(?,?,?)");
+        statement.setString(1,game.getUsername());
+        statement.setInt(2,game.getGamesPlayed());
+        statement.setInt(3,game.getHighestLevel());
+        statement.execute();
+        statement.close();
+        return searchInGame(game.getUsername());
     }
 
     /**
@@ -258,16 +253,6 @@ public class DbImplement {
     }
 
     /**
-     * deletes usernname from games.
-     *
-     * @param username String to remove from db
-     * @return true if it is removed or otherwise
-     */
-    public boolean removeFromGame(String username) {
-        return removeUser(username, "games");
-    }
-
-    /**
      * Get the Top 5 User's Scores.
      * @return usernames.
      */
@@ -300,11 +285,7 @@ public class DbImplement {
             return users;
         } finally {
             if (result != null) {
-                try {
-                    result.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                result.close();
             }
         }
     }
@@ -337,11 +318,7 @@ public class DbImplement {
             return Optional.empty();
         } finally {
             if (result != null) {
-                try {
-                    result.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                result.close();
             }
         }
     }
@@ -374,11 +351,7 @@ public class DbImplement {
             return Optional.empty();
         } finally {
             if (result != null) {
-                try {
-                    result.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                result.close();
             }
         }
     }
@@ -410,11 +383,7 @@ public class DbImplement {
             return Optional.empty();
         } finally {
             if (result != null) {
-                try {
-                    result.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                result.close();
             }
         }
     }
@@ -422,7 +391,7 @@ public class DbImplement {
     /**
      * initialize the tables for this db.
      */
-    private void initialize() {
+    private void initialize() throws FileNotFoundException {
         dbAdapter.importTables();
     }
 }

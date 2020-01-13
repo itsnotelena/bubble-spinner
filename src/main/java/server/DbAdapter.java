@@ -17,6 +17,8 @@ import org.sqlite.SQLiteDataSource;
  */
 public class DbAdapter {
 
+
+
     /**
      * Using SQLiteDataSource to improve test coverage instead
      * of the static methods from DriverManager that are not
@@ -55,36 +57,23 @@ public class DbAdapter {
      */
     public Connection getConn() throws SQLException {
         return dataSource.getConnection();
-
     }
 
     /**
      * Import all the tables into the database
      * if they weren't imported yet.
      */
-    public void importTables() {
-        try (Scanner scanner = new Scanner(new File("assets/db/schema.sql"))
-                .useDelimiter(";")) {
-            try (Statement stmt = getConn().createStatement()) {
-
-                while (scanner.hasNext()) {
-                    try {
-                        stmt.execute(scanner.next());
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public void importTables() throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File("assets/db/schema.sql"))
+                .useDelimiter(";");
+        try (Statement stmt = getConn().createStatement()) {
+            while (scanner.hasNext()) {
+                stmt.execute(scanner.next());
             }
-        } catch (FileNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -93,11 +82,7 @@ public class DbAdapter {
      */
     public final void closeData() throws SQLException {
         if (getConn() != null) {
-            try {
-                getConn().close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            getConn().close();
         }
     }
 
@@ -106,18 +91,24 @@ public class DbAdapter {
      */
     @SuppressWarnings("PMD")
     //Explanation : suppressed warning on the variable name in the loop (UR anomaly) !!
-    public void clearData() {
+    public void clearData() throws SQLException {
         for (String name : tables) {
-            try (PreparedStatement statement = getConn().prepareStatement(
-                    "DELETE FROM " + name + ";")) {
-                statement.executeUpdate();
-                statement.close();
-                System.out.println("here everything is deleted from " + name);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            PreparedStatement statement = getConn().prepareStatement(
+                    "DELETE FROM " + name + ";");
+            statement.executeUpdate();
+            statement.close();
+            System.out.println("here everything is deleted from " + name);
         }
     }
 
+
+    /**
+     * sets the datasource with SQLiteDataSource.
+     *
+     * @param dataSource SQLiteDataSource
+     */
+    public void setDataSource(SQLiteDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }
 

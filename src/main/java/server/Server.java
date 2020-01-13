@@ -27,7 +27,7 @@ public class Server {
      * start the Server.
      * @param args String[] to use
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, SQLException {
         if (!args.toString().isBlank()) {
             dbAdapter = new DbAdapter(args);
         } else {
@@ -36,13 +36,12 @@ public class Server {
         dbImplement = new DbImplement(dbAdapter);
         //dbImplement.initialize();
         ctx = SpringApplication.run(Server.class,args);
-
     }
 
     /**
      * Initialize the database schema.
      */
-    public static void schemaCreate() {
+    public static void schemaCreate() throws FileNotFoundException {
         dbImplement.getDbAdapter().importTables();
     }
 
@@ -50,7 +49,11 @@ public class Server {
      * Clear the data from the database.
      */
     public static void deleteData() {
-        dbImplement.getDbAdapter().clearData();
+        try {
+            dbImplement.getDbAdapter().clearData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -124,7 +127,11 @@ public class Server {
      */
     @PostMapping(value = "/addScore")
     public boolean addScore(final @RequestBody Score score) {
-        return dbImplement.insertScore(score);
+        try {
+            return dbImplement.insertScore(score);
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     /**
@@ -155,18 +162,6 @@ public class Server {
             e.printStackTrace();
             return false;
         }
-    }
-
-    /**
-     * Remove User from the userTable inside the database.
-     *
-     * @param reqBody get the string from the user connection
-     * @return true if user is removed false if not
-     */
-    @PostMapping(value = "/removeUser")
-    public boolean removeUserFromUserTable(final @RequestBody String reqBody) {
-        String user = reqBody;
-        return dbImplement.removeFromUser(user);
     }
 
     public static void stop() {

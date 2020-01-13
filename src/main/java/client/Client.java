@@ -91,18 +91,6 @@ public class Client {
         return res != null ? res : false;
     }
 
-    /**
-     * Remove the User from the database.
-     * @param username username to be removed
-     * @return true if removed or otherwise
-     */
-    public boolean removeUser(String username) {
-        RestTemplate restTemplate = new RestTemplate();
-        Boolean res = restTemplate.postForObject(Config.Api.URL  + "/removeUser",
-                username,
-                boolean.class);
-        return res != null ? res : false;
-    }
 
 
     /**

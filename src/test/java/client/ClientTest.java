@@ -1,5 +1,7 @@
 package client;
 
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -16,9 +18,13 @@ public class ClientTest {
     static Server server = new Server();
 
     @BeforeEach
-    void start() {
+    void start() throws FileNotFoundException, SQLException {
         server.main(new String[]{"test"});
-        server.schemaCreate();
+        try {
+            server.schemaCreate();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @AfterEach
@@ -105,7 +111,6 @@ public class ClientTest {
         User a = new User("bla","uk","uk");
         Assertions.assertThat(new Client().register(a)).isTrue();
         Assertions.assertThat(new Client().authenticate(a)).isTrue();
-        new Client().removeUser("bla");
     }
 
     @Test
