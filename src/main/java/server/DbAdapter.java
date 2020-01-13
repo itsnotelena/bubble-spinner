@@ -23,6 +23,12 @@ public class DbAdapter {
      * easily testable.
      */
     private transient SQLiteDataSource dataSource;
+    private transient String[] tables  = new String[]{
+        "users",
+        "score",
+        "games",
+        "badges"
+    };
 
     /**
      * Class Constructor.
@@ -98,20 +104,15 @@ public class DbAdapter {
     /**
      * Clear the Database.
      */
+    @SuppressWarnings("PMD")
+    //Explanation : suppressed warning on the variable name in the loop (UR anomaly) !!
     public void clearData() {
-        String[] tables  = new String[]{
-            "users",
-            "score",
-            "games",
-            "badges"
-        };
-        for (int i = 0; i < tables.length; i++) {
-
+        for (String name : tables) {
             try (PreparedStatement statement = getConn().prepareStatement(
-                    "DELETE FROM " + tables[i] + ";") ) {
+                    "DELETE FROM " + name + ";")) {
                 statement.executeUpdate();
                 statement.close();
-                System.out.println("here everything is deleted from " + tables[i]);
+                System.out.println("here everything is deleted from " + name);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

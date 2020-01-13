@@ -115,7 +115,7 @@ public class DbImplement {
             statement.execute();
             statement.close();
             return searchInScore(score.getUsername());
-        } catch (SQLException e ) {
+        } catch (SQLException e) {
             return false;
         }
     }
@@ -216,9 +216,8 @@ public class DbImplement {
     private boolean removeUser(String username, String table) {
         assert username != null;
 
-        String query = "DELETE FROM " + table + " WHERE username = ? ";
-
-        try (PreparedStatement statement = dbAdapter.getConn().prepareStatement(query)) {
+        try (PreparedStatement statement = dbAdapter.getConn()
+                .prepareStatement("DELETE FROM " + table + " WHERE username = ? ")) {
             statement.setString(1,username);
             statement.execute();
             statement.close();
