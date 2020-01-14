@@ -11,6 +11,14 @@ import java.util.Scanner;
 
 public class HexagonController {
 
+    public List<BubbleActor> getBubbles() {
+        return bubbles;
+    }
+
+    public void setBubbles(List<BubbleActor> bubbles) {
+        this.bubbles = bubbles;
+    }
+
     private transient List<BubbleActor> bubbles;
     private transient BubbleFactory bubbleFactory;
     public transient boolean lostGame;
@@ -28,13 +36,13 @@ public class HexagonController {
         //Max is the Difficulty of the Game
         this.bubbleFactory.addAllTextures(4);
         this.bubbles = new ArrayList<>();
-        BubbleActor center = bubbleFactory.next().center();
+        BubbleActor center = bubbleFactory.createBubble().center();
         stage.addActor(center);
 
         int bubTotal = 18;
 
         for (int i = 0; i < bubTotal; i++) {
-            BubbleActor bub = bubbleFactory.next();
+            BubbleActor bub = bubbleFactory.createBubble();
             bubbles.add(bub);
             stage.addActor(bub);
         }
@@ -114,9 +122,16 @@ public class HexagonController {
      * @param hit bubble whose neighbours we check for
      *            matching color id.
      */
-    public static int bubblePop(BubbleActor hit){
-        //TO DO
-        return 0;
+    public static int bubblePop(BubbleActor hit, int counter){
+//        int id = hit.getColorID();
+//        for(BubbleActor candidate: hit.neighbours){
+//            if(candidate.getColorId()==id){
+//                counter++;
+//                bubblePop(candidate, counter);
+//            }
+//        }
+        return counter;
+
     }
 
     /**
@@ -129,7 +144,9 @@ public class HexagonController {
         int num = 0;
         for(BubbleActor hit: bubbles){
             if(hit.collide(hitter)){
-                num = bubblePop(hit);
+
+                num = num + bubblePop(hit, 0);
+
             }
         }
         return formula(num);

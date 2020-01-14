@@ -38,15 +38,16 @@ public class DbImplement {
 
         System.out.println("verifying User");
 
-        String query = "SELECT username FROM users WHERE username = ?  AND password = ?";
+        String query = "SELECT password FROM users WHERE username = ?";
         PreparedStatement stat = dbAdapter.getConn().prepareStatement(query);
         stat.setString(1, details.getUsername());
-        stat.setString(2, details.getPassword());
-        boolean result = stat.executeQuery().next();
+        boolean result = BCrypt.checkpw(details.getPassword(),
+                stat.executeQuery().getString(1));
         stat.close();
 
         return result;
     }
+
 
     /**
      * Insert User Details to Database.
@@ -64,12 +65,11 @@ public class DbImplement {
         PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
         statement.setString(1, details.getUsername());
         statement.setString(2, details.getEmail());
-        statement.setString(3, details.getPassword());
+        statement.setString(3, BCrypt.hashpw(details.getPassword(), BCrypt.gensalt()));
         statement.execute();
         statement.close();
 
         return searchInUsers(details.getUsername());
-
     }
 
     /**
@@ -152,47 +152,6 @@ public class DbImplement {
             e.printStackTrace();
             return false;
         }
-    }
-
-    /**
-     * By passing the Specified column name either as String
-     * ("scoreW" or "scoreA") this method will return the top 5
-     * entries of type Score class in descending order.
-     *
-     * @param column either scoreW or scoreA
-     * @return List of top 5 entries in descending order of type Score class
-     * @throws SQLException in case of connection failure
-     */
-    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public final List<Score> getTopFiveScore(String column) throws SQLException {
-        ResultSet result = null;
-        try {
-            String query = "SELECT * FROM score ORDER BY " + column + " DESC LIMIT 5";
-            PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-            result = statement.executeQuery();
-            List<Score> res = new ArrayList<>(5);
-
-            if (result.next()) {
-                res.add(new Score(result
-                        .getString(1), result
-                        .getInt(2), result
-                        .getInt(3)));
-                return res;
-            } else {
-                Optional.empty();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (result != null) {
-                try {
-                    result.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
     }
 
     /**
@@ -284,6 +243,48 @@ public class DbImplement {
         }
     }
 
+    /**
+     * Get the Top 5 User's Scores.
+     * @return usernames.
+     */
+    public List<User> getTop5Score() {
+        try {
+            return getTopXScores(5);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
+    private List<User> getTopXScores(int amount) throws SQLException {
+        ResultSet result = null;
+        List<User> users = new ArrayList<>();
+        try {
+            PreparedStatement statement = dbAdapter.getConn().prepareStatement(
+                    "SELECT * FROM score ORDER BY - scoreA LIMIT ?");
+            statement.setInt(1,amount);
+            result = statement.executeQuery();
+            while (result.next()) {
+                users.add(getUserByUsername(result.getString(1)).get());
+            }
+            return users;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbAdapter.closeData();
+            return users;
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     /**
      * Returns all the usernames in the database.
@@ -291,6 +292,7 @@ public class DbImplement {
      * @return Optional User
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
     public Optional<User> getUserByUsername(String username) throws SQLException {
         ResultSet result = null;
         try {
@@ -306,6 +308,43 @@ public class DbImplement {
                 result.close();
                 return Optional.empty();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbAdapter.closeData();
+            return Optional.empty();
+        } finally {
+            if (result != null) {
+                try {
+                    result.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the score by Username.
+     * @param username as a parameter.
+     * @return Score.
+     * @throws SQLException if no score.
+     */
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
+    public Optional<Score> getScoreByUser(String username) throws SQLException {
+        ResultSet result = null;
+        try {
+            PreparedStatement statement = dbAdapter
+                    .getConn()
+                    .prepareStatement("SELECT * FROM score where username = ? ");
+            statement.setString(1, username);
+            result = statement.executeQuery();
+            if (result.next()) {
+                return Optional.of(new Score(result.getString(1),
+                        result.getInt(2),
+                        result.getInt(3)));
+            }
+            return Optional.empty();
         } catch (SQLException e) {
             e.printStackTrace();
             dbAdapter.closeData();

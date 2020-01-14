@@ -5,11 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import config.Config;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class BubbleFactory implements Iterator {
+public class BubbleFactory implements AbstractBubbleFactory {
 
     private transient Random rnd;
     private transient Stage stage;
@@ -21,22 +20,7 @@ public class BubbleFactory implements Iterator {
     }
 
     @Override
-    public boolean hasNext() {
-        /* TODO
-         *
-         * Implement a maximum number of balls that can be
-         * generated each game, making it harder but
-         * still possible to win.
-         */
-        return true;
-    }
-
-    @Override
-    public BubbleActor next() {
-        return createBubble();
-    }
-
-    private BubbleActor createBubble() {
+    public BubbleActor createBubble() {
         return new BubbleActor(texture.get(rnd.nextInt(texture.size())), stage);
     }
 

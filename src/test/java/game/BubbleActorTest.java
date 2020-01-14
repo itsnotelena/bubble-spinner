@@ -301,6 +301,46 @@ public class BubbleActorTest {
         Assertions.assertThat(outside.get()).isFalse();
     }
 
+    @Test
+    public void testIsMoving() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        AtomicBoolean notMoving = new AtomicBoolean(true);
+        AtomicBoolean moving = new AtomicBoolean(false);
+        Gdx.app.postRunnable(() -> {
+            Gdx.graphics = new GraphicsWrapper();
+            BubbleActor bubbleActor = new BubbleActor(texture, stage, -100, -100);
+            notMoving.set(bubbleActor.isMoving());
+            bubbleActor.setMovingDirection(new Vector2(1,1));
+            moving.set(bubbleActor.isMoving());
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Assertions.assertThat(notMoving).isFalse();
+        Assertions.assertThat(moving).isTrue();
+    }
+
+    @Test
+    public void testBelowScreen() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        AtomicBoolean isBelow = new AtomicBoolean(false);
+        AtomicBoolean isNotBelow = new AtomicBoolean(true);
+        Gdx.app.postRunnable(() -> {
+            Gdx.graphics = new GraphicsWrapper();
+            BubbleActor bubbleActor = new BubbleActor(texture, stage, -100, -100);
+            isBelow.set(bubbleActor.belowScreen());
+            bubbleActor.setPosition(0, 0);
+            isNotBelow.set(bubbleActor.belowScreen());
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Assertions.assertThat(isBelow).isTrue();
+        Assertions.assertThat(isNotBelow).isFalse();
+    }
+
     @AfterEach
     public void after() {
         app.exit();

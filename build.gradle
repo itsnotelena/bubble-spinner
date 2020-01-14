@@ -53,9 +53,12 @@ test {
     }
 }
 
+test.finalizedBy(jacocoTestReport)
+
 jacocoTestReport {
     reports {
         csv.enabled true
+        html.enabled true
     }
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect({

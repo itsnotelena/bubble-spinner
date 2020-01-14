@@ -1,5 +1,6 @@
 package server;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -17,5 +18,61 @@ public class UserTest {
         Assertions.assertEquals("ola", a.getPassword());
     }
 
+    @Test
+    void equalsFalseTest1() {
+        User one = new User("Cardi", "cardi@me", "abc");
+        Object obj = new Object();
+        Assert.assertNotEquals(one, obj);
+    }
 
+    @Test
+    void equalsFalseTest2() {
+        User one = new User("Beyonce", "Beyonce@me", "jesus");
+        User two = new User("Anitta", "anitta@me", "anitta");
+        Assert.assertNotEquals(one,two);
+    }
+
+    @Test
+    void equalsSameObject() {
+        User one = new User("Beyonce", "Beyonce@me", "jesus");
+        Assert.assertEquals(one, one);
+    }
+
+    @Test
+    void equalsTrueTest() {
+        User one = new User("Taylor", "taylor@me", "123");
+        User two = new User("Taylor", "taylor@me", "123");
+        Assert.assertEquals(one, two);
+    }
+
+    @Test
+    void equalsNullTest() {
+        User one = new User("Jesus", "jesus@me", "666");
+        Assert.assertNotEquals(one, null);
+    }
+
+    @Test
+    void equalsUsernameFalse() {
+        User one = new User("Selena", "selena@me", "pii");
+        User two = new User("Lady Gaga", "taylor@me", "bcc");
+
+        Assert.assertNotEquals(one, two);
+    }
+
+    @Test
+    void testHashCode() {
+        User one = new User("WAAAAA", "waaa@me", "waa");
+        User two = new User("WAAAAA", "waaa@me", "waa");
+
+        Assertions.assertTrue(one.equals(two) && two.equals(one));
+        Assertions.assertTrue(one.hashCode() == two.hashCode());
+    }
+
+    @Test
+    void testToString() {
+        User one = new User("user", "user@user", "pass");
+        User two = new User("user", "user@user", "pass");
+
+        Assertions.assertEquals(one.toString(), two.toString());
+    }
 }
