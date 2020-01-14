@@ -125,12 +125,15 @@ public class HexagonController {
      */
     public int calculateScore(BubbleActor hitter){
         int num = 0;
-        for(BubbleActor hit: bubbles){
-            if(hit.collide(hitter)){
-                //num = num + bubblePop(hit, 0);
-            }
-        }
-        if(num>=3){
+        int three = 3;
+//        hitter.getPosition();
+//        for(BubbleActor hit: bubbles){
+//            if(hit.collide(hitter)){
+//                //hit.getY();
+//                //num = num + bubblePop(hit, 0);
+//            }
+//        }
+        if(num>=three){
             num = formula(num);
         }
         return num;
@@ -142,7 +145,8 @@ public class HexagonController {
      * @param num is number of bubbles popped
      */
     public int formula(int num){
-        if(num==3){
+        int three = 3;
+        if(num==three){
             return 5;
         } else {
             return (int)(1.5 * formula(num-1));
