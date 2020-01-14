@@ -17,12 +17,20 @@ import org.sqlite.SQLiteDataSource;
  */
 public class DbAdapter {
 
+
+
     /**
      * Using SQLiteDataSource to improve test coverage instead
      * of the static methods from DriverManager that are not
      * easily testable.
      */
     private transient SQLiteDataSource dataSource;
+    private transient String[] tables  = new String[]{
+        "users",
+        "score",
+        "games",
+        "badges"
+    };
 
     /**
      * Class Constructor.
@@ -39,7 +47,7 @@ public class DbAdapter {
         dataSource.setUrl(jdbUrl);
         //();
 
-        System.out.println("database connection established");
+        System.out.println("database connection established for db : " + name);
     }
 
 
@@ -49,37 +57,22 @@ public class DbAdapter {
      */
     public Connection getConn() throws SQLException {
         return dataSource.getConnection();
-
     }
 
     /**
      * Import all the tables into the database
      * if they weren't imported yet.
      */
-    public boolean importTables() throws FileNotFoundException {
+    public void importTables() throws FileNotFoundException {
         Scanner scanner = new Scanner(new File("assets/db/schema.sql"))
                 .useDelimiter(";");
-
         try (Statement stmt = getConn().createStatement()) {
-
             while (scanner.hasNext()) {
-                try {
-                    stmt.execute(scanner.next());
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            try {
-                stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+                stmt.execute(scanner.next());
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        scanner.close();
-        return true;
 
     }
 
@@ -89,23 +82,33 @@ public class DbAdapter {
      */
     public final void closeData() throws SQLException {
         if (getConn() != null) {
-            try {
-                getConn().close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            getConn().close();
         }
     }
 
     /**
      * Clear the Database.
      */
+    @SuppressWarnings("PMD")
+    //Explanation : suppressed warning on the variable name in the loop (UR anomaly) !!
     public void clearData() throws SQLException {
-        PreparedStatement statement = getConn().prepareStatement(
-                "DELETE FROM users; DELETE FROM score; DELETE FROM games; DELETE FROM badges");
-        statement.executeUpdate();
-        statement.close();
+        for (String name : tables) {
+            PreparedStatement statement = getConn().prepareStatement(
+                    "DELETE FROM " + name + ";");
+            statement.executeUpdate();
+            statement.close();
+            System.out.println("here everything is deleted from " + name);
+        }
     }
 
+
+    /**
+     * sets the datasource with SQLiteDataSource.
+     *
+     * @param dataSource SQLiteDataSource
+     */
+    public void setDataSource(SQLiteDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }
 

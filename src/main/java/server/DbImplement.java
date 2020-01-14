@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.mindrot.jbcrypt.BCrypt;
 
 public class DbImplement {
@@ -21,6 +20,7 @@ public class DbImplement {
      */
     public DbImplement(DbAdapter dbAdapter) {
         this.dbAdapter = dbAdapter;
+        this.initialize();
     }
 
     public DbAdapter getDbAdapter() {
@@ -34,8 +34,6 @@ public class DbImplement {
      * @return returns whether the user is in the database.
      */
     public boolean checkLogin(User details) throws SQLException {
-        assert details != null;
-
         System.out.println("verifying User");
 
         String query = "SELECT password FROM users WHERE username = ?";
@@ -56,7 +54,6 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     public boolean insertUser(User details) throws SQLException {
-        assert details != null;
         if (searchInUsers(details.getUsername())) {
             return false;
         }
@@ -73,6 +70,29 @@ public class DbImplement {
     }
 
     /**
+     * Insert the badge class object to the database.
+     *
+     * @param badge using the Badge class Object.
+     * @return true if the object is inserted.
+     * @throws SQLException in case of connection failure.
+     */
+    public boolean insertBadge(Badge badge) throws SQLException {
+        if (searchInBadges(badge.getUsername())) {
+            return false;
+        }
+
+        PreparedStatement statement = dbAdapter
+                .getConn()
+                .prepareStatement("INSERT INTO badges VALUES(?,?)");
+        statement.setString(1, badge.getUsername());
+        statement.setString(2, badge.getAward());
+        statement.execute();
+        statement.close();
+
+        return searchInBadges(badge.getUsername());
+    }
+
+    /**
      * Insert the Score class object to the database.
      *
      * @param score using the Score class Object
@@ -80,17 +100,17 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     public boolean insertScore(Score score) throws SQLException {
-        assert score != null;
-        String query = "INSERT INTO score VALUES(?,?,?)";
-        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
+        if (searchInScore(score.getUsername())) {
+            return false;
+        }
+        PreparedStatement statement = dbAdapter.getConn()
+                .prepareStatement("INSERT INTO score VALUES(?,?,?)");
         statement.setString(1, score.getUsername());
         statement.setInt(2, score.getScoreW());
         statement.setInt(3, score.getScoreA());
         statement.execute();
         statement.close();
-
         return searchInScore(score.getUsername());
-
     }
 
     /**
@@ -98,18 +118,20 @@ public class DbImplement {
      * and return true if found or otherwise.
      *
      * @param name set users name needs to be searched using String
-     * @param table either users / score / games as string
+     * @param table either users / score / games / badges as string
      * @return boolean if user exists in the specified table
      * @throws SQLException in case of connection failure
      */
-    private boolean searchUser(String name, String table) throws SQLException {
-        assert name != null;
-        String query = "SELECT username FROM " + table + "  WHERE username = ?";
-        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-        statement.setString(1,name);
-        boolean result = statement.executeQuery().next();
-        statement.close();
-        return result;
+    private boolean searchUser(String name, String table) {
+        try (PreparedStatement statement = dbAdapter.getConn()
+                .prepareStatement("SELECT username FROM " + table + "  WHERE username = ?")) {
+            statement.setString(1,name);
+            boolean result =  statement.executeQuery().next();
+            statement.close();
+            return result;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     /**
@@ -118,12 +140,7 @@ public class DbImplement {
      * @return if it exists or not
      */
     public boolean searchInUsers(String name) {
-        try {
-            return searchUser(name, "users");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return searchUser(name, "users");
     }
 
     /**
@@ -132,12 +149,7 @@ public class DbImplement {
      * @return if it exists or not
      */
     public boolean searchInScore(String name) {
-        try {
-            return searchUser(name, "score");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return searchUser(name, "score");
     }
 
     /**
@@ -146,12 +158,16 @@ public class DbImplement {
      * @return if it exists or not
      */
     public boolean searchInGame(String name) {
-        try {
-            return searchUser(name, "games");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return searchUser(name, "games");
+    }
+
+    /**
+     * search inside the badge table.
+     * @param name String to search for.
+     * @return if it exists or not.
+     */
+    public boolean searchInBadges(String name) {
+        return searchUser(name, "badges");
     }
 
     /**
@@ -162,17 +178,16 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     public boolean insertGame(Game game) throws SQLException {
-        assert game != null;
-
-        String query = "INSERT INTO games VALUES(?,?,?,?)";
-        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
+        if (searchInGame(game.getUsername())) {
+            return false;
+        }
+        PreparedStatement statement = dbAdapter.getConn()
+                .prepareStatement("INSERT INTO games VALUES(?,?,?)");
         statement.setString(1,game.getUsername());
         statement.setInt(2,game.getGamesPlayed());
         statement.setInt(3,game.getHighestLevel());
-        statement.setString(4,game.getAward());
         statement.execute();
         statement.close();
-
         return searchInGame(game.getUsername());
     }
 
@@ -185,17 +200,16 @@ public class DbImplement {
      * @return true if it is removed or otherwise
      * @throws SQLException in case of connection failure
      */
-    private boolean removeUser(String username, String table) throws SQLException {
-        assert username != null;
-
-        String query = "DELETE FROM " + table + " WHERE username = ? ";
-        PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
-        statement.setString(1,username);
-        statement.execute();
-        statement.close();
-
-        return !searchUser(username,table);
-
+    private boolean removeUser(String username, String table) {
+        try (PreparedStatement statement = dbAdapter.getConn()
+                .prepareStatement("DELETE FROM " + table + " WHERE username = ? ")) {
+            statement.setString(1,username);
+            statement.execute();
+            statement.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     /**
@@ -205,12 +219,17 @@ public class DbImplement {
      * @return true if it is removed or otherwise
      */
     public boolean removeFromScore(String username) {
-        try {
-            return removeUser(username, "score");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return removeUser(username, "score");
+    }
+
+    /**
+     * deletes username from Badges.
+     *
+     * @param username String to remove from db.
+     * @return true if it is removed or otherwise.
+     */
+    public boolean removeFromBadge(String username) {
+        return removeUser(username, "badges");
     }
 
     /**
@@ -220,27 +239,7 @@ public class DbImplement {
      * @return true if it is removed or otherwise
      */
     public boolean removeFromUser(String username) {
-        try {
-            return removeUser(username, "users");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * deletes usernname from games.
-     *
-     * @param username String to remove from db
-     * @return true if it is removed or otherwise
-     */
-    public boolean removeFromGame(String username) {
-        try {
-            return removeUser(username, "games");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return removeUser(username, "users");
     }
 
     /**
@@ -256,8 +255,7 @@ public class DbImplement {
         }
     }
 
-
-    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.DataflowAnomalyAnalysis"})
     // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
     private List<User> getTopXScores(int amount) throws SQLException {
         ResultSet result = null;
@@ -277,11 +275,7 @@ public class DbImplement {
             return users;
         } finally {
             if (result != null) {
-                try {
-                    result.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                result.close();
             }
         }
     }
@@ -314,11 +308,7 @@ public class DbImplement {
             return Optional.empty();
         } finally {
             if (result != null) {
-                try {
-                    result.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                result.close();
             }
         }
     }
@@ -351,11 +341,39 @@ public class DbImplement {
             return Optional.empty();
         } finally {
             if (result != null) {
-                try {
-                    result.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                result.close();
+            }
+        }
+    }
+
+    /**
+     * Get badges by username.
+     * @param username as a parameter.
+     * @return Badge.
+     * @throws SQLException if no badge.
+     */
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
+    public Optional<Badge> getBadgeByUser(String username) throws SQLException {
+        ResultSet result = null;
+        try {
+            PreparedStatement statement = dbAdapter
+                    .getConn()
+                    .prepareStatement("SELECT * FROM badges where username = ? ");
+            statement.setString(1, username);
+            result = statement.executeQuery();
+            if (result.next()) {
+                return Optional.of(new Badge(result.getString(1),
+                        result.getString(2)));
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            dbAdapter.closeData();
+            return Optional.empty();
+        } finally {
+            if (result != null) {
+                result.close();
             }
         }
     }
@@ -363,7 +381,7 @@ public class DbImplement {
     /**
      * initialize the tables for this db.
      */
-    public void initialize() {
+    private void initialize() {
         try {
             dbAdapter.importTables();
         } catch (FileNotFoundException e) {
