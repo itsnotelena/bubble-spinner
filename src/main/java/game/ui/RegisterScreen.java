@@ -76,11 +76,8 @@ public class RegisterScreen extends ScreenAdapter {
                         emailTextField.getText(), passTextField.getText());
                 if (new Client().register(u)) {
                     game.setUser(u);
-                    try {
-                        game.setScreen(new GameScreen(game));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    game.setScreen(new GameScreen(game));
+
                     dispose();
                 }
             }

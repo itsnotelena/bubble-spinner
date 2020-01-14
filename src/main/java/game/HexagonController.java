@@ -11,6 +11,11 @@ import java.util.Scanner;
 
 public class HexagonController {
 
+    private transient Stage stage;
+    private transient List<BubbleActor> bubbles;
+    private transient BubbleFactory bubbleFactory;
+    public transient boolean lostGame;
+
     public List<BubbleActor> getBubbles() {
         return bubbles;
     }
@@ -18,10 +23,6 @@ public class HexagonController {
     public void setBubbles(List<BubbleActor> bubbles) {
         this.bubbles = bubbles;
     }
-
-    private transient List<BubbleActor> bubbles;
-    private transient BubbleFactory bubbleFactory;
-    public transient boolean lostGame;
 
     /**
      * Constructor for the HexagonController.
@@ -38,6 +39,7 @@ public class HexagonController {
         this.bubbles = new ArrayList<>();
         BubbleActor center = bubbleFactory.createBubble().center();
         stage.addActor(center);
+        this.stage = stage;
 
         int bubTotal = 18;
 
@@ -122,12 +124,14 @@ public class HexagonController {
      * @param hit bubble whose neighbours we check for
      *            matching color id.
      */
-    public static int bubblePop(BubbleActor hit, int counter){
+    public int bubblePop(BubbleActor hit, int counter){
 //        int id = hit.getColorID();
 //        for(BubbleActor candidate: hit.neighbours){
 //            if(candidate.getColorId()==id){
 //                counter++;
 //                bubblePop(candidate, counter);
+//                bubbles.remove(candidate);
+//                candidate.remove();
 //            }
 //        }
         return counter;
@@ -149,7 +153,10 @@ public class HexagonController {
 
             }
         }
-        return formula(num);
+        if(num>=3){
+            num = formula(num);
+        }
+        return num;
     }
 
     /**
