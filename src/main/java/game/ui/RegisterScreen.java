@@ -2,6 +2,7 @@ package game.ui;
 
 import client.Client;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -81,19 +82,7 @@ public class RegisterScreen extends ScreenAdapter {
         registerButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                User u = new User(userTextField.getText(),
-                        emailTextField.getText(), passTextField.getText());
-                if (new Client().register(u)) {
-                    game.setUser(u);
-                    GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
-                            .withComputerPlayer(false)
-                            .withLevel(0)
-                            .withDifficulty(0)
-                            .withInfinite(false)
-                            .build();
-                    game.setScreen(new GameScreen(game, gameSettings));
-                    dispose();
-                }
+                register();
             }
 
             @Override
@@ -137,6 +126,9 @@ public class RegisterScreen extends ScreenAdapter {
         stage.act();
         stage.draw();
 
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            register();
+        }
     }
 
     @Override
@@ -157,5 +149,25 @@ public class RegisterScreen extends ScreenAdapter {
     public void dispose() {
         super.dispose();
         stage.dispose();
+    }
+
+    /**
+     * Send an HTTP call to the server to register
+     * the user.
+     */
+    private void register() {
+        User u = new User(userTextField.getText(),
+                emailTextField.getText(), passTextField.getText());
+        if (new Client().register(u)) {
+            game.setUser(u);
+            GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
+                    .withComputerPlayer(false)
+                    .withLevel(0)
+                    .withDifficulty(0)
+                    .withInfinite(false)
+                    .build();
+            game.setScreen(new GameScreen(game, gameSettings));
+            dispose();
+        }
     }
 }

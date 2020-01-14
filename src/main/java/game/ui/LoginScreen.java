@@ -2,6 +2,7 @@ package game.ui;
 
 import client.Client;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -37,7 +38,6 @@ public class LoginScreen extends ScreenAdapter {
     private transient Label forgotPass;
     static final String def = "default";
 
-
     /**
      * Login Screen.
      * @param game BubbleSpinner instance.
@@ -72,12 +72,7 @@ public class LoginScreen extends ScreenAdapter {
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                User u = new User(userTextField.getText(), null, passTextField.getText());
-                if (new Client().authenticate(u)) {
-                    game.setUser(u);
-                    game.setScreen(new MenuScreen(game));
-                    dispose();
-                }
+                login();
             }
 
             @Override
@@ -119,6 +114,7 @@ public class LoginScreen extends ScreenAdapter {
         table.add(register).colspan(1).width(w / 2);
         table.add(forgotPass).colspan(1).width(w / 2);
         stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -132,6 +128,10 @@ public class LoginScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            login();
+        }
 
     }
 
@@ -153,5 +153,17 @@ public class LoginScreen extends ScreenAdapter {
     public void dispose() {
         super.dispose();
         stage.dispose();
+    }
+
+    /**
+     * Send an HTTP call to the server to verify the user.
+     */
+    public void login() {
+        User u = new User(userTextField.getText(), null, passTextField.getText());
+        if (new Client().authenticate(u)) {
+            game.setUser(u);
+            game.setScreen(new MenuScreen(game));
+            dispose();
+        }
     }
 }
