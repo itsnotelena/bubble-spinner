@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Leaderboard extends Table {
 
-    private List<User> users;
+    private transient List<User> users;
 
     public Leaderboard(Skin skin) {
         super(skin);
