@@ -28,6 +28,7 @@ public class RegisterScreen extends ScreenAdapter {
     private transient TextField passTextField;
     private transient TextField emailTextField;
     private transient TextButton registerButton;
+    private transient Label goBackField;
     static final String def = "default";
 
 
@@ -59,6 +60,23 @@ public class RegisterScreen extends ScreenAdapter {
         passTextField.setMessageText("Password");
 
         registerButton = new TextButton("Register", skin, def);
+
+        goBackField = new Label("Go back", skin, def);
+        goBackField.setColor(new Color(0.2f,0.2f,0.5f,1));
+
+        goBackField.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen( new LoginScreen(game));
+                dispose();
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
 
         registerButton.addListener(new InputListener() {
             @Override
@@ -102,6 +120,8 @@ public class RegisterScreen extends ScreenAdapter {
         table.row();
         table.row();
         table.add(registerButton).colspan(2);
+        table.row();
+        table.add(goBackField).colspan(1).width(w / 2);
         stage.addActor(table);
     }
 
