@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
 import server.Server;
 
-import java.io.FileNotFoundException;
 
 public class MenuScreen extends ScreenAdapter {
 
