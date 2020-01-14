@@ -36,18 +36,18 @@ public class DbAdapter {
      * Class Constructor.
      * @param name The name of the database.
      */
-    public DbAdapter(String[] name) {
+    public DbAdapter(String name) {
         //try {
         //    Class.forName("org.sqlite.jdbc");
         //} catch (ClassNotFoundException ignored) {
         //    ignored.printStackTrace();
         //}
-        String jdbUrl = "jdbc:sqlite:assets/db/" + name[0] + ".db";
+        String jdbUrl = "jdbc:sqlite:assets/db/" + name + ".db";
         dataSource = new SQLiteDataSource();
         dataSource.setUrl(jdbUrl);
         //();
 
-        System.out.println("database connection established for db : " + name[0]);
+        System.out.println("database connection established for db : " + name);
     }
 
 

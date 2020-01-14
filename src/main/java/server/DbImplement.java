@@ -18,7 +18,7 @@ public class DbImplement {
      *
      * @param dbAdapter Object dbAdapter
      */
-    public DbImplement(DbAdapter dbAdapter) throws FileNotFoundException {
+    public DbImplement(DbAdapter dbAdapter) {
         this.dbAdapter = dbAdapter;
         this.initialize();
     }
@@ -381,8 +381,12 @@ public class DbImplement {
     /**
      * initialize the tables for this db.
      */
-    private void initialize() throws FileNotFoundException {
-        dbAdapter.importTables();
+    private void initialize() {
+        try {
+            dbAdapter.importTables();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
 

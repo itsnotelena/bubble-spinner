@@ -90,8 +90,8 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void notGettingUserByUsername() throws SQLException, FileNotFoundException {
-        dbImplement = new DbImplement(new DbAdapter(new String[]{"Test"}));
+    void notGettingUserByUsername() throws SQLException {
+        dbImplement = new DbImplement(new DbAdapter("test"));
 
         dbImplement.removeFromUser("baka");
         Optional<User> optional = dbImplement.getUserByUsername("baka");
@@ -103,8 +103,8 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void emptyScoreByGettingScoreByUser() throws SQLException, FileNotFoundException {
-        dbImplement = new DbImplement(new DbAdapter(new String[] {"Test"}));
+    void emptyScoreByGettingScoreByUser() throws SQLException {
+        dbImplement = new DbImplement(new DbAdapter("test"));
 
         dbImplement.removeFromUser("naruto");
         Optional<Score> optional = dbImplement.getScoreByUser("naruto");
@@ -117,7 +117,7 @@ public class DbImplementExceptionsTest {
 
     @Test
     void emptyBadgesByGettingBadgesByUser() throws SQLException, FileNotFoundException {
-        dbImplement = new DbImplement(new DbAdapter(new String[] {"Test"}));
+        dbImplement = new DbImplement(new DbAdapter("test"));
 
         dbImplement.removeFromUser("elena");
         Optional<Badge> optional = dbImplement.getBadgeByUser("elena");

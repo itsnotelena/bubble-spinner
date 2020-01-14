@@ -27,12 +27,18 @@ public class Server {
      * start the Server.
      * @param args String[] to use
      */
-    public static void main(String[] args) throws FileNotFoundException {
-        dbAdapter = new DbAdapter(args);
+    public static void main(String[] args) {
+        final var len = 0;
+        if (args.length > len) {
+            dbAdapter = new DbAdapter(args[0]);
+        } else {
+            dbAdapter = new DbAdapter("database");
+        }
         dbImplement = new DbImplement(dbAdapter);
-        //dbImplement.initialize();
         ctx = SpringApplication.run(Server.class,args);
+
     }
+
 
     /**
      * Initialize the database schema.
@@ -59,13 +65,9 @@ public class Server {
      */
     @PostMapping(value = "/login")
     public boolean checkLogin(final @RequestBody Map<String, Object> reqBody) {
-        String username = (String) reqBody.get("username");
-        String password = (String) reqBody.get("password");
-        if (username == null || password == null) {
-            return false;
-        }
         try {
-            return dbImplement.checkLogin(new User(username, null, password));
+            return dbImplement.checkLogin(new User((String) reqBody.get("username"),
+                    null, (String) reqBody.get("password")));
         } catch (SQLException e) {
             return false;
         }

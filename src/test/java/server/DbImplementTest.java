@@ -14,10 +14,10 @@ import org.junit.jupiter.api.Test;
 
 
 public class DbImplementTest {
-    private static DbAdapter dbAdapter = new DbAdapter(new String[]{"test"});
+    private static DbAdapter dbAdapter = new DbAdapter("test");
     private transient DbImplement dbImplement = new DbImplement(dbAdapter);
 
-    public DbImplementTest() throws FileNotFoundException, SQLException {
+    public DbImplementTest() {
     }
 
     @BeforeAll

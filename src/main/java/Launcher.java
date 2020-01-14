@@ -2,8 +2,6 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import config.Config;
 import game.BubbleSpinner;
-import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import server.Server;
 
 
@@ -17,9 +15,9 @@ public class Launcher {
      * Main class for the Launcher.
      * @param args no arguments needed.
      */
-    public static void main(String[] args) throws FileNotFoundException, SQLException {
+    public static void main(String[] args) {
         if (Config.Api.URL.contains("localhost")) {
-            Server.main(new String[]{"database"});
+            Server.main(new String[0]);
         }
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle(Config.Game.TITLE);

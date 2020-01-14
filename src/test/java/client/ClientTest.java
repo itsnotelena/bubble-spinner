@@ -1,7 +1,6 @@
 package client;
 
 import java.io.FileNotFoundException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
@@ -15,28 +14,32 @@ import server.User;
 
 public class ClientTest {
 
-    static Server server = new Server();
-
+    /**
+     * Database Test Set up.
+     */
     @BeforeEach
-    void start() throws FileNotFoundException, SQLException {
-        server.main(new String[]{"test"});
-        try {
-            server.schemaCreate();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    public void before() {
+        String[] args = {"testClient"};
+        Server.main(args);
+        Server.deleteData();
     }
 
+    /**
+     * Sets up the environment after each test for next tests to work properly.
+     *
+     * @throws FileNotFoundException Exception type file not found
+     */
     @AfterEach
-    public void stop() {
-        server.deleteData();
-        server.stop();
+    public void cleanUp() throws FileNotFoundException {
+        Server.deleteData();
+        Server.schemaCreate();
+        Server.stop();
     }
 
 
     @Test
     public void testAuthFail() {
-        Assertions.assertThat(new Client().authenticate(new User("test",
+        Assertions.assertThat(new Client().authenticate(new User("tesst",
                 null, "test"))).isFalse();
     }
 
@@ -61,8 +64,8 @@ public class ClientTest {
         Client client = new Client();
         Badge badge = new Badge("sasuke", "LEVEL2");
         Assertions.assertThat(client.addBadge(badge)).isTrue();
+        Assertions.assertThat(new Client().authenticate(new User("test", null, "test"))).isFalse();
     }
-
 
     @Test
     public void getTop5() {
@@ -91,9 +94,9 @@ public class ClientTest {
 
         client.addScore(new Score("cardi", 3, 55));
         client.addScore(new Score("anitta", 2, 50));
-        client.addScore(new Score("Lady Gaga", 1, 30));
-        client.addScore(new Score("Taylor Swift", 11, 25));
-        client.addScore(new Score("Rosalia", 4, 24));
+        client.addScore(new Score("Lady Gaga", 3, 30));
+        client.addScore(new Score("Taylor Swift", 3, 25));
+        client.addScore(new Score("Rosalia", 3, 24));
 
         List<User> result = client.getTop5();
 

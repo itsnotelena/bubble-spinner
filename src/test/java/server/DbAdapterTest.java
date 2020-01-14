@@ -1,12 +1,9 @@
 package server;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.sqlite.SQLiteDataSource;
 
@@ -17,13 +14,13 @@ public class DbAdapterTest {
      */
     @Test
     public void testDatabaseConnection() throws SQLException {
-        DbAdapter dba = new DbAdapter(new String[]{"test"});
+        DbAdapter dba = new DbAdapter("test");
         Assertions.assertThat(dba.getConn()).isNotNull();
     }
 
     @Test
     void testConnFails() throws SQLException {
-        DbAdapter dbAdapter = new DbAdapter(new String[]{"test"});
+        DbAdapter dbAdapter = new DbAdapter("test");
 
         SQLiteDataSource dataSource = Mockito.mock(SQLiteDataSource.class);
         Mockito.doThrow(new SQLException()).when(dataSource).getConnection();
@@ -41,7 +38,7 @@ public class DbAdapterTest {
 
     @Test
     void noNullInClosingData() throws SQLException {
-        DbAdapter dba = new DbAdapter(new String[]{"test"});
+        DbAdapter dba = new DbAdapter("test");
         dba.closeData();
     }
 }
