@@ -19,6 +19,8 @@ import game.BubbleSpinner;
 import game.GameSettings;
 import server.User;
 
+
+
 public class RegisterScreen extends ScreenAdapter {
 
     private transient Stage stage;
@@ -90,7 +92,6 @@ public class RegisterScreen extends ScreenAdapter {
                 return true;
             }
         });
-
         int w = 300;
         int padding = 5;
         int h = 50;

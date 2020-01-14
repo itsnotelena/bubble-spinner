@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
 import server.User;
 
+
 public class LoginScreen extends ScreenAdapter {
 
     private transient Stage stage;
@@ -80,6 +81,7 @@ public class LoginScreen extends ScreenAdapter {
                 return true;
             }
         });
+
 
         register.addListener(new InputListener() {
             @Override
