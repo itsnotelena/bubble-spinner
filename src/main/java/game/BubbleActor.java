@@ -18,6 +18,7 @@ public class BubbleActor extends Image implements Observer {
     private transient Vector2 movingDirection = new Vector2(0, 0);
     private transient Stage stage;
     public transient ArrayList<BubbleActor> neighbours;
+    private int colorId;
 
     /**
      * Constructor for the Bubble Actor in the stage.
@@ -84,6 +85,14 @@ public class BubbleActor extends Image implements Observer {
 
     public void shiftY(boolean positive) {
         shiftY(positive, 1);
+    }
+
+    public int getColorId() {
+        return colorId;
+    }
+
+    public void setColorId(int colorId) {
+        this.colorId = colorId;
     }
 
     /**
