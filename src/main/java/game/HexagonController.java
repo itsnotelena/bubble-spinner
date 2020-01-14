@@ -52,15 +52,13 @@ public class HexagonController {
         int lastneigh = 7;
         int temp;
 
-        File file = new File("assets\\hexagon_easy.txt");
+        File file = new File("assets/hexagon_easy.txt");
         Scanner sc = null;
         try {
             sc = new Scanner(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        sc.useDelimiter(", |\n|\r");
-        sc.useLocale(Locale.US);
         for (BubbleActor bubble: bubbles) {
             if (!(sc.hasNext())) {
                 break;
@@ -69,7 +67,7 @@ public class HexagonController {
             double y = sc.nextDouble();
             bubble.center().shiftX(true, (float)x);
             bubble.shiftY(true, (float)y);
-            sc.next();
+            //sc.next();
         }
         int num2 = 0;
         for (BubbleActor a: bubbles) {
