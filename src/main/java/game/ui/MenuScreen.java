@@ -10,8 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import config.Config.Game;
+import config.Config.Time;
 import game.BubbleSpinner;
-import server.Server;
+import game.GameSettings;
 
 
 public class MenuScreen extends ScreenAdapter {
@@ -21,6 +23,7 @@ public class MenuScreen extends ScreenAdapter {
     private transient Table table;
     private transient TextButton startButton;
     private transient TextButton computerButton;
+    private transient TextButton timerButton;
     private transient TextButton optionsButton;
     private transient TextButton exitButton;
     private transient boolean computerPlayer;
@@ -50,12 +53,21 @@ public class MenuScreen extends ScreenAdapter {
 
         computerButton = new TextButton("Computer Player OFF", skin, def);
         computerPlayer = false;
+
+        timerButton = new TextButton("Timer: 10 minutes", skin, def);
+        Game.GAME_TIME = Time.DEFAULT;
         
         startButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
-                game.setScreen(new GameScreen(game, computerPlayer));
+                GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
+                            .withComputerPlayer(computerPlayer)
+                            .withLevel(0)
+                            .withDifficulty(0)
+                            .withInfinite(Game.GAME_TIME == 0)
+                            .withHelpBox(computerPlayer ? new TutorialHelpBox(game.batch) : null)
+                            .build();
+                game.setScreen(new GameScreen(game, gameSettings));
                 dispose();
             }
 
@@ -71,6 +83,18 @@ public class MenuScreen extends ScreenAdapter {
                 computerPlayer = !computerPlayer;
                 computerButton.setText("Computer Player " + (computerPlayer ? "ON" : "OFF"));
                 return computerPlayer;
+            }
+        });
+
+        timerButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                Game.GAME_TIME = (Game.GAME_TIME + Time.DEFAULT) % Time.HOUR;
+                String time = Game.GAME_TIME == 0
+                            ? "infinite" :
+                            Integer.toString(Game.GAME_TIME / Time.MINUTE);
+                timerButton.setText("Timer: " + time + " minutes");
+                return true;
             }
         });
 
@@ -124,6 +148,8 @@ public class MenuScreen extends ScreenAdapter {
         table.add(startButton).colspan(2);
         table.row();
         table.add(computerButton).colspan(2);
+        table.row();
+        table.add(timerButton).colspan(2);
         table.row();
         table.add(optionsButton).colspan(2);
         table.row();

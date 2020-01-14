@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -15,9 +17,17 @@ public class DbImplementTest {
     private static DbAdapter dbAdapter = new DbAdapter("test");
     private transient DbImplement dbImplement = new DbImplement(dbAdapter);
 
+    public DbImplementTest() {
+    }
+
     @BeforeAll
     static void setUp() throws FileNotFoundException {
         dbAdapter.importTables();
+    }
+
+    @AfterEach
+    void clean() throws SQLException {
+        dbAdapter.clearData();
     }
 
     @Test
@@ -35,7 +45,6 @@ public class DbImplementTest {
     @Test
     void searchProperly() throws SQLException {
         Score a = new Score("lalalq",1,1);
-        dbImplement.removeFromScore(a.getUsername());
         boolean resA = dbImplement.insertScore(a);
         Assertions.assertThat(resA).isTrue();
         Assertions.assertThat(dbImplement.removeFromScore(a.getUsername()));
@@ -46,6 +55,7 @@ public class DbImplementTest {
     void searchFails() {
         Assertions.assertThat(dbImplement.searchInUsers("lal")).isFalse();
         Assertions.assertThat(dbImplement.searchInScore("lal")).isFalse();
+        Assertions.assertThat(dbImplement.searchInGame("lal")).isFalse();
     }
 
     @Test
@@ -58,6 +68,18 @@ public class DbImplementTest {
         Optional<Score> scoreOptional = dbImplement.getScoreByUser(a.getUsername());
         Assertions.assertThat(scoreOptional.isPresent()).isTrue();
         Assertions.assertThat(scoreOptional.get()).isEqualTo(a);
+    }
+
+    @Test
+    void getBadgesByUsername() throws SQLException {
+        Badge beyhive = new Badge("beyonce", "LEVEL1");
+        dbImplement.removeFromBadge(beyhive.getUsername());
+        boolean resA = dbImplement.insertBadge(beyhive);
+        Assertions.assertThat(resA).isTrue();
+
+        Optional<Badge> badgeOptional = dbImplement.getBadgeByUser(beyhive.getUsername());
+        Assertions.assertThat(badgeOptional.isPresent()).isTrue();
+        Assertions.assertThat(badgeOptional.get()).isEqualTo(beyhive);
     }
 
     @Test
@@ -102,6 +124,23 @@ public class DbImplementTest {
         list.add(dbImplement.getUserByUsername(five.getUsername()).get());
 
         Assertions.assertThat(scoreOptional).isEqualTo(list);
+    }
+
+    @Test
+    void alreadyExists() throws SQLException {
+        User a = new User("h","h","h");
+        Game b = new Game("a",1,1);
+        Score c = new Score("a",1,1);
+        Badge d = new Badge("a","b");
+        dbImplement.insertUser(a);
+        dbImplement.insertGame(b);
+        dbImplement.insertScore(c);
+        dbImplement.insertBadge(d);
+        Assertions.assertThat(dbImplement.insertUser(a)).isFalse();
+        Assertions.assertThat(dbImplement.insertGame(b)).isFalse();
+        Assertions.assertThat(dbImplement.insertScore(c)).isFalse();
+        Assertions.assertThat(dbImplement.insertBadge(d)).isFalse();
+
     }
 
 }

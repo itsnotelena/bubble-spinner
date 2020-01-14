@@ -10,6 +10,7 @@ public class BubbleSpinnerController {
     transient Stage stage;
     transient Shooter shooter;
     transient HexagonController hexagonController;
+    private static int THRESHOLD_BUBBLES = 1;
 
     /**
      * Constructor for the Controller of the Bubble Spinner game.
@@ -46,6 +47,10 @@ public class BubbleSpinnerController {
 
         if (hexagonController.lostGame) {
             gameScreen.dispose();
+        }
+
+        if (hexagonController.getBubbles().size() == THRESHOLD_BUBBLES) {
+            gameScreen.nextLevel();
         }
     }
 

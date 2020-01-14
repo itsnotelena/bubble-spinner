@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -21,33 +23,28 @@ public class Server {
     private static DbAdapter dbAdapter;
     private static ConfigurableApplicationContext ctx;
 
-
     /**
      * start the Server.
      * @param args String[] to use
      */
     public static void main(String[] args) {
-        final var len = 1;
+        final var len = 0;
         if (args.length > len) {
             dbAdapter = new DbAdapter(args[0]);
         } else {
             dbAdapter = new DbAdapter("database");
         }
         dbImplement = new DbImplement(dbAdapter);
-        dbImplement.initialize();
         ctx = SpringApplication.run(Server.class,args);
 
     }
 
+
     /**
      * Initialize the database schema.
      */
-    public static void schemaCreate() {
-        try {
-            dbImplement.getDbAdapter().importTables();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+    public static void schemaCreate() throws FileNotFoundException {
+        dbImplement.getDbAdapter().importTables();
     }
 
     /**
@@ -68,13 +65,9 @@ public class Server {
      */
     @PostMapping(value = "/login")
     public boolean checkLogin(final @RequestBody Map<String, Object> reqBody) {
-        String username = (String) reqBody.get("username");
-        String password = (String) reqBody.get("password");
-        if (username == null || password == null) {
-            return false;
-        }
         try {
-            return dbImplement.checkLogin(new User(username, null, password));
+            return dbImplement.checkLogin(new User((String) reqBody.get("username"),
+                    null, (String) reqBody.get("password")));
         } catch (SQLException e) {
             return false;
         }
@@ -110,6 +103,22 @@ public class Server {
     }
 
     /**
+     * Get the badges of the users.
+     * @param reqBody is the username.
+     * @return the badges.
+     */
+    @GetMapping(value = "/getBadges")
+    public Optional<Badge> getBadges(final @RequestBody String reqBody) {
+        String username = reqBody;
+        try {
+            return dbImplement.getBadgeByUser(username);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    /**
      * Add a new score to the database.
      * @param score is the Score object.
      * @return true if successful, false otherwise.
@@ -118,6 +127,20 @@ public class Server {
     public boolean addScore(final @RequestBody Score score) {
         try {
             return dbImplement.insertScore(score);
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Add a new badge to the database.
+     * @param badge is the Badge object.
+     * @return true if successful, false otherwise.
+     */
+    @PostMapping(value = "/addBadge")
+    public boolean addBadge(final @RequestBody Badge badge) {
+        try {
+            return dbImplement.insertBadge(badge);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -137,18 +160,6 @@ public class Server {
             e.printStackTrace();
             return false;
         }
-    }
-
-    /**
-     * Remove User from the userTable inside the database.
-     *
-     * @param reqBody get the string from the user connection
-     * @return true if user is removed false if not
-     */
-    @PostMapping(value = "/removeUser")
-    public boolean removeUserFromUserTable(final @RequestBody String reqBody) {
-        String user = reqBody;
-        return dbImplement.removeFromUser(user);
     }
 
     public static void stop() {

@@ -1,7 +1,5 @@
 package server;
 
-import java.util.Objects;
-
 public class Score {
     private String username;
     private int scoreW;
@@ -63,6 +61,6 @@ public class Score {
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, scoreW, scoreA);
+        return super.hashCode();
     }
 }

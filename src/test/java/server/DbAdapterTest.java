@@ -1,9 +1,11 @@
 package server;
 
-import java.io.FileNotFoundException;
 import java.sql.SQLException;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.sqlite.SQLiteDataSource;
 
 public class DbAdapterTest {
 
@@ -16,13 +18,27 @@ public class DbAdapterTest {
         Assertions.assertThat(dba.getConn()).isNotNull();
     }
 
-    /**
-     * Testing the table import method.
-     */
     @Test
-    public void testImportTables() throws FileNotFoundException {
-        DbAdapter db = new DbAdapter("test");
-        Assertions.assertThat(db.importTables()).isTrue();
+    void testConnFails() throws SQLException {
+        DbAdapter dbAdapter = new DbAdapter("test");
+
+        SQLiteDataSource dataSource = Mockito.mock(SQLiteDataSource.class);
+        Mockito.doThrow(new SQLException()).when(dataSource).getConnection();
+        dbAdapter.setDataSource(dataSource);
+        Assertions.assertThatThrownBy(() -> dbAdapter.getConn())
+                .isInstanceOf(SQLException.class);
     }
 
+    @Test
+    void nullInClosingData() throws SQLException {
+        DbAdapter dba = Mockito.mock(DbAdapter.class);
+        Mockito.when(dba.getConn()).thenReturn(null);
+        dba.closeData();
+    }
+
+    @Test
+    void noNullInClosingData() throws SQLException {
+        DbAdapter dba = new DbAdapter("test");
+        dba.closeData();
+    }
 }
