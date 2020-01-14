@@ -70,7 +70,7 @@ public class HexagonController {
             //sc.next();
         }
         int num2 = 0;
-        for(BubbleActor a: bubbles){
+        for (BubbleActor a: bubbles){
             int num = 0;
             for(BubbleActor b: bubbles){
 
@@ -116,27 +116,6 @@ public class HexagonController {
     }
 
     /**
-     * Recursive method to find how many neighbouring
-     * bubbles will be popped after hit.
-     * @return number of bubbles
-     * @param hit bubble whose neighbours we check for
-     *            matching color id.
-     */
-    public int bubblePop(BubbleActor hit, int counter){
-//        int id = hit.getColorID();
-//        for(BubbleActor candidate: hit.neighbours){
-//            if(candidate.getColorId()==id){
-//                counter++;
-//                bubblePop(candidate, counter);
-//                bubbles.remove(candidate);
-//                candidate.remove();
-//            }
-//        }
-        return counter;
-
-    }
-
-    /**
      * Method calculates score based on how many
      * bubbles have been popped.
      * @return the score due to the hit
@@ -146,9 +125,7 @@ public class HexagonController {
         int num = 0;
         for(BubbleActor hit: bubbles){
             if(hit.collide(hitter)){
-
-                num = num + bubblePop(hit, 0);
-
+                //num = num + bubblePop(hit, 0);
             }
         }
         if(num>=3){
