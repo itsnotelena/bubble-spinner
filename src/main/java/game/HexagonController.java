@@ -132,6 +132,19 @@ public class HexagonController {
                 num = bubblePop(hit);
             }
         }
-        return num;
+        return formula(num);
+    }
+
+    /**
+     * Helper method to help with
+     * score calculation
+     * @param num is number of bubbles popped
+     */
+    public int formula(int num){
+        if(num==3){
+            return 5;
+        } else {
+            return (int)(1.5 * formula(num-1));
+        }
     }
 }
