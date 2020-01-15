@@ -67,7 +67,7 @@ public class LoginScreen extends ScreenAdapter {
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                login();
+                login(new User(userTextField.getText(), null, passTextField.getText()));
             }
 
             @Override
@@ -127,10 +127,29 @@ public class LoginScreen extends ScreenAdapter {
         stage.act();
         stage.draw();
 
+        // Enter -> Login
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            login();
+            login(new User(userTextField.getText(), null, passTextField.getText()));
         }
 
+        // R -> Register Screen
+        if (Gdx.input.isKeyPressed(Input.Keys.R)) {
+            game.setScreen(new RegisterScreen(game));
+            dispose();
+        }
+
+        // F -> Forgot Password
+        if (Gdx.input.isKeyPressed(Input.Keys.F)) {
+
+        }
+
+        // Ctrl + D -> Login with Default user
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)
+            && Gdx.input.isKeyPressed(Input.Keys.D)) {
+            User defaultUser = new User("", "", "");
+            new Client().register(defaultUser);
+            login(defaultUser);
+        }
     }
 
     @Override
@@ -156,10 +175,9 @@ public class LoginScreen extends ScreenAdapter {
     /**
      * Send an HTTP call to the server to verify the user.
      */
-    public void login() {
-        User u = new User(userTextField.getText(), null, passTextField.getText());
-        if (new Client().authenticate(u)) {
-            game.setUser(u);
+    public void login(User user) {
+        if (new Client().authenticate(user)) {
+            game.setUser(user);
             game.setScreen(new MenuScreen(game));
             dispose();
         } else {

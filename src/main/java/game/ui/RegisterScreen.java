@@ -133,8 +133,15 @@ public class RegisterScreen extends ScreenAdapter {
         stage.act();
         stage.draw();
 
+        // Enter -> Register
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             register();
+        }
+
+        // Esc -> Go back
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            game.setScreen( new LoginScreen(game));
+            dispose();
         }
     }
 
