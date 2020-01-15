@@ -62,6 +62,8 @@ public class RegisterScreen extends ScreenAdapter {
 
         passTextField = new TextField("", skin, def);
         passTextField.setMessageText("Password");
+        passTextField.setPasswordCharacter('*');
+        passTextField.setPasswordMode(true);
 
         registerButton = new TextButton("Register", skin, def);
 
