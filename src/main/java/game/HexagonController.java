@@ -57,17 +57,18 @@ public class HexagonController {
         Scanner sc = null;
         try {
             sc = new Scanner(file);
+            sc.useLocale(Locale.US);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         for (BubbleActor bubble: bubbles) {
-            if (!(sc.hasNext())) {
+            if (!(sc.hasNextFloat())) {
                 break;
             }
-            double x = sc.nextDouble();
-            double y = sc.nextDouble();
-            bubble.center().shiftX(true, (float)x);
-            bubble.shiftY(true, (float)y);
+            float x = sc.nextFloat();
+            float y = sc.nextFloat();
+            bubble.center().shiftX(true, x);
+            bubble.shiftY(true, y);
             //sc.next();
         }
         int num2 = 0;
@@ -85,12 +86,10 @@ public class HexagonController {
                     float len = (float) Math.sqrt(lenx + leny);
                     if (len <= 120.0 && len >= 65.0) {
                         a.neighbours.add(b);
-                        System.out.println("Added neighbour num " + num);
                         num++;
                     }
                 }
             }
-            System.out.println("Done with bubble " + num2);
             num2++;
         }
     }
