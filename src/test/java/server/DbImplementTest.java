@@ -116,8 +116,8 @@ public class DbImplementTest {
         dbImplement.insertScore(four);
         dbImplement.insertScore(five);
 
-
         List<Score> scoreOptional = dbImplement.getTop5Score();
+
         List<User> list = new ArrayList<>();
         list.add(dbImplement.getUserByUsername(one.getUsername()).get());
         list.add(dbImplement.getUserByUsername(two.getUsername()).get());

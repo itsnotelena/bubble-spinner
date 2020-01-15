@@ -71,28 +71,7 @@ public class ClientTest {
 
     @Test
     public void getTop5() {
-
-        User cardi = new User("cardi", "cardi@me", "abc");
-        User anitta = new User("anitta", "anitta@me", "123");
-        User ladygaga = new User("Lady Gaga", "ladygaga@me", "456");
-        User taylorswift = new User("Taylor Swift", "taylor@me", "789");
-        User rosalia = new User("Rosalia", "rosalia@me", "000");
-
-        List<User> users = new ArrayList<>();
-
-        users.add(cardi);
-        users.add(anitta);
-        users.add(ladygaga);
-        users.add(taylorswift);
-        users.add(rosalia);
-
         Client client = new Client();
-
-        client.addUser(cardi);
-        client.addUser(anitta);
-        client.addUser(ladygaga);
-        client.addUser(taylorswift);
-        client.addUser(rosalia);
 
         client.addScore(new Score("cardi", 3, 55));
         client.addScore(new Score("anitta", 2, 50));
@@ -102,11 +81,11 @@ public class ClientTest {
 
         List<Score> result = client.getTop5();
 
-        assertEquals(users.get(0).getUsername(), result.get(0).getUsername());
-        assertEquals(users.get(1).getUsername(), result.get(1).getUsername());
-        assertEquals(users.get(2).getUsername(), result.get(2).getUsername());
-        assertEquals(users.get(3).getUsername(), result.get(3).getUsername());
-        assertEquals(users.get(4).getUsername(), result.get(4).getUsername());
+        Assertions.assertThat("cardi".equals(result.get(0).getUsername())).isTrue();
+        Assertions.assertThat("anitta".equals(result.get(1).getUsername())).isTrue();
+        Assertions.assertThat("Lady Gaga".equals(result.get(2).getUsername())).isTrue();
+        Assertions.assertThat("Taylor Swift".equals(result.get(3).getUsername())).isTrue();
+        Assertions.assertThat("Rosalia".equals(result.get(4).getUsername())).isTrue();
     }
 
     @Test

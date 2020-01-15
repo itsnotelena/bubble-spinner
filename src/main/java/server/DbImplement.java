@@ -266,8 +266,8 @@ public class DbImplement {
             statement.setInt(1,amount);
             result = statement.executeQuery();
             while (result.next()) {
-                Optional<Score> score = getScoreByUser(result.getString(1));
-                score.ifPresent(users::add);
+                users.add(new Score(result.getString(1),
+                        result.getInt(2),result.getInt(3)));
             }
             return users;
         } catch (SQLException e) {
