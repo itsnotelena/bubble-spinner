@@ -33,6 +33,7 @@ public class RegisterScreen extends ScreenAdapter {
     private transient TextButton registerButton;
     private transient Label goBackField;
     static final String def = "default";
+    private transient PopupMenu popupMenu;
 
 
     /**
@@ -113,6 +114,9 @@ public class RegisterScreen extends ScreenAdapter {
         table.row();
         table.add(goBackField).colspan(1).width(w / 2);
         stage.addActor(table);
+
+        popupMenu = new PopupMenu(skin);
+        stage.addActor(popupMenu);
     }
 
     @Override
@@ -169,6 +173,9 @@ public class RegisterScreen extends ScreenAdapter {
                     .build();
             game.setScreen(new GameScreen(game, gameSettings));
             dispose();
+        } else {
+            popupMenu.setMessage("It's not possible to register this account.");
         }
     }
+
 }

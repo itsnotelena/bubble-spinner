@@ -37,6 +37,7 @@ public class LoginScreen extends ScreenAdapter {
     private transient TextButton playButton;
     private transient Label register;
     private transient Label forgotPass;
+    private transient PopupMenu popupMenu;
     static final String def = "default";
 
     /**
@@ -116,7 +117,9 @@ public class LoginScreen extends ScreenAdapter {
         table.add(register).colspan(1).width(w / 2);
         table.add(forgotPass).colspan(1).width(w / 2);
         stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
+
+        popupMenu = new PopupMenu(skin);
+        stage.addActor(popupMenu);
     }
 
     @Override
@@ -166,6 +169,8 @@ public class LoginScreen extends ScreenAdapter {
             game.setUser(u);
             game.setScreen(new MenuScreen(game));
             dispose();
+        } else {
+            popupMenu.setMessage("Invalid credentials.");
         }
     }
 }
