@@ -30,10 +30,7 @@ public class HexagonController {
      * @param stage Stage where objects reside.
      */
     public HexagonController(Stage stage) {
-        /*
-         * TODO
-         * Change this to create the correct structure.
-         */
+
         this.bubbleFactory = new BubbleFactory(stage);
         //Max is the Difficulty of the Game
         this.bubbleFactory.addAllTextures(4);
@@ -49,9 +46,6 @@ public class HexagonController {
             bubbles.add(bub);
             stage.addActor(bub);
         }
-
-        int lastneigh = 7;
-        int temp;
 
         File file = new File("assets/hexagon_easy.txt");
         Scanner sc = null;
@@ -71,9 +65,7 @@ public class HexagonController {
             bubble.shiftY(true, y);
             //sc.next();
         }
-        int num2 = 0;
-        for (BubbleActor a: bubbles) {
-            int num = 0;
+          for (BubbleActor a: bubbles) {
             for (BubbleActor b: bubbles) {
 
                 if (!a.collide(b)) {
@@ -86,12 +78,31 @@ public class HexagonController {
                     float len = (float) Math.sqrt(lenx + leny);
                     if (len <= 120.0 && len >= 65.0) {
                         a.neighbours.add(b);
-                        num++;
                     }
                 }
             }
-            num2++;
         }
+    }
+
+        /**
+     * Recursive method to find how many neighbouring
+     * bubbles will be popped after hit.
+     * @return number of bubbles
+     * @param hit bubble whose neighbours we check for
+     *            matching color id.
+     */
+    public int bubblePop(BubbleActor hit, int counter){
+        int id = hit.getColorId();
+        for(BubbleActor candidate: hit.neighbours){
+            if(candidate.getColorId()==id){
+                counter++;
+                bubblePop(candidate, counter);
+                bubbles.remove(candidate);
+                candidate.remove();
+            }
+        }
+        return counter;
+
     }
 
     /**
@@ -123,12 +134,12 @@ public class HexagonController {
         int num = 0;
         int three = 3;
         hitter.getPosition();
-        //for(BubbleActor hit: bubbles){
-        //if(hit.collide(hitter)){
-        //hit.getY();
-        //num = num + bubblePop(hit, 0);
-        //}
-        //}
+        for(BubbleActor hit: bubbles){
+            if(hit.collide(hitter)){
+                hit.getY();
+                num = num + bubblePop(hit, 0);
+            }
+        }
 
         if (num >= three) {
             num = formula(num);
