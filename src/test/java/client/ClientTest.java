@@ -12,6 +12,8 @@ import server.Score;
 import server.Server;
 import server.User;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class ClientTest {
 
     /**
@@ -98,15 +100,13 @@ public class ClientTest {
         client.addScore(new Score("Taylor Swift", 3, 25));
         client.addScore(new Score("Rosalia", 3, 24));
 
-        List<User> result = client.getTop5();
+        List<Score> result = client.getTop5();
 
-        Assertions.assertThat(users.get(0).equals(result.get(0))).isTrue();
-        Assertions.assertThat(users.get(1).equals(result.get(1))).isTrue();
-        Assertions.assertThat(users.get(2).equals(result.get(2))).isTrue();
-        Assertions.assertThat(users.get(3).equals(result.get(3))).isTrue();
-        Assertions.assertThat(users.get(4).equals(result.get(4))).isTrue();
-
-        Assertions.assertThat(result).isEqualTo(users);
+        assertEquals(users.get(0).getUsername(), result.get(0).getUsername());
+        assertEquals(users.get(1).getUsername(), result.get(1).getUsername());
+        assertEquals(users.get(2).getUsername(), result.get(2).getUsername());
+        assertEquals(users.get(3).getUsername(), result.get(3).getUsername());
+        assertEquals(users.get(4).getUsername(), result.get(4).getUsername());
     }
 
     @Test

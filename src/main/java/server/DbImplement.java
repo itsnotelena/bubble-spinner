@@ -246,7 +246,7 @@ public class DbImplement {
      * Get the Top 5 User's Scores.
      * @return usernames.
      */
-    public List<User> getTop5Score() {
+    public List<Score> getTop5Score() {
         try {
             return getTopXScores(5);
         } catch (SQLException e) {
@@ -257,16 +257,17 @@ public class DbImplement {
 
     @SuppressWarnings({"PMD.AvoidDuplicateLiterals", "PMD.DataflowAnomalyAnalysis"})
     // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
-    private List<User> getTopXScores(int amount) throws SQLException {
+    private List<Score> getTopXScores(int amount) throws SQLException {
         ResultSet result = null;
-        List<User> users = new ArrayList<>();
+        List<Score> users = new ArrayList<>();
         try {
             PreparedStatement statement = dbAdapter.getConn().prepareStatement(
                     "SELECT * FROM score ORDER BY - scoreA LIMIT ?");
             statement.setInt(1,amount);
             result = statement.executeQuery();
             while (result.next()) {
-                users.add(getUserByUsername(result.getString(1)).get());
+                Optional<Score> score = getScoreByUser(result.getString(1));
+                score.ifPresent(users::add);
             }
             return users;
         } catch (SQLException e) {

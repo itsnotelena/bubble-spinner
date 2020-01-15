@@ -164,7 +164,10 @@ public class MenuScreen extends ScreenAdapter {
         stage.addActor(table);
 
         leaderboard = new Leaderboard(skin);
-        leaderboard.setPosition(Gdx.graphics.getWidth() * 6 / 8.f, 4 * Gdx.graphics.getHeight() / 8.f);
+        leaderboard.setPosition(
+                Gdx.graphics.getWidth() * 6 / 8.f,
+                4 * Gdx.graphics.getHeight() / 8.f
+        );
         stage.addActor(leaderboard);
     }
 

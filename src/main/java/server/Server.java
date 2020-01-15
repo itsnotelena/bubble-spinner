@@ -98,7 +98,7 @@ public class Server {
      * @return 5 top scores.
      */
     @GetMapping(value = "/top5")
-    public List<User> getTop5() {
+    public List<Score> getTop5() {
         return dbImplement.getTop5Score();
     }
 
