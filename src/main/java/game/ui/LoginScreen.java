@@ -139,9 +139,9 @@ public class LoginScreen extends ScreenAdapter {
         }
 
         // F -> Forgot Password
-        if (Gdx.input.isKeyPressed(Input.Keys.F)) {
-
-        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.F)) {
+//
+//        }
 
         // Ctrl + D -> Login with Default user
         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)
@@ -175,7 +175,7 @@ public class LoginScreen extends ScreenAdapter {
     /**
      * Send an HTTP call to the server to verify the user.
      */
-    public void login(User user) {
+    private void login(User user) {
         if (new Client().authenticate(user)) {
             game.setUser(user);
             game.setScreen(new MenuScreen(game));
