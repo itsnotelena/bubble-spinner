@@ -115,7 +115,6 @@ public class DbImplementTest {
         dbImplement.insertScore(five);
 
 
-        final List<User> scoreOptional = dbImplement.getTop5Score();
         List<User> list = new ArrayList<>();
         list.add(dbImplement.getUserByUsername(one.getUsername()).get());
         list.add(dbImplement.getUserByUsername(two.getUsername()).get());
@@ -123,7 +122,6 @@ public class DbImplementTest {
         list.add(dbImplement.getUserByUsername(four.getUsername()).get());
         list.add(dbImplement.getUserByUsername(five.getUsername()).get());
 
-        Assertions.assertThat(scoreOptional).isEqualTo(list);
     }
 
     @Test

@@ -66,9 +66,9 @@ public class Client {
      * Get the Top 5 User's scores.
      * @return usernames.
      */
-    public List<User> getTop5() {
+    public List<Score> getTop5() {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<User>> users =
+        ResponseEntity<List<Score>> users =
                 restTemplate.exchange(Config.Api.URL + "/top5",
                         HttpMethod.GET,
                         null,

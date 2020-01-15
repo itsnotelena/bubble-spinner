@@ -52,7 +52,7 @@ public class DbImplementExceptionsTest {
     void errorGettingTop5() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
-        List<User> list = dbImplement.getTop5Score();
+        List<Score> list = dbImplement.getTop5Score();
         Assertions.assertThat(list.isEmpty()).isTrue();
     }
 
@@ -83,7 +83,7 @@ public class DbImplementExceptionsTest {
     void exceptionByGettingTopXScores() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
-        List<User> list = dbImplement.getTop5Score();
+        List<Score> list = dbImplement.getTop5Score();
         Assertions.assertThatThrownBy(() -> dbImplement.getDbAdapter().getConn().close())
                 .isInstanceOf(SQLException.class);
         Assertions.assertThat(list.isEmpty()).isTrue();
