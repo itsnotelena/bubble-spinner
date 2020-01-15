@@ -14,6 +14,7 @@ public class HexagonController {
 
     private transient Stage stage;
     private transient List<BubbleActor> bubbles;
+    private transient BubbleGrid bubbleGrid;
     private transient BubbleFactory bubbleFactory;
     public transient boolean lostGame;
 
