@@ -1,6 +1,7 @@
 package game.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -91,4 +92,18 @@ public class PauseMenu extends Stage {
               (Gdx.graphics.getHeight() - newHeight) / 2, newWidth, newHeight); // Screen center.
     }
 
+    @Override
+    public void act() {
+        super.act();
+
+        // Space -> Resume Game
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            gameScreen.togglePause();
+        }
+
+        // Escape -> Exit Game
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            gameScreen.game.setScreen(new MenuScreen(gameScreen.game));
+        }
+    }
 }
