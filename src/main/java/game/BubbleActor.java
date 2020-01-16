@@ -17,7 +17,13 @@ public class BubbleActor extends Image implements Observer {
     private transient Circle circle;
     private transient Vector2 movingDirection = new Vector2(0, 0);
     private transient Stage stage;
-    public transient ArrayList<BubbleActor> neighbours;
+
+    public ArrayList<BubbleActor> getNeighbours() {
+        return neighbours;
+    }
+
+
+    private transient ArrayList<BubbleActor> neighbours;
     private int colorId;
 
     /**

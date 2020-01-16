@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -30,10 +31,7 @@ public class HexagonController {
      * @param stage Stage where objects reside.
      */
     public HexagonController(Stage stage) {
-        /*
-         * TODO
-         * Change this to create the correct structure.
-         */
+
         this.bubbleFactory = new BubbleFactory(stage);
         //Max is the Difficulty of the Game
         this.bubbleFactory.addAllTextures(4);
@@ -43,15 +41,11 @@ public class HexagonController {
         this.stage = stage;
 
         int bubTotal = 18;
-
         for (int i = 0; i < bubTotal; i++) {
             BubbleActor bub = bubbleFactory.createBubble();
             bubbles.add(bub);
             stage.addActor(bub);
         }
-
-        int lastneigh = 7;
-        int temp;
 
         File file = new File("assets/hexagon_easy.txt");
         Scanner sc = null;
@@ -71,11 +65,8 @@ public class HexagonController {
             bubble.shiftY(true, y);
             //sc.next();
         }
-        int num2 = 0;
         for (BubbleActor a: bubbles) {
-            int num = 0;
             for (BubbleActor b: bubbles) {
-
                 if (!a.collide(b)) {
                     float xa = a.getX();
                     float ya = a.getY();
@@ -85,13 +76,43 @@ public class HexagonController {
                     float leny = (float) Math.pow((ya - yb), 2);
                     float len = (float) Math.sqrt(lenx + leny);
                     if (len <= 120.0 && len >= 65.0) {
-                        a.neighbours.add(b);
-                        num++;
+                        a.getNeighbours().add(b);
                     }
                 }
             }
-            num2++;
         }
+    }
+
+    /**
+    * Recursive method to find how many neighbouring
+    * bubbles will be popped after hit.
+    * @param hit bubble whose neighbours we check for
+    *            matching color id.
+    * @return number of bubbles
+    */
+    public int bubblePop(BubbleActor hit, int counter, ArrayList<BubbleActor> visited) {
+        int three = 3;
+        ArrayList<BubbleActor> candidates = hit.getNeighbours();
+        for (int i = 0; i < candidates.size(); i++) {
+            BubbleActor candidate = candidates.get(i);
+            if (candidate.getColorId() == hit.getColorId() && !(visited.contains(candidate))) {
+                counter++;
+                visited.add(candidate);
+                counter += bubblePop(candidate, counter, visited);
+                System.out.println(counter);
+            }
+        }
+        if (counter >= three) {
+            for (int j = 0; j < visited.size();  j++) {
+                visited.get(j).remove();
+                stage.getActors().removeValue(visited.get(j), true);
+                bubbles.remove(visited.get(j));
+            }
+            bubbles.remove(hit);
+            stage.getActors().removeValue(hit, true);
+            hit.remove();
+        }
+        return counter;
     }
 
     /**
@@ -102,8 +123,12 @@ public class HexagonController {
     public boolean checkCollisions(BubbleActor bubble) {
         for (int i = 0; i < bubbles.size(); ++i) {
             if (bubble.collide(bubbles.get(i))) {
+                BubbleActor hit = bubbles.get(i);
+                hit.getNeighbours().add(bubble);
+                bubble.getNeighbours().add(hit);
                 bubble.stop();
                 bubbles.add(bubble);
+                this.calculateScore(bubble);
                 return true;
             }
             if (bubbles.get(i).outSideScreen()) {
@@ -121,19 +146,15 @@ public class HexagonController {
      */
     public int calculateScore(BubbleActor hitter) {
         int num = 0;
-        int three = 3;
-        hitter.getPosition();
-        //for(BubbleActor hit: bubbles){
-        //if(hit.collide(hitter)){
-        //hit.getY();
-        //num = num + bubblePop(hit, 0);
-        //}
-        //}
-
-        if (num >= three) {
-            num = formula(num);
+        for (int i = 0; i < bubbles.size(); i++) {
+            BubbleActor hit = bubbles.get(i);
+            if (hit.collide(hitter)) {
+                hit.getY();
+                num += bubblePop(hitter, 0, new ArrayList<BubbleActor>());
+            }
         }
-        return num;
+        int result = formula(num);
+        return result;
     }
 
     /**
@@ -143,6 +164,9 @@ public class HexagonController {
      */
     public int formula(int num) {
         int three = 3;
+        if (num < three) {
+            return 0;
+        }
         if (num == three) {
             return 5;
         } else {
