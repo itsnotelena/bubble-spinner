@@ -8,7 +8,7 @@ public class Config {
         public static final int HEIGHT = 720;
         public static final String ICON = "assets/icon.png";
         public static int GAME_TIME = 600;
-        public static final int BUBBLE_SIZE = 64;
+        public static int BUBBLE_SIZE = 64;
     }
 
     public static class Time {

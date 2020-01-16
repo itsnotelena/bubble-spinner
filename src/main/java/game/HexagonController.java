@@ -32,8 +32,8 @@ public class HexagonController {
      * @param stage Stage where objects reside.
      */
     public HexagonController(Stage stage) {
-
         this.bubbleFactory = new BubbleFactory(stage);
+
         //Max is the Difficulty of the Game
         this.bubbleFactory.addAllTextures(4);
         this.bubbles = new ArrayList<>();
@@ -64,7 +64,6 @@ public class HexagonController {
             float y = sc.nextFloat();
             bubble.center().shiftX(true, x);
             bubble.shiftY(true, y);
-            //sc.next();
         }
         for (BubbleActor a: bubbles) {
             for (BubbleActor b: bubbles) {
@@ -151,7 +150,7 @@ public class HexagonController {
             BubbleActor hit = bubbles.get(i);
             if (hit.collide(hitter)) {
                 hit.getY();
-                num += bubblePop(hitter, 0, new ArrayList<BubbleActor>());
+                num += bubblePop(hitter, 0, new ArrayList<>());
             }
         }
         int result = formula(num);

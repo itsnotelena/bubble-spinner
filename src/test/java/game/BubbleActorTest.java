@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import config.Config;
 import org.assertj.core.api.Assertions;
 
 import org.junit.jupiter.api.AfterEach;
@@ -40,6 +41,7 @@ public class BubbleActorTest {
      */
     @BeforeEach
     public void before() {
+        Config.Game.BUBBLE_SIZE = 64;
         texture = Mockito.mock(Texture.class);
         stage = Mockito.mock(Stage.class);
         viewport = Mockito.mock(Viewport.class);

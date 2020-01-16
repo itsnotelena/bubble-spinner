@@ -1,5 +1,8 @@
 package game;
 
+import com.badlogic.gdx.math.Vector2;
+import config.Config;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,8 +11,11 @@ import java.util.Map;
 public class BubbleGrid {
     private static final int RADIUS = 100;
     private transient BubbleActor[][] bubbles = new BubbleActor[RADIUS*2][RADIUS*2];
+    private HexagonController parent;
 
-    public BubbleGrid(){}
+    public BubbleGrid(HexagonController parent){
+        this.parent = parent;
+    }
 
     public void setBubble(int x, int y, BubbleActor bubbleActor) {
         int dx = x + RADIUS;
@@ -29,7 +35,14 @@ public class BubbleGrid {
         return null;
     }
 
-
+    public Vector2 gridToWorld(int x, int y) {
+        // Center of the structure should be at 0,0
+        int offset = Math.abs(y) % 2;
+        float colDistance = (float) (Config.Game.BUBBLE_SIZE * Math.sqrt(3) / 2.f);
+        float dx = colDistance * x;
+        float dy = (float) (y * Config.Game.BUBBLE_SIZE - offset * 0.5 * Config.Game.BUBBLE_SIZE);
+        return new Vector2(dx, dy);
+    }
 
     public List<BubbleActor> getNeighbours(int x, int y) {
         ArrayList<BubbleActor> list = new ArrayList<>();
@@ -68,4 +81,5 @@ public class BubbleGrid {
         }
         return visited;
     }
+
 }
