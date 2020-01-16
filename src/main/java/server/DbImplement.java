@@ -1,13 +1,16 @@
 package server;
 
+import config.Config;
+
 import java.io.FileNotFoundException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -15,6 +18,7 @@ import org.mindrot.jbcrypt.BCrypt;
 public class DbImplement {
 
     private transient DbAdapter dbAdapter;
+    private transient CalendarWrapper calendar;
 
     /**
      * Constructor.
@@ -22,8 +26,8 @@ public class DbImplement {
      * @param dbAdapter Object dbAdapter
      */
     public DbImplement(DbAdapter dbAdapter) {
+        this.calendar = new CalendarWrapper();
         this.dbAdapter = dbAdapter;
-        this.initialize();
     }
 
     public DbAdapter getDbAdapter() {
@@ -394,12 +398,47 @@ public class DbImplement {
     /**
      * initialize the tables for this db.
      */
-    private void initialize() {
+    public void initialize() {
         try {
             dbAdapter.importTables();
+            this.checkTimeToChange();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * check if the server needs to restart the weekly scores.
+     */
+    public boolean checkTimeToChange() {
+        calendar.setTime(new Date());
+        if (!Config.Time.NeedToBeRestarted) {
+            System.err.println(calendar.get(Calendar.DAY_OF_WEEK));
+            if (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+                itsMonday();
+                Config.Time.NeedToBeRestarted = true;
+                return true;
+            } else {
+                Config.Time.NeedToBeRestarted = false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * restarts the weekly scores.
+     */
+    private void itsMonday() {
+        try (PreparedStatement statement = dbAdapter.getConn().prepareStatement("UPDATE score "
+                + "SET scoreA = 0 ")) {
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setCalendar(CalendarWrapper calendar) {
+        this.calendar = calendar;
     }
 }
 

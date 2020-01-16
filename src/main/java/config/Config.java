@@ -15,6 +15,7 @@ public class Config {
         public static final int DEFAULT = 600;
         public static final int MINUTE = 60;
         public static final int HOUR = 3600;
+        public static boolean NeedToBeRestarted = false;
     }
 
     public static class HelpBox {

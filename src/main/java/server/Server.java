@@ -35,6 +35,7 @@ public class Server {
             dbAdapter = new DbAdapter("database");
         }
         dbImplement = new DbImplement(dbAdapter);
+        dbImplement.initialize();
         ctx = SpringApplication.run(Server.class,args);
 
     }
