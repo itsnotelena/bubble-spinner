@@ -2,6 +2,7 @@ package game.ui;
 
 import client.Client;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -30,7 +31,9 @@ public class RegisterScreen extends ScreenAdapter {
     private transient TextField passTextField;
     private transient TextField emailTextField;
     private transient TextButton registerButton;
+    private transient Label goBackField;
     static final String def = "default";
+    private transient PopupMenu popupMenu;
 
 
     /**
@@ -59,25 +62,32 @@ public class RegisterScreen extends ScreenAdapter {
 
         passTextField = new TextField("", skin, def);
         passTextField.setMessageText("Password");
+        passTextField.setPasswordCharacter('*');
+        passTextField.setPasswordMode(true);
 
         registerButton = new TextButton("Register", skin, def);
+
+        goBackField = new Label("Go back", skin, def);
+        goBackField.setColor(new Color(0.2f,0.2f,0.5f,1));
+
+        goBackField.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen( new LoginScreen(game));
+                dispose();
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
 
         registerButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                User u = new User(userTextField.getText(),
-                        emailTextField.getText(), passTextField.getText());
-                if (new Client().register(u)) {
-                    game.setUser(u);
-                    GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
-                            .withComputerPlayer(false)
-                            .withLevel(0)
-                            .withDifficulty(0)
-                            .withInfinite(false)
-                            .build();
-                    game.setScreen(new GameScreen(game, gameSettings));
-                    dispose();
-                }
+                register();
             }
 
             @Override
@@ -103,7 +113,12 @@ public class RegisterScreen extends ScreenAdapter {
         table.row();
         table.row();
         table.add(registerButton).colspan(2);
+        table.row();
+        table.add(goBackField).colspan(1).width(w / 2);
         stage.addActor(table);
+
+        popupMenu = new PopupMenu(skin);
+        stage.addActor(popupMenu);
     }
 
     @Override
@@ -118,6 +133,16 @@ public class RegisterScreen extends ScreenAdapter {
         stage.act();
         stage.draw();
 
+        // Enter -> Register
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            register();
+        }
+
+        // Esc -> Go back
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            game.setScreen( new LoginScreen(game));
+            dispose();
+        }
     }
 
     @Override
@@ -139,4 +164,27 @@ public class RegisterScreen extends ScreenAdapter {
         super.dispose();
         stage.dispose();
     }
+
+    /**
+     * Send an HTTP call to the server to register
+     * the user.
+     */
+    private void register() {
+        User u = new User(userTextField.getText(),
+                emailTextField.getText(), passTextField.getText());
+        if (new Client().register(u)) {
+            game.setUser(u);
+            GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
+                    .withComputerPlayer(false)
+                    .withLevel(0)
+                    .withDifficulty(0)
+                    .withInfinite(false)
+                    .build();
+            game.setScreen(new GameScreen(game, gameSettings));
+            dispose();
+        } else {
+            popupMenu.setMessage("It's not possible to register this account.");
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.ui.GameScreen;
 
@@ -60,7 +61,8 @@ public class BubbleSpinnerController {
      * @param bubble is the first Bubble to be shot.
      */
     public void checkShoot(BubbleActor bubble) {
-        if (Gdx.input.isTouched() && !bubble.isMoving()) {
+        if ((Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+                    && !bubble.isMoving()) {
             shooter.shootBubble();
         }
     }
