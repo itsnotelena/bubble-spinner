@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import config.Config;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class BubbleActor extends Image implements Observer {
@@ -17,6 +18,7 @@ public class BubbleActor extends Image implements Observer {
     private transient Circle circle;
     private transient Vector2 movingDirection = new Vector2(0, 0);
     private transient Stage stage;
+    public transient int[] gridPos = new int[2];
     public transient ArrayList<BubbleActor> neighbours;
     private int colorId;
 
