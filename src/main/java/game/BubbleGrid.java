@@ -34,7 +34,7 @@ public class BubbleGrid {
         int[] dy = { 0,  1, 1, 1, 0, -1};
         for (int i = 0; i < 6; i++) {
             BubbleActor bub = getBubble(x-1, y);
-            if(bub != null){ list.add(bub)}
+            if(bub != null){ list.add(bub); }
         }
 
     }
