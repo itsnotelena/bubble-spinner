@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class HexagonController {
 
-    private int result = 0;
+    private transient int result = 0;
     private transient Stage stage;
     private transient List<BubbleActor> bubbles;
     private transient BubbleFactory bubbleFactory;
