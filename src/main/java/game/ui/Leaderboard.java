@@ -28,7 +28,7 @@ public class Leaderboard extends Table {
         for (Score s : scores) {
             this.add(new Label(s.getUsername(), skin));
             this.add(new Label(String.valueOf(s.getScoreA()), skin));
-            this.add(new Label(String.valueOf(s.getScoreW()), skin));
+            this.add(new Label(String.valueOf(s.getHighestWeekScore()), skin));
             this.row();
         }
 

@@ -1,11 +1,9 @@
 package game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -13,6 +11,7 @@ import java.util.Scanner;
 
 public class HexagonController {
 
+    private transient int result = 0;
     private transient Stage stage;
     private transient List<BubbleActor> bubbles;
     private transient BubbleFactory bubbleFactory;
@@ -115,6 +114,10 @@ public class HexagonController {
         return counter;
     }
 
+    public int getResult() {
+        return result;
+    }
+
     /**
      * Check whether a moving bubble collides with the hexagon.
      * @param bubble BubbleActor representing the moving bubble.
@@ -128,7 +131,7 @@ public class HexagonController {
                 bubble.getNeighbours().add(hit);
                 bubble.stop();
                 bubbles.add(bubble);
-                this.calculateScore(bubble);
+                result += calculateScore(bubble);
                 return true;
             }
             if (bubbles.get(i).outSideScreen()) {
@@ -150,11 +153,11 @@ public class HexagonController {
             BubbleActor hit = bubbles.get(i);
             if (hit.collide(hitter)) {
                 hit.getY();
-                num += bubblePop(hitter, 0, new ArrayList<BubbleActor>());
+                num += bubblePop(hitter, 0, new ArrayList<>());
             }
         }
-        int result = formula(num);
-        return result;
+
+        return formula(num);
     }
 
     /**
