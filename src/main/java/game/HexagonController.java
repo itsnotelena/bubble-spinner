@@ -41,7 +41,6 @@ public class HexagonController {
         this.stage = stage;
 
         int bubTotal = 18;
-
         for (int i = 0; i < bubTotal; i++) {
             BubbleActor bub = bubbleFactory.createBubble();
             bubbles.add(bub);
@@ -106,7 +105,11 @@ public class HexagonController {
         if (counter >= three) {
             for (int j = 0; j < visited.size();  j++) {
                 visited.get(j).remove();
+                stage.getActors().removeValue(visited.get(j), true);
+                bubbles.remove(visited.get(j));
             }
+            bubbles.remove(hit);
+            stage.getActors().removeValue(hit, true);
             hit.remove();
         }
         return counter;
