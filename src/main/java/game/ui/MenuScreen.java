@@ -29,6 +29,7 @@ public class MenuScreen extends ScreenAdapter {
     private transient boolean computerPlayer;
     private transient TextButton logoutButton;
     private transient TextButton loggedIn;
+    private transient Leaderboard leaderboard;
 
     /**
      * Login Screen.
@@ -53,7 +54,6 @@ public class MenuScreen extends ScreenAdapter {
 
         computerButton = new TextButton("Computer Player OFF", skin, def);
         computerPlayer = false;
-
         timerButton = new TextButton("Timer: 10 minutes", skin, def);
         Game.GAME_TIME = Time.DEFAULT;
         
@@ -156,12 +156,19 @@ public class MenuScreen extends ScreenAdapter {
         table.add(logoutButton).colspan(2);
         table.row();
         loggedIn = new TextButton("Player : " + game.getUser().getUsername(), skin, def);
-        loggedIn.setPosition(Gdx.graphics.getHeight() / 8,
-                7 * Gdx.graphics.getHeight() / 8);
+        loggedIn.setPosition(Gdx.graphics.getWidth() / 8.f,
+                7 * Gdx.graphics.getHeight() / 8.f);
         stage.addActor(loggedIn);
 
         table.add(exitButton).colspan(2);
         stage.addActor(table);
+
+        leaderboard = new Leaderboard(skin);
+        leaderboard.setPosition(
+                Gdx.graphics.getWidth() * 6 / 8.f,
+                4 * Gdx.graphics.getHeight() / 8.f
+        );
+        stage.addActor(leaderboard);
     }
 
     @Override

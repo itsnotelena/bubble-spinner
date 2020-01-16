@@ -12,6 +12,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class DbImplementTest {
     private static DbAdapter dbAdapter = new DbAdapter("test");
@@ -114,6 +116,7 @@ public class DbImplementTest {
         dbImplement.insertScore(four);
         dbImplement.insertScore(five);
 
+        List<Score> scoreOptional = dbImplement.getTop5Score();
 
         List<User> list = new ArrayList<>();
         list.add(dbImplement.getUserByUsername(one.getUsername()).get());
@@ -122,6 +125,10 @@ public class DbImplementTest {
         list.add(dbImplement.getUserByUsername(four.getUsername()).get());
         list.add(dbImplement.getUserByUsername(five.getUsername()).get());
 
+        assertEquals(scoreOptional.size(), 5);
+        for(int i = 0; i < scoreOptional.size(); i++){
+            assertEquals( scoreOptional.get(i).getUsername() , list.get(i).getUsername());
+        }
     }
 
     @Test

@@ -12,6 +12,8 @@ import server.Score;
 import server.Server;
 import server.User;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class ClientTest {
 
     /**
