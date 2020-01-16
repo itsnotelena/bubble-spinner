@@ -7,7 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.mindrot.jbcrypt.BCrypt;
+
 
 public class DbImplement {
 
@@ -60,11 +63,18 @@ public class DbImplement {
 
         String query = "INSERT INTO users VALUES (?,?,?);";
         PreparedStatement statement = dbAdapter.getConn().prepareStatement(query);
+        PreparedStatement statement1 = dbAdapter.getConn()
+                .prepareStatement("INSERT INTO score VALUES(?,0,0)");
+        statement1.setString(1,details.getUsername());
         statement.setString(1, details.getUsername());
         statement.setString(2, details.getEmail());
         statement.setString(3, BCrypt.hashpw(details.getPassword(), BCrypt.gensalt()));
         statement.execute();
         statement.close();
+        statement1.execute();
+        statement1.close();
+
+        insertGame(new Game(details.getUsername(),0,0));
 
         return searchInUsers(details.getUsername());
     }
@@ -77,10 +87,6 @@ public class DbImplement {
      * @throws SQLException in case of connection failure.
      */
     public boolean insertBadge(Badge badge) throws SQLException {
-        if (searchInBadges(badge.getUsername())) {
-            return false;
-        }
-
         PreparedStatement statement = dbAdapter
                 .getConn()
                 .prepareStatement("INSERT INTO badges VALUES(?,?)");
@@ -100,17 +106,23 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     public boolean insertScore(Score score) throws SQLException {
-        if (searchInScore(score.getUsername())) {
-            return false;
+        Score result = getScoreByUser(score.getUsername());
+        int scoreWeek = result.getHighestWeekScore();
+        int total = result.getScoreA() + score.getScoreA();
+        if (score.getHighestWeekScore() > scoreWeek) {
+            scoreWeek = score.getHighestWeekScore();
         }
-        PreparedStatement statement = dbAdapter.getConn()
-                .prepareStatement("INSERT INTO score VALUES(?,?,?)");
-        statement.setString(1, score.getUsername());
-        statement.setInt(2, score.getScoreW());
-        statement.setInt(3, score.getScoreA());
+        PreparedStatement statement = dbAdapter
+                .getConn()
+                .prepareStatement("UPDATE score "
+                        + "SET scoreA = ? ,highestWeekScore = ?  "
+                        + "WHERE username = ? ");
+        statement.setInt(1,total);
+        statement.setInt(2,scoreWeek);
+        statement.setString(3,score.getUsername());
         statement.execute();
         statement.close();
-        return searchInScore(score.getUsername());
+        return true;
     }
 
     /**
@@ -322,24 +334,23 @@ public class DbImplement {
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
-    public Optional<Score> getScoreByUser(String username) throws SQLException {
+    public Score getScoreByUser(String username) throws SQLException {
         ResultSet result = null;
         try {
             PreparedStatement statement = dbAdapter
                     .getConn()
-                    .prepareStatement("SELECT * FROM score where username = ? ");
+                    .prepareStatement("SELECT * FROM score where username = ?");
             statement.setString(1, username);
             result = statement.executeQuery();
             if (result.next()) {
-                return Optional.of(new Score(result.getString(1),
+                return new Score(result.getString(1),
                         result.getInt(2),
-                        result.getInt(3)));
+                        result.getInt(3));
+            } else {
+                return new Score("",0,0);
             }
-            return Optional.empty();
         } catch (SQLException e) {
-            e.printStackTrace();
-            dbAdapter.closeData();
-            return Optional.empty();
+            return new Score("",0,0);
         } finally {
             if (result != null) {
                 result.close();
@@ -355,23 +366,24 @@ public class DbImplement {
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
-    public Optional<Badge> getBadgeByUser(String username) throws SQLException {
+    public ArrayList<Badge> getBadgeByUser(String username) throws SQLException {
         ResultSet result = null;
+        ArrayList<Badge> output = new ArrayList<>();
         try {
             PreparedStatement statement = dbAdapter
                     .getConn()
                     .prepareStatement("SELECT * FROM badges where username = ? ");
             statement.setString(1, username);
             result = statement.executeQuery();
-            if (result.next()) {
-                return Optional.of(new Badge(result.getString(1),
-                        result.getString(2)));
+            while (result.next()) {
+                output.add(new Badge(result.getString("username"),
+                        result.getString("award")));
             }
-            return Optional.empty();
+            return output;
         } catch (SQLException e) {
             e.printStackTrace();
             dbAdapter.closeData();
-            return Optional.empty();
+            return output;
         } finally {
             if (result != null) {
                 result.close();
