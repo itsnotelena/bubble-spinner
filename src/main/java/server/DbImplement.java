@@ -95,7 +95,7 @@ public class DbImplement {
                 .getConn()
                 .prepareStatement("INSERT INTO badges VALUES(?,?)");
         statement.setString(1, badge.getUsername());
-        statement.setString(2, badge.getAward());
+        statement.setString(2, badge.getAward().getText());
         statement.execute();
         statement.close();
 
@@ -381,7 +381,7 @@ public class DbImplement {
             result = statement.executeQuery();
             while (result.next()) {
                 output.add(new Badge(result.getString("username"),
-                        result.getString("award")));
+                        BadgesEnum.get(result.getString("award"))));
             }
             return output;
         } catch (SQLException e) {
@@ -413,7 +413,6 @@ public class DbImplement {
     public boolean checkTimeToChange() {
         calendar.setTime(new Date());
         if (!Config.Time.NeedToBeRestarted) {
-            System.err.println(calendar.get(Calendar.DAY_OF_WEEK));
             if (this.calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
                 itsMonday();
                 Config.Time.NeedToBeRestarted = true;
