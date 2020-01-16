@@ -2,10 +2,8 @@ package client;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +11,6 @@ import server.Badge;
 import server.Score;
 import server.Server;
 import server.User;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClientTest {
 

@@ -6,7 +6,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -139,9 +141,9 @@ public class LoginScreen extends ScreenAdapter {
         }
 
         // F -> Forgot Password
-//        if (Gdx.input.isKeyPressed(Input.Keys.F)) {
-//
-//        }
+        //if (Gdx.input.isKeyPressed(Input.Keys.F)) {
+
+        //}
 
         // Ctrl + D -> Login with Default user
         if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)

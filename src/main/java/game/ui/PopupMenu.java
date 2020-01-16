@@ -15,13 +15,17 @@ public class PopupMenu extends Table {
     private static String def = "default";
     private transient Label gamePausedLabel;
 
+    /**
+     * PopMenu constructor.
+     * @param skin Skin
+     */
     public PopupMenu(Skin skin) {
         super();
 
         gamePausedLabel = new Label("", skin, def);
         gamePausedLabel.setColor(0.f,0.f,0.f,1.f);
         TextButton okButton = new TextButton("Ok", skin, def);
-        okButton.addListener(new InputListener(){
+        okButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 setVisible(false);
