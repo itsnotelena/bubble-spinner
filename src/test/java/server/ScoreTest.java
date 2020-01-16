@@ -11,10 +11,10 @@ public class ScoreTest {
         Assertions.assertEquals(a,a);
         a.setUsername("aa");
         a.setScoreA(2);
-        a.setScoreW(2);
+        a.setHighestWeekScore(2);
         Assertions.assertEquals(a.getUsername(),"aa");
         Assertions.assertEquals(a.getScoreA(),2);
-        Assertions.assertEquals(a.getScoreW(),2);
+        Assertions.assertEquals(a.getHighestWeekScore(),2);
     }
 
     @Test

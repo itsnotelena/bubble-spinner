@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 CREATE TABLE IF NOT EXISTS score (
 	username VARCHAR(64) NOT NULL,
-	scoreW int(64) NOT NULL,
+	highestWeekScore int(64) NOT NULL,
 	scoreA int(64) NOT NULL,
 	FOREIGN KEY (username) REFERENCES users(username)
 );
@@ -17,6 +17,5 @@ CREATE TABLE IF NOT EXISTS games (
 );
 CREATE TABLE IF NOT EXISTS badges (
 	username VARCHAR(64) NOT NULL,
-	award VARCHAR(64) NOT NULL,
-	FOREIGN KEY (username) REFERENCES users(username)
+	award VARCHAR(64) NOT NULL
 );

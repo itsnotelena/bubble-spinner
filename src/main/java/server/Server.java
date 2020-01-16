@@ -3,17 +3,17 @@ package server;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -35,6 +35,7 @@ public class Server {
             dbAdapter = new DbAdapter("database");
         }
         dbImplement = new DbImplement(dbAdapter);
+        dbImplement.initialize();
         ctx = SpringApplication.run(Server.class,args);
 
     }
@@ -102,19 +103,19 @@ public class Server {
         return dbImplement.getTop5Score();
     }
 
+
     /**
      * Get the badges of the users.
-     * @param reqBody is the username.
-     * @return the badges.
+     * @param username is the username
+     * @return list of badges for this client.
      */
     @GetMapping(value = "/getBadges")
-    public Optional<Badge> getBadges(final @RequestBody String reqBody) {
-        String username = reqBody;
+    public Badge[] getBadges(final @RequestParam String username) {
         try {
-            return dbImplement.getBadgeByUser(username);
+            ArrayList<Badge> result = dbImplement.getBadgeByUser(username);
+            return result.toArray(new Badge[result.size()]);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return Optional.empty();
+            return new Badge[0];
         }
     }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -60,8 +61,8 @@ public class DbImplementExceptionsTest {
     void errorGettingScoreByUsername() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
-        Assertions.assertThatThrownBy(() -> dbImplement.getScoreByUser("lol"))
-                .isInstanceOf(SQLException.class);
+        Assertions.assertThat(dbImplement.getScoreByUser("lol"))
+                .isEqualTo(new Score("",0,0));
     }
 
     @Test
@@ -106,9 +107,8 @@ public class DbImplementExceptionsTest {
     void emptyScoreByGettingScoreByUser() throws SQLException {
         dbImplement = new DbImplement(new DbAdapter("test"));
 
-        dbImplement.removeFromUser("naruto");
-        Optional<Score> optional = dbImplement.getScoreByUser("naruto");
-        Assertions.assertThat(optional.isEmpty()).isTrue();
+        Score optional = dbImplement.getScoreByUser("naruto");
+        Assert.assertEquals(optional,new Score("",0,0));
 
         dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
         Mockito.when(dbImplement.getDbAdapter().getConn())
@@ -120,7 +120,7 @@ public class DbImplementExceptionsTest {
         dbImplement = new DbImplement(new DbAdapter("test"));
 
         dbImplement.removeFromUser("elena");
-        Optional<Badge> optional = dbImplement.getBadgeByUser("elena");
+        List optional = dbImplement.getBadgeByUser("elena");
         Assertions.assertThat(optional.isEmpty()).isTrue();
 
         dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));

@@ -77,6 +77,16 @@ public class Client {
     }
 
     /**
+     * Get the badges of the user.
+     * @return badges.
+     */
+    public Badge[] getBadges(User user) {
+        return new RestTemplate().getForObject(Config.Api.URL
+                        + "/getBadges" + "?username="
+                        + user.getUsername(),Badge[].class);
+    }
+
+    /**
      * sends a user object to the db and checks if it
      * can be registered.
      *
@@ -90,22 +100,4 @@ public class Client {
                 boolean.class);
         return res;
     }
-
-
-
-    /**
-     * Get the badges of the user.
-     * @return badges.
-     */
-    public List<Badge> getBadges() {
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<Badge>> badges =
-                restTemplate.exchange(Config.Api.URL + "/getBadges",
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<List<Badge>>() {
-                        });
-        return badges.getBody();
-    }
-
 }
