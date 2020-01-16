@@ -1,6 +1,7 @@
 package game.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -29,6 +30,7 @@ public class MenuScreen extends ScreenAdapter {
     private transient boolean computerPlayer;
     private transient TextButton logoutButton;
     private transient TextButton loggedIn;
+    private transient Leaderboard leaderboard;
 
     /**
      * Login Screen.
@@ -53,22 +55,13 @@ public class MenuScreen extends ScreenAdapter {
 
         computerButton = new TextButton("Computer Player OFF", skin, def);
         computerPlayer = false;
-
         timerButton = new TextButton("Timer: 10 minutes", skin, def);
         Game.GAME_TIME = Time.DEFAULT;
         
         startButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
-                            .withComputerPlayer(computerPlayer)
-                            .withLevel(0)
-                            .withDifficulty(0)
-                            .withInfinite(Game.GAME_TIME == 0)
-                            .withHelpBox(computerPlayer ? new TutorialHelpBox(game.batch) : null)
-                            .build();
-                game.setScreen(new GameScreen(game, gameSettings));
-                dispose();
+                startGame();
             }
 
             @Override
@@ -80,20 +73,14 @@ public class MenuScreen extends ScreenAdapter {
         computerButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                computerPlayer = !computerPlayer;
-                computerButton.setText("Computer Player " + (computerPlayer ? "ON" : "OFF"));
-                return computerPlayer;
+                return switchComputerPlayer();
             }
         });
 
         timerButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Game.GAME_TIME = (Game.GAME_TIME + Time.DEFAULT) % Time.HOUR;
-                String time = Game.GAME_TIME == 0
-                            ? "infinite" :
-                            Integer.toString(Game.GAME_TIME / Time.MINUTE);
-                timerButton.setText("Timer: " + time + " minutes");
+                incrementTimer();
                 return true;
             }
         });
@@ -101,7 +88,7 @@ public class MenuScreen extends ScreenAdapter {
         optionsButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                optionsButton.setText("Diffulty: Easy");
+                changeDifficulty();
             }
 
             @Override
@@ -114,8 +101,7 @@ public class MenuScreen extends ScreenAdapter {
         logoutButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(new LoginScreen(game));
-                dispose();
+                logout();
             }
 
             @Override
@@ -128,7 +114,6 @@ public class MenuScreen extends ScreenAdapter {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 dispose();
-                game.dispose();
             }
 
             @Override
@@ -156,12 +141,19 @@ public class MenuScreen extends ScreenAdapter {
         table.add(logoutButton).colspan(2);
         table.row();
         loggedIn = new TextButton("Player : " + game.getUser().getUsername(), skin, def);
-        loggedIn.setPosition(Gdx.graphics.getHeight() / 8,
-                7 * Gdx.graphics.getHeight() / 8);
+        loggedIn.setPosition(Gdx.graphics.getWidth() / 8.f,
+                7 * Gdx.graphics.getHeight() / 8.f);
         stage.addActor(loggedIn);
 
         table.add(exitButton).colspan(2);
         stage.addActor(table);
+
+        leaderboard = new Leaderboard(skin);
+        leaderboard.setPosition(
+                Gdx.graphics.getWidth() * 6 / 8.f,
+                4 * Gdx.graphics.getHeight() / 8.f
+        );
+        stage.addActor(leaderboard);
     }
 
     @Override
@@ -175,6 +167,36 @@ public class MenuScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
         stage.draw();
+
+        // Space -> Start Game
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            startGame();
+        }
+
+        // C -> Computer Player
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+            switchComputerPlayer();
+        }
+
+        // T -> Timer
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+            incrementTimer();
+        }
+
+        // D -> Difficulty
+        if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+            changeDifficulty();
+        }
+
+        // Backspace -> Logout
+        if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+            logout();
+        }
+
+        // Escape -> Exit
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            dispose();
+        }
     }
 
     @Override
@@ -193,6 +215,42 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        stage.dispose();
+        game.dispose();
+    }
+
+    private void startGame() {
+        GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
+                .withComputerPlayer(computerPlayer)
+                .withLevel(0)
+                .withDifficulty(0)
+                .withInfinite(Game.GAME_TIME == 0)
+                .withHelpBox(computerPlayer ? new TutorialHelpBox(game.batch) : null)
+                .build();
+        game.setScreen(new GameScreen(game, gameSettings));
+        stage.dispose();
+    }
+
+    private boolean switchComputerPlayer() {
+        computerPlayer = !computerPlayer;
+        computerButton.setText("Computer Player " + (computerPlayer ? "ON" : "OFF"));
+        return computerPlayer;
+    }
+
+    private void incrementTimer() {
+        Game.GAME_TIME = (Game.GAME_TIME + Time.DEFAULT) % Time.HOUR;
+        String time = Game.GAME_TIME == 0
+                ? "infinite" :
+                Integer.toString(Game.GAME_TIME / Time.MINUTE);
+        timerButton.setText("Timer: " + time + " minutes");
+    }
+
+    private void changeDifficulty() {
+        optionsButton.setText("Diffulty: Easy");
+    }
+
+    private void logout() {
+        game.setScreen(new LoginScreen(game));
         stage.dispose();
     }
 }

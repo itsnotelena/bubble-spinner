@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BubbleGrid {
-    private final int RADIUS = 100;
+    private static final int RADIUS = 100;
     private transient BubbleActor[][] bubbles = new BubbleActor[RADIUS*2][RADIUS*2];
 
     public BubbleGrid(){}
@@ -42,7 +42,7 @@ public class BubbleGrid {
         int[] dy = { -offset,  1 - offset, 1, 1 - offset, -offset, -1}; //  fine as long as it works
 
         // Add all the neighbours that are present
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < dx.length && i < dy.length; i++) {
             BubbleActor bub = getBubble(x + dx[i], y + dy[i]);
             if(bub != null){ list.add(bub); }
         }
@@ -59,7 +59,8 @@ public class BubbleGrid {
                BubbleActor nextActor = next.pop();
                List<BubbleActor> neighbours = getNeighbours(nextActor.gridPos[0], nextActor.gridPos[1]);
                visited.add(nextActor);
-               for (BubbleActor actor : neighbours) {
+               for (int i = 0; i < neighbours.size(); i++) {
+                   BubbleActor actor = neighbours.get(i);
                    if (!visited.contains(actor)) {
                        next.add(actor);
                    }

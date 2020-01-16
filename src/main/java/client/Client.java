@@ -66,14 +66,24 @@ public class Client {
      * Get the Top 5 User's scores.
      * @return usernames.
      */
-    public List<User> getTop5() {
+    public List<Score> getTop5() {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<User>> users =
+        ResponseEntity<List<Score>> users =
                 restTemplate.exchange(Config.Api.URL + "/top5",
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<>(){});
         return users.getBody();
+    }
+
+    /**
+     * Get the badges of the user.
+     * @return badges.
+     */
+    public Badge[] getBadges(User user) {
+        return new RestTemplate().getForObject(Config.Api.URL
+                        + "/getBadges" + "?username="
+                        + user.getUsername(),Badge[].class);
     }
 
     /**
@@ -90,22 +100,4 @@ public class Client {
                 boolean.class);
         return res;
     }
-
-
-
-    /**
-     * Get the badges of the user.
-     * @return badges.
-     */
-    public List<Badge> getBadges() {
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<Badge>> badges =
-                restTemplate.exchange(Config.Api.URL + "/getBadges",
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<List<Badge>>() {
-                        });
-        return badges.getBody();
-    }
-
 }
