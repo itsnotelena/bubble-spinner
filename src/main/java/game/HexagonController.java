@@ -97,7 +97,7 @@ public class HexagonController {
             BubbleActor candidate = candidates.get(i);
             if (candidate.getColorId() == hit.getColorId()) {
                 counter++;
-                bubblePop(candidate, counter);
+                counter += bubblePop(candidate, counter);
                 bubbles.remove(candidate);
                 candidate.remove();
             }
@@ -140,7 +140,6 @@ public class HexagonController {
                 num += bubblePop(hit, 0);
             }
         }
-
         int result = formula(num);
 
         return result;
