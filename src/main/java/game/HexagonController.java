@@ -65,9 +65,8 @@ public class HexagonController {
             bubble.shiftY(true, y);
             //sc.next();
         }
-          for (BubbleActor a: bubbles) {
+        for (BubbleActor a: bubbles) {
             for (BubbleActor b: bubbles) {
-
                 if (!a.collide(b)) {
                     float xa = a.getX();
                     float ya = a.getY();
@@ -84,17 +83,17 @@ public class HexagonController {
         }
     }
 
-        /**
-     * Recursive method to find how many neighbouring
-     * bubbles will be popped after hit.
-     * @return number of bubbles
-     * @param hit bubble whose neighbours we check for
-     *            matching color id.
-     */
-    public int bubblePop(BubbleActor hit, int counter){
+    /**
+    * Recursive method to find how many neighbouring
+    * bubbles will be popped after hit.
+    * @param hit bubble whose neighbours we check for
+    *            matching color id.
+    * @return number of bubbles
+    */
+    public int bubblePop(BubbleActor hit, int counter) {
         int id = hit.getColorId();
-        for(BubbleActor candidate: hit.neighbours){
-            if(candidate.getColorId()==id){
+        for (BubbleActor candidate: hit.neighbours) {
+            if (candidate.getColorId() == id) {
                 counter++;
                 bubblePop(candidate, counter);
                 bubbles.remove(candidate);
@@ -102,7 +101,6 @@ public class HexagonController {
             }
         }
         return counter;
-
     }
 
     /**
@@ -134,8 +132,8 @@ public class HexagonController {
         int num = 0;
         int three = 3;
         hitter.getPosition();
-        for(BubbleActor hit: bubbles){
-            if(hit.collide(hitter)){
+        for (BubbleActor hit: bubbles) {
+            if (hit.collide(hitter)) {
                 hit.getY();
                 num = num + bubblePop(hit, 0);
             }
