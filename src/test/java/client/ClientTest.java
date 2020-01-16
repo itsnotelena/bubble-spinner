@@ -13,7 +13,6 @@ import server.Score;
 import server.Server;
 import server.User;
 
-
 public class ClientTest {
 
     /**

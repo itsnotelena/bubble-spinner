@@ -16,8 +16,8 @@ public class PopupMenu extends Table {
     private transient Label gamePausedLabel;
 
     /**
-     * class constructor.
-     * @param skin Skin class
+     * PopMenu constructor.
+     * @param skin Skin
      */
     public PopupMenu(Skin skin) {
         super();

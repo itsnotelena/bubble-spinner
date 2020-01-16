@@ -66,4 +66,8 @@ public class BubbleSpinnerController {
             shooter.shootBubble();
         }
     }
+
+    public int getResult() {
+        return hexagonController.getResult();
+    }
 }
