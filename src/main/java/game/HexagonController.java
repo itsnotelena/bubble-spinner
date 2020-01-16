@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -91,9 +92,10 @@ public class HexagonController {
     * @return number of bubbles
     */
     public int bubblePop(BubbleActor hit, int counter) {
-        int id = hit.getColorId();
-        for (BubbleActor candidate: hit.neighbours) {
-            if (candidate.getColorId() == id) {
+        ArrayList<BubbleActor> candidates = hit.neighbours;
+        for (int i = 0; i < candidates.size(); i++) {
+            BubbleActor candidate = candidates.get(i);
+            if (candidate.getColorId() == hit.getColorId()) {
                 counter++;
                 bubblePop(candidate, counter);
                 bubbles.remove(candidate);
@@ -130,19 +132,18 @@ public class HexagonController {
      */
     public int calculateScore(BubbleActor hitter) {
         int num = 0;
-        int three = 3;
         hitter.getPosition();
-        for (BubbleActor hit: bubbles) {
+        for (int i = 0; i < bubbles.size(); i++) {
+            BubbleActor hit = bubbles.get(i);
             if (hit.collide(hitter)) {
                 hit.getY();
-                num = num + bubblePop(hit, 0);
+                num += bubblePop(hit, 0);
             }
         }
 
-        if (num >= three) {
-            num = formula(num);
-        }
-        return num;
+        int result = formula(num);
+
+        return result;
     }
 
     /**
@@ -152,6 +153,9 @@ public class HexagonController {
      */
     public int formula(int num) {
         int three = 3;
+        if (num < three) {
+            return 0;
+        }
         if (num == three) {
             return 5;
         } else {
