@@ -22,7 +22,7 @@ public class BubbleFactory implements AbstractBubbleFactory {
     @Override
     public BubbleActor createBubble() {
         int colorId = rnd.nextInt(texture.size());
-        BubbleActor actor = new BubbleActor(texture.get(rnd.nextInt(texture.size())), stage);
+        BubbleActor actor = new BubbleActor(texture.get(colorId), stage);
         actor.setColorId(colorId);
         return actor;
     }

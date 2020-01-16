@@ -77,7 +77,7 @@ public class HexagonController {
                     float leny = (float) Math.pow((ya - yb), 2);
                     float len = (float) Math.sqrt(lenx + leny);
                     if (len <= 120.0 && len >= 65.0) {
-                        a.neighbours.add(b);
+                        a.getNeighbours().add(b);
                     }
                 }
             }
@@ -91,16 +91,23 @@ public class HexagonController {
     *            matching color id.
     * @return number of bubbles
     */
-    public int bubblePop(BubbleActor hit, int counter) {
-        ArrayList<BubbleActor> candidates = hit.neighbours;
+    public int bubblePop(BubbleActor hit, int counter, ArrayList<BubbleActor> visited) {
+        int three = 3;
+        ArrayList<BubbleActor> candidates = hit.getNeighbours();
         for (int i = 0; i < candidates.size(); i++) {
             BubbleActor candidate = candidates.get(i);
-            if (candidate.getColorId() == hit.getColorId()) {
+            if (candidate.getColorId() == hit.getColorId() && !(visited.contains(candidate))) {
                 counter++;
-                counter += bubblePop(candidate, counter);
-                bubbles.remove(candidate);
-                candidate.remove();
+                visited.add(candidate);
+                counter += bubblePop(candidate, counter, visited);
+                System.out.println(counter);
             }
+        }
+        if (counter >= three) {
+            for (int j = 0; j < visited.size();  j++) {
+                visited.get(j).remove();
+            }
+            hit.remove();
         }
         return counter;
     }
@@ -113,8 +120,12 @@ public class HexagonController {
     public boolean checkCollisions(BubbleActor bubble) {
         for (int i = 0; i < bubbles.size(); ++i) {
             if (bubble.collide(bubbles.get(i))) {
+                BubbleActor hit = bubbles.get(i);
+                hit.getNeighbours().add(bubble);
+                bubble.getNeighbours().add(hit);
                 bubble.stop();
                 bubbles.add(bubble);
+                this.calculateScore(bubble);
                 return true;
             }
             if (bubbles.get(i).outSideScreen()) {
@@ -132,16 +143,14 @@ public class HexagonController {
      */
     public int calculateScore(BubbleActor hitter) {
         int num = 0;
-        hitter.getPosition();
         for (int i = 0; i < bubbles.size(); i++) {
             BubbleActor hit = bubbles.get(i);
             if (hit.collide(hitter)) {
                 hit.getY();
-                num += bubblePop(hit, 0);
+                num += bubblePop(hitter, 0, new ArrayList<BubbleActor>());
             }
         }
         int result = formula(num);
-
         return result;
     }
 
