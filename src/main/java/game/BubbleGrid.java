@@ -11,8 +11,11 @@ import java.util.Map;
 public class BubbleGrid {
     private static final int RADIUS = 100;
     private transient BubbleActor[][] bubbles = new BubbleActor[RADIUS*2][RADIUS*2];
+    public Vector2 origin;
 
-    public BubbleGrid(){}
+    public BubbleGrid(Vector2 origin){
+        this.origin = origin;
+    }
 
     public void setBubble(int x, int y, BubbleActor bubbleActor) {
         int dx = x + RADIUS;
@@ -39,6 +42,15 @@ public class BubbleGrid {
         float dx = colDistance * x;
         float dy = (float) (y * Config.Game.BUBBLE_SIZE - offset * 0.5 * Config.Game.BUBBLE_SIZE);
         return new Vector2(dx, dy);
+    }
+
+    // Takes an offset from the center and returns the grid coordinates
+    public int[] worldToGrid(Vector2 vec) {
+        float colDistance = (float) (Config.Game.BUBBLE_SIZE * Math.sqrt(3) / 2.f);
+        int x = Math.round((vec.x / colDistance));
+        int offset = Math.abs(x) % 2;
+        int y = Math.round((float) (vec.y + offset * 0.5 * Config.Game.BUBBLE_SIZE) / (float) Config.Game.BUBBLE_SIZE);
+        return new int[]{x,y};
     }
 
     public List<BubbleActor> getNeighbours(int x, int y) {

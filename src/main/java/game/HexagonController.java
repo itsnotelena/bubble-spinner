@@ -24,23 +24,19 @@ public class HexagonController {
         return bubbles;
     }
 
-    public void setBubbles(List<BubbleActor> bubbles) {
-        this.bubbles = bubbles;
-    }
-
     /**
      * Constructor for the HexagonController.
      * @param stage Stage where objects reside.
      */
     public HexagonController(Stage stage) {
-        this.bubbleGrid = new BubbleGrid();
-        this.bubbleFactory = new BubbleFactory(stage);
 
+        this.bubbleFactory = new BubbleFactory(stage);
         //Max is the Difficulty of the Game
         this.bubbleFactory.addAllTextures(4);
         this.bubbles = new ArrayList<>();
         BubbleActor center = bubbleFactory.createBubble().center();
         stage.addActor(center);
+        this.bubbleGrid = new BubbleGrid(center.getPosition());
         bubbleGrid.setBubble(0,0, center);
 
         this.stage = stage;
@@ -53,6 +49,13 @@ public class HexagonController {
         bubbles.add(bub2);
         bubbleGrid.setBubble(-1,1,bub2);
         stage.addActor(bub2);
+
+        bub2 = bubbleFactory.createBubble();
+        bubbles.add(bub2);
+        bubbleGrid.setBubble(0,1,bub2);
+        stage.addActor(bub2);
+
+
         draw();
     }
 
@@ -73,7 +76,7 @@ public class HexagonController {
     */
     public int bubblePop(BubbleActor hit, int counter, ArrayList<BubbleActor> visited) {
         int three = 3;
-        ArrayList<BubbleActor> candidates = hit.getNeighbours();
+        List<BubbleActor> candidates = this.bubbleGrid.getNeighbours(hit.gridPos[0], hit.gridPos[1]);
         for (int i = 0; i < candidates.size(); i++) {
             BubbleActor candidate = candidates.get(i);
             if (candidate.getColorId() == hit.getColorId() && !(visited.contains(candidate))) {
@@ -109,7 +112,10 @@ public class HexagonController {
                 bubble.getNeighbours().add(hit);
                 bubble.stop();
                 bubbles.add(bubble);
-                this.calculateScore(bubble);
+                int[] gridPos = bubbleGrid.worldToGrid(bubble.getPosition().sub(this.bubbleGrid.origin));
+                this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
+                //this.calculateScore(bubble);
+                draw();
                 return true;
             }
             if (bubbles.get(i).outSideScreen()) {
