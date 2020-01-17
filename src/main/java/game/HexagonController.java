@@ -168,7 +168,7 @@ public class HexagonController {
         if (num == three) {
             return 5;
         } else {
-            return (int)(1.5 * formula(num - 1));
+            return (int)(1.2 * formula(num - 1));
         }
     }
 }
