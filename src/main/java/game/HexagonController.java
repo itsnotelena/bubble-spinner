@@ -25,7 +25,6 @@ public class HexagonController {
     public HexagonController(Stage stage) {
 
         this.bubbleFactory = new BubbleFactory(stage);
-        //Max is the Difficulty of the Game
         this.bubbleFactory.addAllTextures(4);
         this.bubbles = new ArrayList<>();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
@@ -35,20 +34,26 @@ public class HexagonController {
         bubbleGrid.setBubble(0,0, center);
 
         this.stage = stage;
-        BubbleActor bub = bubbleFactory.createBubble();
-        bubbles.add(bub);
-        bubbleGrid.setBubble(-1,0,bub);
-        stage.addActor(bub);
+        BubbleActor bub2;
 
-        BubbleActor bub2 = bubbleFactory.createBubble();
-        bubbles.add(bub2);
-        bubbleGrid.setBubble(-1,1,bub2);
-        stage.addActor(bub2);
+        //This loop iterates over all of the
+        //possible combinations for bubble positions
+        //and only allows certain combinations
+        //to be placed. Feel free to do it
+        //in a smarter way
 
-        bub2 = bubbleFactory.createBubble();
-        bubbles.add(bub2);
-        bubbleGrid.setBubble(0,1,bub2);
-        stage.addActor(bub2);
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if (!(Math.abs(i)==2 && Math.abs(j)==2) &&
+                        !(i==-2 && Math.abs(j)==1) &&
+                        !(i==0 && j==0)) {
+                    bub2 = bubbleFactory.createBubble();
+                    bubbles.add(bub2);
+                    bubbleGrid.setBubble(j, i, bub2);
+                    stage.addActor(bub2);
+                }
+            }
+        }
         drawGrid();
     }
 
@@ -58,6 +63,7 @@ public class HexagonController {
             Vector2 vec = bubbleGrid.gridToWorld(bub.gridPos[0], bub.gridPos[1]);
             bub.center();
             bub.moveBy(vec.x, vec.y);
+
         }
     }
 

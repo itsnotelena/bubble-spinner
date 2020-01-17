@@ -10,9 +10,9 @@ import java.util.List;
 public class BubbleGrid {
     private static final int RADIUS = 100;
     private transient BubbleActor[][] bubbles = new BubbleActor[RADIUS*2][RADIUS*2];
-    public Vector2 origin;
-    private float theta = 30;
-    private float delta_theta = 100;
+    public transient Vector2 origin;
+    private transient  float theta = 30;
+    private transient float delta_theta = 100;
 
     public BubbleGrid(Vector2 origin){
         this.origin = origin;
@@ -25,7 +25,8 @@ public class BubbleGrid {
     }
 
     public void update_rotation() {
-        if (Math.abs(delta_theta) > 0.1 ) {
+        double zeroone = 0.1;
+        if (Math.abs(delta_theta) > zeroone ) {
             delta_theta *= 0.98f;
         }
         else {
