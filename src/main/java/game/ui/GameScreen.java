@@ -153,10 +153,12 @@ public class GameScreen implements Screen {
      * If the game is won move to the next level.
      */
     public void nextLevel() {
-        User user = game.getUser();
-        new Client().addScore(new Score(user.getUsername(),
-                bubbleSpinnerController.getResult(),
-                bubbleSpinnerController.getResult()));
+        if (!gameSettings.isComputerPlayer()) {
+            User user = game.getUser();
+            new Client().addScore(new Score(user.getUsername(),
+                    bubbleSpinnerController.getResult(),
+                    bubbleSpinnerController.getResult()));
+        }
         gameSettings.incrementLevel();
 
         if (gameSettings.isComputerPlayer()) {
