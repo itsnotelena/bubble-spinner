@@ -116,7 +116,7 @@ public class HexagonController {
                 bubbles.add(bubble);
                 int[] gridPos = bubbleGrid.worldToGrid(bubble.getPosition().sub(this.bubbleGrid.origin));
                 this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
-                this.popBubbles(bubble);
+                result += this.popBubbles(bubble);
                 drawGrid();
                 return true;
             }
