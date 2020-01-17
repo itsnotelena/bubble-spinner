@@ -22,7 +22,7 @@ public class BubbleGrid {
         int dy = y + RADIUS;
         if ( dx >= 0 && dx < RADIUS*2 && dy >= 0 && dy < RADIUS*2) {
             this.bubbles[dx][dy] = bubbleActor;
-            bubbleActor.gridPos = new int[]{x, y};
+            if(bubbleActor != null){ bubbleActor.gridPos = new int[]{x, y}; }
         }
     }
 
@@ -57,7 +57,7 @@ public class BubbleGrid {
         ArrayList<BubbleActor> list = new ArrayList<>();
 
         // Since our grid is hexagonal we have to do a bit of magic
-        int offset = y % 2;
+        int offset = Math.abs(y) % 2;
 
         // Start by checking the position on the bottom left of the current bubble and move clockwise around the bubble
         int[] dx = {-1, -1, 0, 1, 1,  0};
@@ -72,10 +72,10 @@ public class BubbleGrid {
         return list;
     }
 
-    public List<BubbleActor> getConnectedBubbles() {
+    public List<BubbleActor> getConnectedBubbles(int x, int y) {
         ArrayList<BubbleActor> visited = new ArrayList<>();
         LinkedList<BubbleActor> next = new LinkedList<>();
-        next.add(getBubble(0,0));
+        next.add(getBubble(x,y));
 
         while( !next.isEmpty() ) {
                BubbleActor nextActor = next.pop();

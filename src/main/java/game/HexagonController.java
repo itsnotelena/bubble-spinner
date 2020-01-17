@@ -1,16 +1,10 @@
 package game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
 
 public class HexagonController {
 
@@ -55,8 +49,6 @@ public class HexagonController {
         bubbles.add(bub2);
         bubbleGrid.setBubble(0,1,bub2);
         stage.addActor(bub2);
-
-
         draw();
     }
 
@@ -68,6 +60,12 @@ public class HexagonController {
         }
     }
 
+    private void popSingleBubble(BubbleActor actor) {
+        this.bubbles.remove(actor);
+        this.bubbleGrid.setBubble(actor.gridPos[0], actor.gridPos[1], null);
+        stage.getActors().removeValue(actor, true);
+    }
+
     /**
     * Recursive method to find how many neighbouring
     * bubbles will be popped after hit.
@@ -75,28 +73,26 @@ public class HexagonController {
     *            matching color id.
     * @return number of bubbles
     */
-    public int bubblePop(BubbleActor hit, int counter, ArrayList<BubbleActor> visited) {
-        int three = 3;
+    public int getPoppable(BubbleActor hit, int counter, List<BubbleActor> visited) {
+        visited.add(hit); // Add the bubbleActor to the list of visited bubbles
         List<BubbleActor> candidates = this.bubbleGrid.getNeighbours(hit.gridPos[0], hit.gridPos[1]);
+
+        // Loop over the neighbours of the current bubble
         for (int i = 0; i < candidates.size(); i++) {
             BubbleActor candidate = candidates.get(i);
             if (candidate.getColorId() == hit.getColorId() && !(visited.contains(candidate))) {
                 counter++;
-                visited.add(candidate);
-                counter += bubblePop(candidate, counter, visited);
-                System.out.println(counter);
+                counter += getPoppable(candidate, counter, visited);
             }
         }
-        if (counter >= three) {
-            for (int j = 0; j < visited.size();  j++) {
-                visited.get(j).remove();
-                stage.getActors().removeValue(visited.get(j), true);
-                bubbles.remove(visited.get(j));
-            }
-            bubbles.remove(hit);
-            stage.getActors().removeValue(hit, true);
-            hit.remove();
-        }
+//        if (counter >= 3) {
+//            for (int j = 0; j < visited.size();  j++) {
+//                this.popSingleBubble(visited.get(j));
+//            }
+//            bubbles.remove(hit);
+//            stage.getActors().removeValue(hit, true);
+//            hit.remove();
+//        }
         return counter;
     }
 
@@ -108,14 +104,11 @@ public class HexagonController {
     public boolean checkCollisions(BubbleActor bubble) {
         for (int i = 0; i < bubbles.size(); ++i) {
             if (bubble.collide(bubbles.get(i))) {
-                BubbleActor hit = bubbles.get(i);
-                hit.getNeighbours().add(bubble);
-                bubble.getNeighbours().add(hit);
                 bubble.stop();
                 bubbles.add(bubble);
                 int[] gridPos = bubbleGrid.worldToGrid(bubble.getPosition().sub(this.bubbleGrid.origin));
                 this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
-                //this.calculateScore(bubble);
+                this.popBubbles(bubble);
                 draw();
                 return true;
             }
@@ -132,13 +125,13 @@ public class HexagonController {
      * @param hitter is the bubble shot under the user's command
      * @return the score due to the hit
      */
-    public int calculateScore(BubbleActor hitter) {
-        int num = 0;
-        for (int i = 0; i < bubbles.size(); i++) {
-            BubbleActor hit = bubbles.get(i);
-            if (hit.collide(hitter)) {
-                hit.getY();
-                num += bubblePop(hitter, 0, new ArrayList<>());
+    public int popBubbles(BubbleActor hitter) {
+        List<BubbleActor> poppable = new ArrayList<>();
+        int num = getPoppable(hitter, 0, poppable);
+        if(poppable.size() >= 3){
+            for ( BubbleActor actor : poppable)
+            {
+                this.popSingleBubble(actor);
             }
         }
         int result = formula(num);
