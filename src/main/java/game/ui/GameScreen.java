@@ -142,12 +142,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
         stage.dispose();
         if (bubbleSpinnerController instanceof BotController) {
             game.setScreen(new GameScreen(game, gameSettings));
         } else {
-            game.setScreen(new MenuScreen(game));
+            game.setScreen(new LoseScreen(game));
         }
     }
 
@@ -160,7 +159,12 @@ public class GameScreen implements Screen {
                 bubbleSpinnerController.getResult(),
                 bubbleSpinnerController.getResult()));
         gameSettings.incrementLevel();
-        game.setScreen(new GameScreen(game, gameSettings));
+
+        if (gameSettings.isComputerPlayer()) {
+            game.setScreen(new GameScreen(game, gameSettings));
+        } else {
+            game.setScreen(new WinScreen(game, gameSettings));
+        }
     }
 
     /**
