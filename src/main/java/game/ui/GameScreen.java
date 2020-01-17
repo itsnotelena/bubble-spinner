@@ -1,5 +1,6 @@
 package game.ui;
 
+import client.Client;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -12,14 +13,16 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import config.Config;
 import game.BotController;
 import game.BubbleSpinner;
 import game.BubbleSpinnerController;
+import game.GameSettings;
 import game.Timer;
+import server.Score;
+import server.User;
+
 
 public class GameScreen implements Screen {
 
@@ -32,13 +35,15 @@ public class GameScreen implements Screen {
     private transient boolean paused;
     private transient ShapeRenderer shapeRenderer;
     private transient Timer timer;
+    private transient GameSettings gameSettings;
 
     /**
      * This is Screen where the game is played.
      * @param game BubbleSpinner instance.
      */
-    public GameScreen(BubbleSpinner game, boolean computer) {
+    public GameScreen(BubbleSpinner game, GameSettings gameSettings) {
         this.game = game;
+        this.gameSettings = gameSettings;
 
         this.paused = false;
         camera = new OrthographicCamera();
@@ -46,25 +51,23 @@ public class GameScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
-        if (computer) {
+        if (gameSettings.isComputerPlayer()) {
             bubbleSpinnerController = new BotController(this, stage);
         } else {
             bubbleSpinnerController = new BubbleSpinnerController(this, stage);
         }
 
-        timer = new Timer();
-        timerFont = new BitmapFont();
-        timerFont.setColor(Color.BLACK);
-        timerFont.getData().setScale(2);
+        if (!gameSettings.isInfinite()) {
+            timer = new Timer();
+            timerFont = new BitmapFont();
+            timerFont.setColor(Color.BLACK);
+            timerFont.getData().setScale(2);
+        }
 
         shapeRenderer = new ShapeRenderer();
 
         Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
         this.pauseMenu = new PauseMenu(this, skin);
-    }
-
-    public GameScreen(BubbleSpinner game) {
-        this(game, false);
     }
 
     @Override
@@ -80,15 +83,17 @@ public class GameScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
-        game.batch.begin();
+        if (!gameSettings.isInfinite()) {
+            game.batch.begin();
 
-        timerFont.draw(game.batch,
-                timer.calculateRemainingTime(),
-                Gdx.graphics.getHeight() / 8,
-                7 * Gdx.graphics.getHeight() / 8
-        );
+            timerFont.draw(game.batch,
+                    timer.calculateRemainingTime(),
+                    Gdx.graphics.getHeight() / 8,
+                    7 * Gdx.graphics.getHeight() / 8
+            );
 
-        game.batch.end();
+            game.batch.end();
+        }
 
         stage.act();
         stage.draw();
@@ -97,7 +102,7 @@ public class GameScreen implements Screen {
             this.togglePause();
         }
 
-        if (timer.isOver()) {
+        if (!gameSettings.isInfinite() && timer.isOver()) {
             dispose();
         }
 
@@ -107,6 +112,11 @@ public class GameScreen implements Screen {
         } else {
             pauseMenu.act();
             pauseMenu.draw();
+        }
+
+        if (bubbleSpinnerController instanceof BotController
+            && gameSettings.getHelpBox() != null) {
+            gameSettings.getHelpBox().update();
         }
     }
 
@@ -134,9 +144,26 @@ public class GameScreen implements Screen {
     public void dispose() {
         stage.dispose();
         if (bubbleSpinnerController instanceof BotController) {
-            game.setScreen(new GameScreen(game, true));
+            game.setScreen(new GameScreen(game, gameSettings));
         } else {
-            game.setScreen(new MenuScreen(game));
+            game.setScreen(new LoseScreen(game));
+        }
+    }
+
+    /**
+     * If the game is won move to the next level.
+     */
+    public void nextLevel() {
+        User user = game.getUser();
+        new Client().addScore(new Score(user.getUsername(),
+                bubbleSpinnerController.getResult(),
+                bubbleSpinnerController.getResult()));
+        gameSettings.incrementLevel();
+
+        if (gameSettings.isComputerPlayer()) {
+            game.setScreen(new GameScreen(game, gameSettings));
+        } else {
+            game.setScreen(new WinScreen(game, gameSettings));
         }
     }
 
@@ -217,10 +244,12 @@ public class GameScreen implements Screen {
     public void togglePause() {
         this.paused = !this.paused;
 
-        if (this.paused) {
-            timer.pause();
-        } else {
-            timer.resume();
+        if (!gameSettings.isInfinite()) {
+            if (this.paused) {
+                timer.pause();
+            } else {
+                timer.resume();
+            }
         }
     }
 }

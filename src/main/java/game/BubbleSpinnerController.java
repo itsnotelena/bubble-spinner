@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.ui.GameScreen;
 
@@ -10,6 +11,7 @@ public class BubbleSpinnerController {
     transient Stage stage;
     transient Shooter shooter;
     transient HexagonController hexagonController;
+    private static int THRESHOLD_BUBBLES = 1;
 
     /**
      * Constructor for the Controller of the Bubble Spinner game.
@@ -21,6 +23,7 @@ public class BubbleSpinnerController {
         this.stage = stage;
         this.shooter = new Shooter(stage);
         this.hexagonController = new HexagonController(stage);
+        this.hexagonController.drawGrid();
         this.shooter.initialize();
     }
 
@@ -30,10 +33,10 @@ public class BubbleSpinnerController {
      */
     public void update() {
         BubbleActor bubble = shooter.current();
-
         checkShoot(bubble);
-
         bubble.update();
+
+        hexagonController.drawGrid();
 
         if (hexagonController.checkCollisions(bubble)
             || bubble.belowScreen()) {
@@ -47,6 +50,10 @@ public class BubbleSpinnerController {
         if (hexagonController.lostGame) {
             gameScreen.dispose();
         }
+
+        if (hexagonController.getBubbles().size() == THRESHOLD_BUBBLES) {
+            gameScreen.nextLevel();
+        }
     }
 
     /**
@@ -55,8 +62,13 @@ public class BubbleSpinnerController {
      * @param bubble is the first Bubble to be shot.
      */
     public void checkShoot(BubbleActor bubble) {
-        if (Gdx.input.isTouched() && !bubble.isMoving()) {
+        if ((Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+                    && !bubble.isMoving()) {
             shooter.shootBubble();
         }
+    }
+
+    public int getResult() {
+        return hexagonController.getResult();
     }
 }

@@ -2,12 +2,10 @@ package game.ui;
 
 import client.Client;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,13 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
+import game.GameSettings;
 import server.User;
+
+
 
 public class RegisterScreen extends ScreenAdapter {
 
@@ -34,7 +31,9 @@ public class RegisterScreen extends ScreenAdapter {
     private transient TextField passTextField;
     private transient TextField emailTextField;
     private transient TextButton registerButton;
+    private transient Label goBackField;
     static final String def = "default";
+    private transient PopupMenu popupMenu;
 
 
     /**
@@ -63,19 +62,19 @@ public class RegisterScreen extends ScreenAdapter {
 
         passTextField = new TextField("", skin, def);
         passTextField.setMessageText("Password");
+        passTextField.setPasswordCharacter('*');
+        passTextField.setPasswordMode(true);
 
         registerButton = new TextButton("Register", skin, def);
 
-        registerButton.addListener(new InputListener() {
+        goBackField = new Label("Go back", skin, def);
+        goBackField.setColor(new Color(0.2f,0.2f,0.5f,1));
+
+        goBackField.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                User u = new User(userTextField.getText(),
-                        emailTextField.getText(), passTextField.getText());
-                if (new Client().register(u)) {
-                    game.setUser(u);
-                    game.setScreen(new GameScreen(game));
-                    dispose();
-                }
+                game.setScreen(new LoginScreen(game));
+                dispose();
             }
 
             @Override
@@ -84,6 +83,18 @@ public class RegisterScreen extends ScreenAdapter {
             }
         });
 
+
+        registerButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                register();
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
         int w = 300;
         int padding = 5;
         int h = 50;
@@ -102,7 +113,12 @@ public class RegisterScreen extends ScreenAdapter {
         table.row();
         table.row();
         table.add(registerButton).colspan(2);
+        table.row();
+        table.add(goBackField).colspan(1).width(w / 2);
         stage.addActor(table);
+
+        popupMenu = new PopupMenu(skin);
+        stage.addActor(popupMenu);
     }
 
     @Override
@@ -112,11 +128,20 @@ public class RegisterScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         stage.act();
         stage.draw();
 
+        // Enter -> Register
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            register();
+        }
+
+        // Esc -> Go back
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            game.setScreen(new LoginScreen(game));
+            dispose();
+        }
     }
 
     @Override
@@ -138,4 +163,27 @@ public class RegisterScreen extends ScreenAdapter {
         super.dispose();
         stage.dispose();
     }
+
+    /**
+     * Send an HTTP call to the server to register
+     * the user.
+     */
+    private void register() {
+        User u = new User(userTextField.getText(),
+                emailTextField.getText(), passTextField.getText());
+        if (new Client().register(u)) {
+            game.setUser(u);
+            GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
+                    .withComputerPlayer(false)
+                    .withLevel(0)
+                    .withDifficulty(0)
+                    .withInfinite(false)
+                    .build();
+            game.setScreen(new GameScreen(game, gameSettings));
+            dispose();
+        } else {
+            popupMenu.setMessage("It's not possible to register this account.");
+        }
+    }
+
 }

@@ -4,6 +4,7 @@ import config.Config;
 import game.BubbleSpinner;
 import server.Server;
 
+
 /**
  * Launcher class.
  * This is the starting point of the game

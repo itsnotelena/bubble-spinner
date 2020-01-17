@@ -3,10 +3,10 @@ package client;
 import config.Config;
 import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import server.Badge;
 import server.Score;
 import server.User;
 
@@ -23,7 +23,7 @@ public class Client {
         Boolean res = restTemplate.postForObject(Config.Api.URL + "/login",
                                     new User(user.getUsername(), null, user.getPassword()),
                                 boolean.class);
-        return res != null ? res : false;
+        return res;
     }
 
     /**
@@ -34,7 +34,7 @@ public class Client {
     public boolean addScore(Score score) {
         RestTemplate restTemplate = new RestTemplate();
         Boolean user = restTemplate.postForObject(Config.Api.URL + "/addScore", score,
-                                                    boolean.class);
+                                                boolean.class);
         return user;
     }
 
@@ -51,17 +51,39 @@ public class Client {
     }
 
     /**
+     * Add a new badge to the database.
+     * @param badge is the new Badge object.
+     * @return true if successful, false otherwise.
+     */
+    public boolean addBadge(Badge badge) {
+        RestTemplate restTemplate = new RestTemplate();
+        Boolean result = restTemplate.postForObject(Config.Api.URL + "/addBadge", badge,
+                                                boolean.class);
+        return result;
+    }
+
+    /**
      * Get the Top 5 User's scores.
      * @return usernames.
      */
-    public List<User> getTop5() {
+    public List<Score> getTop5() {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<List<User>> users =
+        ResponseEntity<List<Score>> users =
                 restTemplate.exchange(Config.Api.URL + "/top5",
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<>(){});
         return users.getBody();
+    }
+
+    /**
+     * Get the badges of the user.
+     * @return badges.
+     */
+    public Badge[] getBadges(User user) {
+        return new RestTemplate().getForObject(Config.Api.URL
+                        + "/getBadges" + "?username="
+                        + user.getUsername(),Badge[].class);
     }
 
     /**
@@ -76,20 +98,17 @@ public class Client {
         Boolean res = restTemplate.postForObject(Config.Api.URL + "/register",
                 user,
                 boolean.class);
-        return res != null ? res : false;
+        return res;
     }
 
     /**
-     * Remove the User from the database.
-     * @param username username to be removed
-     * @return true if removed or otherwise
+     * Request the score of a specific user.
+     * @param user User object.
+     * @return Score object.
      */
-    public boolean removeUser(String username) {
-        RestTemplate restTemplate = new RestTemplate();
-        Boolean res = restTemplate.postForObject(Config.Api.URL  + "/removeUser",
-                username,
-                boolean.class);
-        return res != null ? res : false;
+    public Score getSCore(User user) {
+        return new RestTemplate().postForObject(Config.Api.URL + "/getUserScore",
+                                user,
+                                Score.class);
     }
-
 }

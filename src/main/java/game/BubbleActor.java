@@ -8,12 +8,19 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import config.Config;
 
+import java.util.ArrayList;
+import java.util.Map;
+
+
 public class BubbleActor extends Image implements Observer {
 
     private static final int SIZE = Config.Game.BUBBLE_SIZE;
     private transient Circle circle;
     private transient Vector2 movingDirection = new Vector2(0, 0);
     private transient Stage stage;
+    public transient int[] gridPos = new int[2];
+
+    private int colorId;
 
     /**
      * Constructor for the Bubble Actor in the stage.
@@ -43,7 +50,7 @@ public class BubbleActor extends Image implements Observer {
         circle = new Circle(
                 getX() + SIZE / 2,
                 getY() + SIZE / 2,
-                SIZE / 2
+                SIZE / 2 - 7
         );
         setPosition(x, y);
     }
@@ -65,7 +72,7 @@ public class BubbleActor extends Image implements Observer {
         }
     }
 
-    public void shiftX(boolean positive, int scale) {
+    public void shiftX(boolean positive, float scale) {
         shiftAxis(positive, scale, true);
     }
 
@@ -73,12 +80,20 @@ public class BubbleActor extends Image implements Observer {
         shiftX(positive, 1);
     }
 
-    public void shiftY(boolean positive, int scale) {
+    public void shiftY(boolean positive, float scale) {
         shiftAxis(positive, scale, false);
     }
 
     public void shiftY(boolean positive) {
         shiftY(positive, 1);
+    }
+
+    public int getColorId() {
+        return colorId;
+    }
+
+    public void setColorId(int colorId) {
+        this.colorId = colorId;
     }
 
     /**
@@ -87,7 +102,7 @@ public class BubbleActor extends Image implements Observer {
      * @param scale The number of times to shift.
      * @param axis True for X axis, False for Y axis.
      */
-    public void shiftAxis(boolean positive, int scale, boolean axis) {
+    public void shiftAxis(boolean positive, float scale, boolean axis) {
         if (axis) {
             moveBy((positive ? 1 : -1) * scale * SIZE, 0);
         } else {
@@ -125,6 +140,8 @@ public class BubbleActor extends Image implements Observer {
     public void setMovingDirection(Vector2 movingDirection) {
         this.movingDirection = movingDirection;
     }
+
+    public Vector2 getMovingDirection(){ return this.movingDirection; }
 
     public void stop() {
         setMovingDirection(vec(0, 0));

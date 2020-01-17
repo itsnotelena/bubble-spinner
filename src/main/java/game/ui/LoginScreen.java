@@ -2,12 +2,10 @@ package game.ui;
 
 import client.Client;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,13 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
 import server.User;
+
 
 public class LoginScreen extends ScreenAdapter {
 
@@ -35,8 +30,8 @@ public class LoginScreen extends ScreenAdapter {
     private transient TextButton playButton;
     private transient Label register;
     private transient Label forgotPass;
+    private transient PopupMenu popupMenu;
     static final String def = "default";
-
 
     /**
      * Login Screen.
@@ -62,6 +57,8 @@ public class LoginScreen extends ScreenAdapter {
 
         passTextField = new TextField("", skin, def);
         passTextField.setMessageText("Password");
+        passTextField.setPasswordCharacter('*');
+        passTextField.setPasswordMode(true);
 
         playButton = new TextButton("Login", skin, def);
         register = new Label("Register", skin, def);
@@ -72,12 +69,7 @@ public class LoginScreen extends ScreenAdapter {
         playButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                User u = new User(userTextField.getText(), null, passTextField.getText());
-                if (new Client().authenticate(u)) {
-                    game.setUser(u);
-                    game.setScreen(new MenuScreen(game));
-                    dispose();
-                }
+                login(new User(userTextField.getText(), null, passTextField.getText()));
             }
 
             @Override
@@ -85,6 +77,7 @@ public class LoginScreen extends ScreenAdapter {
                 return true;
             }
         });
+
 
         register.addListener(new InputListener() {
             @Override
@@ -119,6 +112,9 @@ public class LoginScreen extends ScreenAdapter {
         table.add(register).colspan(1).width(w / 2);
         table.add(forgotPass).colspan(1).width(w / 2);
         stage.addActor(table);
+
+        popupMenu = new PopupMenu(skin);
+        stage.addActor(popupMenu);
     }
 
     @Override
@@ -133,6 +129,28 @@ public class LoginScreen extends ScreenAdapter {
         stage.act();
         stage.draw();
 
+        // Enter -> Login
+        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            login(new User(userTextField.getText(), null, passTextField.getText()));
+        }
+
+        // R -> Register Screen
+        if (Gdx.input.isKeyPressed(Input.Keys.R)) {
+            game.setScreen(new RegisterScreen(game));
+            dispose();
+        }
+
+        // F -> Forgot Password
+        //if (Gdx.input.isKeyPressed(Input.Keys.F)) {
+        //}
+
+        // Ctrl + D -> Login with Default user
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)
+            && Gdx.input.isKeyPressed(Input.Keys.D)) {
+            User defaultUser = new User("", "", "");
+            new Client().register(defaultUser);
+            login(defaultUser);
+        }
     }
 
     @Override
@@ -153,5 +171,18 @@ public class LoginScreen extends ScreenAdapter {
     public void dispose() {
         super.dispose();
         stage.dispose();
+    }
+
+    /**
+     * Send an HTTP call to the server to verify the user.
+     */
+    private void login(User user) {
+        if (new Client().authenticate(user)) {
+            game.setUser(user);
+            game.setScreen(new MenuScreen(game));
+            dispose();
+        } else {
+            popupMenu.setMessage("Invalid credentials.");
+        }
     }
 }

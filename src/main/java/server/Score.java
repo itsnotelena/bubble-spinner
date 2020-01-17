@@ -1,10 +1,8 @@
 package server;
 
-import java.util.Objects;
-
 public class Score {
     private String username;
-    private int scoreW;
+    private int highestWeekScore;
     private int scoreA;
 
     public Score() {
@@ -14,12 +12,12 @@ public class Score {
     /**
      * Constructor.
      * @param username set username using String
-     * @param scoreW set score for this week
+     * @param highestWeekScore set score for this week
      * @param scoreA set score for All time
      */
-    public Score(String username, int scoreW, int scoreA) {
+    public Score(String username, int highestWeekScore, int scoreA) {
         this.username = username;
-        this.scoreW = scoreW;
+        this.highestWeekScore = highestWeekScore;
         this.scoreA = scoreA;
     }
 
@@ -31,12 +29,12 @@ public class Score {
         this.username = username;
     }
 
-    public int getScoreW() {
-        return scoreW;
+    public int getHighestWeekScore() {
+        return highestWeekScore;
     }
 
-    public void setScoreW(int scoreW) {
-        this.scoreW = scoreW;
+    public void setHighestWeekScore(int highestWeekScore) {
+        this.highestWeekScore = highestWeekScore;
     }
 
     public int getScoreA() {
@@ -56,13 +54,13 @@ public class Score {
             return false;
         }
         Score score = (Score) o;
-        return scoreW == score.scoreW
+        return highestWeekScore == score.highestWeekScore
                 && scoreA == score.scoreA
                 && username.equals(score.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, scoreW, scoreA);
+        return super.hashCode();
     }
 }

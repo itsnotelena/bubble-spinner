@@ -44,7 +44,8 @@ SliderStyle: {
 	default-vertical: { background: default-slider, knob: default-round-large }
 },
 LabelStyle: {
-	default: { font: default-font, fontColor: white }
+	default: { font: default-font, fontColor: white },
+	leaderboard: { font: default-font, fontColor: black }
 },
 TextFieldStyle: {
 	default: { selection: selection, background: textfield, font: default-font, fontColor: white, cursor: cursor }
