@@ -142,7 +142,6 @@ public class LoginScreen extends ScreenAdapter {
 
         // F -> Forgot Password
         //if (Gdx.input.isKeyPressed(Input.Keys.F)) {
-
         //}
 
         // Ctrl + D -> Login with Default user

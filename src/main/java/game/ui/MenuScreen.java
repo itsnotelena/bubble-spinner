@@ -30,6 +30,7 @@ public class MenuScreen extends ScreenAdapter {
     private transient boolean computerPlayer;
     private transient TextButton logoutButton;
     private transient TextButton loggedIn;
+    private transient TextButton achievementButton;
     private transient Leaderboard leaderboard;
 
     /**
@@ -51,6 +52,7 @@ public class MenuScreen extends ScreenAdapter {
         startButton = new TextButton("Start game", skin, def);
         optionsButton = new TextButton("Difficulty: Hard", skin, def);
         logoutButton = new TextButton("Logout", skin, def);
+        achievementButton = new TextButton("AchievementScreen",skin,def);
         exitButton = new TextButton("Exit", skin, def);
 
         computerButton = new TextButton("Computer Player OFF", skin, def);
@@ -122,6 +124,18 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
+        achievementButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                achievementPanel();
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
         int w = 300;
         int padding = 5;
         int h = 50;
@@ -135,6 +149,8 @@ public class MenuScreen extends ScreenAdapter {
         table.add(computerButton).colspan(2);
         table.row();
         table.add(timerButton).colspan(2);
+        table.row();
+        table.add(achievementButton).colspan(2);
         table.row();
         table.add(optionsButton).colspan(2);
         table.row();
@@ -228,6 +244,11 @@ public class MenuScreen extends ScreenAdapter {
                 .withHelpBox(computerPlayer ? new TutorialHelpBox(game.batch) : null)
                 .build();
         game.setScreen(new GameScreen(game, gameSettings));
+        stage.dispose();
+    }
+
+    private void achievementPanel() {
+        game.setScreen(new AchievementScreen(game));
         stage.dispose();
     }
 

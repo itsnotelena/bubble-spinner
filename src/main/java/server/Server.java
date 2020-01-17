@@ -143,7 +143,6 @@ public class Server {
         try {
             return dbImplement.insertBadge(badge);
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -160,6 +159,20 @@ public class Server {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    /**
+     * Get the username scores.
+     * @param user User object.
+     * @return Score.
+     */
+    @PostMapping(value = "/getUserScore")
+    public Score getUserScore(final @RequestBody User user) {
+        try {
+            return dbImplement.getScoreByUser(user.getUsername());
+        } catch (SQLException e) {
+            return null;
         }
     }
 

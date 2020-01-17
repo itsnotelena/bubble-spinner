@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Badge {
 
     private String username;
-    private String award;
+    private BadgesEnum award;
 
     public Badge() {
 
@@ -16,7 +16,7 @@ public class Badge {
      * @param username set username using string.
      * @param award set the badge.
      */
-    public Badge(String username, String award) {
+    public Badge(String username, BadgesEnum award) {
         this.username = username;
         this.award = award;
     }
@@ -29,11 +29,11 @@ public class Badge {
         this.username = username;
     }
 
-    public String getAward() {
+    public BadgesEnum getAward() {
         return award;
     }
 
-    public void setAward(String award) {
+    public void setAward(BadgesEnum award) {
         this.award = award;
     }
 

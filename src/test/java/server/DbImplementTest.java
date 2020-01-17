@@ -76,7 +76,7 @@ public class DbImplementTest {
 
     @Test
     void getBadgesByUsername() throws SQLException {
-        Badge beyhive = new Badge("beyonce", "LEVEL1");
+        Badge beyhive = new Badge("beyonce", BadgesEnum.Badge_Gamer);
         dbImplement.removeFromBadge(beyhive.getUsername());
         boolean resA = dbImplement.insertBadge(beyhive);
         Assertions.assertThat(resA).isTrue();
