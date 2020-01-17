@@ -27,7 +27,10 @@ public class AchievementScreen extends ScreenAdapter {
     private transient BubbleSpinner game; // screen to be shown after.
     private transient Achievement achievement;
 
-
+    /**
+     * Constructor for displaying the Achievements.
+     * @param game instance of BubbleSpinner.
+     */
     public AchievementScreen(BubbleSpinner game) {
         this.game = game;
         this.achievement = new Achievement(game.getUser());
