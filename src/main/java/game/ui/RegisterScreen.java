@@ -179,6 +179,7 @@ public class RegisterScreen extends ScreenAdapter {
                     .withLevel(0)
                     .withDifficulty(0)
                     .withInfinite(false)
+                    .withHelpBox(new TutorialHelpBox(game.batch))
                     .build();
             game.setScreen(new GameScreen(game, gameSettings));
             dispose();

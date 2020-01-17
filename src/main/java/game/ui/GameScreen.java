@@ -114,8 +114,7 @@ public class GameScreen implements Screen {
             pauseMenu.draw();
         }
 
-        if (bubbleSpinnerController instanceof BotController
-            && gameSettings.getHelpBox() != null) {
+        if (gameSettings.getHelpBox() != null) {
             gameSettings.getHelpBox().update();
         }
     }
