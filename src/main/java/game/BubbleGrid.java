@@ -11,25 +11,22 @@ import java.util.Map;
 public class BubbleGrid {
     private static final int RADIUS = 100;
     private transient BubbleActor[][] bubbles = new BubbleActor[RADIUS*2][RADIUS*2];
-    private HexagonController parent;
 
-    public BubbleGrid(HexagonController parent){
-        this.parent = parent;
-    }
+    public BubbleGrid(){}
 
     public void setBubble(int x, int y, BubbleActor bubbleActor) {
         int dx = x + RADIUS;
         int dy = y + RADIUS;
-        if (dx >= 0 && dx < RADIUS && dy >= 0 && dy < RADIUS) {
+        if ( dx >= 0 && dx < RADIUS*2 && dy >= 0 && dy < RADIUS*2) {
             this.bubbles[dx][dy] = bubbleActor;
-            bubbleActor.gridPos = new int[]{dx, dy};
+            bubbleActor.gridPos = new int[]{x, y};
         }
     }
 
     public BubbleActor getBubble(int x, int y) {
         int dx = x + RADIUS;
         int dy = y + RADIUS;
-        if (dx >= 0 && dx < RADIUS && dy >= 0 && dy < RADIUS) {
+        if (dx >= 0 && dx < RADIUS*2 && dy >= 0 && dy < RADIUS*2) {
             return this.bubbles[dx][dy];
         }
         return null;
@@ -37,7 +34,7 @@ public class BubbleGrid {
 
     public Vector2 gridToWorld(int x, int y) {
         // Center of the structure should be at 0,0
-        int offset = Math.abs(y) % 2;
+        int offset = Math.abs(x) % 2;
         float colDistance = (float) (Config.Game.BUBBLE_SIZE * Math.sqrt(3) / 2.f);
         float dx = colDistance * x;
         float dy = (float) (y * Config.Game.BUBBLE_SIZE - offset * 0.5 * Config.Game.BUBBLE_SIZE);

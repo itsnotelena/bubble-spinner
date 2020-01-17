@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.io.File;
@@ -32,6 +33,7 @@ public class HexagonController {
      * @param stage Stage where objects reside.
      */
     public HexagonController(Stage stage) {
+        this.bubbleGrid = new BubbleGrid();
         this.bubbleFactory = new BubbleFactory(stage);
 
         //Max is the Difficulty of the Game
@@ -39,47 +41,26 @@ public class HexagonController {
         this.bubbles = new ArrayList<>();
         BubbleActor center = bubbleFactory.createBubble().center();
         stage.addActor(center);
+        bubbleGrid.setBubble(0,0, center);
+
         this.stage = stage;
+        BubbleActor bub = bubbleFactory.createBubble();
+        bubbles.add(bub);
+        bubbleGrid.setBubble(-1,0,bub);
+        stage.addActor(bub);
 
-        int bubTotal = 18;
-        for (int i = 0; i < bubTotal; i++) {
-            BubbleActor bub = bubbleFactory.createBubble();
-            bubbles.add(bub);
-            stage.addActor(bub);
-        }
+        BubbleActor bub2 = bubbleFactory.createBubble();
+        bubbles.add(bub2);
+        bubbleGrid.setBubble(-1,1,bub2);
+        stage.addActor(bub2);
+        draw();
+    }
 
-        File file = new File("assets/hexagon_easy.txt");
-        Scanner sc = null;
-        try {
-            sc = new Scanner(file);
-            sc.useLocale(Locale.US);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        for (BubbleActor bubble: bubbles) {
-            if (!(sc.hasNextFloat())) {
-                break;
-            }
-            float x = sc.nextFloat();
-            float y = sc.nextFloat();
-            bubble.center().shiftX(true, x);
-            bubble.shiftY(true, y);
-        }
-        for (BubbleActor a: bubbles) {
-            for (BubbleActor b: bubbles) {
-                if (!a.collide(b)) {
-                    float xa = a.getX();
-                    float ya = a.getY();
-                    float xb = b.getX();
-                    float yb = b.getY();
-                    float lenx = (float) Math.pow((xa - xb), 2);
-                    float leny = (float) Math.pow((ya - yb), 2);
-                    float len = (float) Math.sqrt(lenx + leny);
-                    if (len <= 120.0 && len >= 65.0) {
-                        a.getNeighbours().add(b);
-                    }
-                }
-            }
+    private void draw(){
+        for(BubbleActor bub : bubbles) {
+            Vector2 vec = bubbleGrid.gridToWorld(bub.gridPos[0], bub.gridPos[1]);
+            bub.center();
+            bub.moveBy(vec.x, vec.y);
         }
     }
 
