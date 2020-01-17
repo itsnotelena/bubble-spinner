@@ -23,6 +23,7 @@ public class BubbleSpinnerController {
         this.stage = stage;
         this.shooter = new Shooter(stage);
         this.hexagonController = new HexagonController(stage);
+        this.hexagonController.drawGrid();
         this.shooter.initialize();
     }
 
@@ -32,10 +33,10 @@ public class BubbleSpinnerController {
      */
     public void update() {
         BubbleActor bubble = shooter.current();
-
         checkShoot(bubble);
-
         bubble.update();
+
+        hexagonController.drawGrid();
 
         if (hexagonController.checkCollisions(bubble)
             || bubble.belowScreen()) {

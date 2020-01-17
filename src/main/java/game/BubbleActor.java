@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import config.Config;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class BubbleActor extends Image implements Observer {
@@ -17,13 +18,8 @@ public class BubbleActor extends Image implements Observer {
     private transient Circle circle;
     private transient Vector2 movingDirection = new Vector2(0, 0);
     private transient Stage stage;
+    public transient int[] gridPos = new int[2];
 
-    public ArrayList<BubbleActor> getNeighbours() {
-        return neighbours;
-    }
-
-
-    private transient ArrayList<BubbleActor> neighbours;
     private int colorId;
 
     /**
@@ -48,14 +44,13 @@ public class BubbleActor extends Image implements Observer {
      */
     public BubbleActor(Texture texture, Stage stage, int x, int y) {
         super(texture);
-        neighbours = new ArrayList<>();
         this.stage = stage;
         setSize(SIZE, SIZE);
         setOrigin(SIZE / 2, SIZE / 2);
         circle = new Circle(
                 getX() + SIZE / 2,
                 getY() + SIZE / 2,
-                SIZE / 2
+                SIZE / 2 - 7
         );
         setPosition(x, y);
     }
@@ -145,6 +140,8 @@ public class BubbleActor extends Image implements Observer {
     public void setMovingDirection(Vector2 movingDirection) {
         this.movingDirection = movingDirection;
     }
+
+    public Vector2 getMovingDirection(){ return this.movingDirection; }
 
     public void stop() {
         setMovingDirection(vec(0, 0));

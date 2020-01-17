@@ -22,7 +22,7 @@ public class Leaderboard extends Table {
 
         this.add(new Label("User", skin));
         this.add(new Label("Score a", skin));
-        this.add(new Label("Score w", skin));
+        this.add(new Label("Weekly", skin));
         this.row();
 
         for (Score s : scores) {

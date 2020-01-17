@@ -27,6 +27,13 @@ public class BubbleFactory implements AbstractBubbleFactory {
         return actor;
     }
 
+    public BubbleActor createCenterBubble() {
+        Texture centerTexture = new Texture("assets/Bubbles/Black.png");
+        BubbleActor actor = new BubbleActor(centerTexture, stage);
+        actor.setColorId(-1);
+        return actor;
+    }
+
     public void addTexture(Texture texture) {
         this.texture.add(texture);
     }
