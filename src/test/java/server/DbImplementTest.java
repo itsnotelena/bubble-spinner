@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -77,7 +78,7 @@ public class DbImplementTest {
 
     @Test
     void getBadgesByUsername() throws SQLException {
-        Badge beyhive = new Badge("beyonce", "LEVEL1");
+        Badge beyhive = new Badge("beyonce", BadgesEnum.Badge_Gamer);
         dbImplement.removeFromBadge(beyhive.getUsername());
         boolean resA = dbImplement.insertBadge(beyhive);
         Assertions.assertThat(resA).isTrue();
@@ -121,6 +122,7 @@ public class DbImplementTest {
         dbImplement.insertScore(four);
         dbImplement.insertScore(five);
 
+
         List<User> list = new ArrayList<>();
         list.add(dbImplement.getUserByUsername(one.getUsername()).get());
         list.add(dbImplement.getUserByUsername(two.getUsername()).get());
@@ -129,10 +131,9 @@ public class DbImplementTest {
         list.add(dbImplement.getUserByUsername(five.getUsername()).get());
 
         List<Score> scoreOptional = dbImplement.getTop5Score();
-
-        assertEquals(scoreOptional.size(), 5);
+        Assert.assertEquals(scoreOptional.size(), 5);
         for (int i = 0; i < scoreOptional.size(); i++) {
-            assertEquals(scoreOptional.get(i).getUsername(), list.get(i).getUsername());
+            Assert.assertEquals(scoreOptional.get(i).getUsername(), list.get(i).getUsername());
         }
     }
 

@@ -1,5 +1,6 @@
 package game.ui;
 
+import client.Client;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -19,6 +20,8 @@ import game.BubbleSpinner;
 import game.BubbleSpinnerController;
 import game.GameSettings;
 import game.Timer;
+import server.Score;
+import server.User;
 
 
 public class GameScreen implements Screen {
@@ -143,7 +146,7 @@ public class GameScreen implements Screen {
         if (bubbleSpinnerController instanceof BotController) {
             game.setScreen(new GameScreen(game, gameSettings));
         } else {
-            game.setScreen(new MenuScreen(game));
+            game.setScreen(new LoseScreen(game));
         }
     }
 
@@ -151,8 +154,17 @@ public class GameScreen implements Screen {
      * If the game is won move to the next level.
      */
     public void nextLevel() {
+        User user = game.getUser();
+        new Client().addScore(new Score(user.getUsername(),
+                bubbleSpinnerController.getResult(),
+                bubbleSpinnerController.getResult()));
         gameSettings.incrementLevel();
-        game.setScreen(new GameScreen(game, gameSettings));
+
+        if (gameSettings.isComputerPlayer()) {
+            game.setScreen(new GameScreen(game, gameSettings));
+        } else {
+            game.setScreen(new WinScreen(game, gameSettings));
+        }
     }
 
     /**

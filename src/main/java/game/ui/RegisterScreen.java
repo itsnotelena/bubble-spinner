@@ -73,7 +73,7 @@ public class RegisterScreen extends ScreenAdapter {
         goBackField.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen( new LoginScreen(game));
+                game.setScreen(new LoginScreen(game));
                 dispose();
             }
 
@@ -128,8 +128,7 @@ public class RegisterScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         stage.act();
         stage.draw();
 
@@ -140,7 +139,7 @@ public class RegisterScreen extends ScreenAdapter {
 
         // Esc -> Go back
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            game.setScreen( new LoginScreen(game));
+            game.setScreen(new LoginScreen(game));
             dispose();
         }
     }

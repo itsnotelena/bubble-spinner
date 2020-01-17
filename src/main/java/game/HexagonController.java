@@ -1,13 +1,15 @@
 package game;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HexagonController {
 
+    private transient int result = 0;
     private transient Stage stage;
     private transient List<BubbleActor> bubbles;
     private transient BubbleGrid bubbleGrid;
@@ -94,6 +96,10 @@ public class HexagonController {
             }
         }
         return counter;
+    }
+
+    public int getResult() {
+        return result;
     }
 
     /**

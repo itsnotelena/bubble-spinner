@@ -8,10 +8,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import server.Badge;
+import server.BadgesEnum;
 import server.Score;
 import server.Server;
 import server.User;
-
 
 public class ClientTest {
 
@@ -63,7 +63,7 @@ public class ClientTest {
     @Test
     void testAddBadge() {
         Client client = new Client();
-        Badge badge = new Badge("sasuke", "LEVEL2");
+        Badge badge = new Badge("sasuke", BadgesEnum.First_Victory);
         Assertions.assertThat(client.addBadge(badge)).isTrue();
         Assertions.assertThat(new Client().authenticate(new User("test", null, "test"))).isFalse();
     }
@@ -124,9 +124,9 @@ public class ClientTest {
         String maye = "maye";
 
         List<Badge> result = new ArrayList<>();
-        Badge bla = new Badge(maye,"a");
-        Badge blaa = new Badge(maye,"b");
-        Badge blaaa = new Badge(maye,"c");
+        Badge bla = new Badge(maye, BadgesEnum.Badge_Veteran);
+        Badge blaa = new Badge(maye, BadgesEnum.Badge_Legend);
+        Badge blaaa = new Badge(maye, BadgesEnum.Badge_Gamer);
 
         result.add(bla);
         result.add(blaa);
