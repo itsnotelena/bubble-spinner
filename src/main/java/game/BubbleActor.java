@@ -55,7 +55,7 @@ public class BubbleActor extends Image implements Observer {
         circle = new Circle(
                 getX() + SIZE / 2,
                 getY() + SIZE / 2,
-                SIZE / 2
+                SIZE / 2 - 7
         );
         setPosition(x, y);
     }
