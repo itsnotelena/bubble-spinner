@@ -59,10 +59,7 @@ public class BubbleGrid {
         float colDistance = (float) (Config.Game.BUBBLE_SIZE * Math.sqrt(3) / 2.f);
         float dx = colDistance * x;
         float dy = (float) (y * Config.Game.BUBBLE_SIZE - offset * 0.5 * Config.Game.BUBBLE_SIZE);
-        Vector2 vec = new Vector2(dx, dy);
-
-        // Apply rotation
-        vec = vec.rotate(theta);
+        Vector2 vec = new Vector2(dx, dy).rotate(theta);
         return vec;
     }
 

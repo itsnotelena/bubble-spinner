@@ -54,12 +54,12 @@ public class HexagonController {
                 }
             }
         }
-        drawGrid();
     }
 
     public void drawGrid(){
         this.bubbleGrid.update_rotation();
-        for(BubbleActor bub : bubbles) {
+        for (int i = 1; i < bubbles.size(); i++) {
+            BubbleActor bub = bubbles.get(i);
             Vector2 vec = bubbleGrid.gridToWorld(bub.gridPos[0], bub.gridPos[1]);
             bub.center();
             bub.moveBy(vec.x, vec.y);
@@ -129,9 +129,10 @@ public class HexagonController {
     public int popBubbles(BubbleActor hitter) {
         List<BubbleActor> poppable = new ArrayList<>();
         int num = getPoppable(hitter, 0, poppable);
-        if(poppable.size() >= 3){
-            for ( BubbleActor actor : poppable)
-            {
+        int three = 3;
+        if(poppable.size() >= three){
+            for (int i = 0; i < poppable.size(); i++) {
+                BubbleActor actor = poppable.get(i);
                 this.popSingleBubble(actor);
             }
         }
@@ -142,13 +143,13 @@ public class HexagonController {
 
     public int popFloatingBubbles() {
         int num = 0;
-        // Get all bubbles that are connected to the center
-        List<BubbleActor> connected = this.bubbleGrid.getConnectedBubbles(0,0);
         List<BubbleActor> oldBubbles = new ArrayList<>(this.bubbles);
-        for(BubbleActor actor : oldBubbles) {
-            if( !connected.contains(actor) ) {
+        for (int i = 0; i < oldBubbles.size(); i++) {
+            BubbleActor actor = oldBubbles.get(i);
+            if( !this.bubbleGrid.getConnectedBubbles(0,0)
+                    .contains(actor) ) {
                 popSingleBubble(actor);
-                num++;
+                num+=1;
             }
         }
         return num;
@@ -168,7 +169,7 @@ public class HexagonController {
         if (num == three) {
             return 5;
         } else {
-            return (int)(1.2 * formula(num - 1));
+            return (int)(1.5 * formula(num - 1));
         }
     }
 }
