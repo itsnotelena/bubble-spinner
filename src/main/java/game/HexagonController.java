@@ -127,8 +127,23 @@ public class HexagonController {
                 this.popSingleBubble(actor);
             }
         }
+        num += popFloatingBubbles();
         int result = formula(num);
         return result;
+    }
+
+    public int popFloatingBubbles() {
+        int num = 0;
+        List<BubbleActor> connected = this.bubbleGrid.getConnectedBubbles(0,0);
+        List<BubbleActor> oldBubbles = new ArrayList<>(this.bubbles);
+        for(BubbleActor actor : oldBubbles) {
+            if( !connected.contains(actor) ) {
+                popSingleBubble(actor);
+                num++;
+            }
+        }
+        return num;
+
     }
 
     /**
