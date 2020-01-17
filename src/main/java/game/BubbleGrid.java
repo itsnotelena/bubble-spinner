@@ -57,7 +57,7 @@ public class BubbleGrid {
         ArrayList<BubbleActor> list = new ArrayList<>();
 
         // Since our grid is hexagonal we have to do a bit of magic
-        int offset = Math.abs(y) % 2;
+        int offset = Math.abs(x) % 2;
 
         // Start by checking the position on the bottom left of the current bubble and move clockwise around the bubble
         int[] dx = {-1, -1, 0, 1, 1,  0};

@@ -49,10 +49,10 @@ public class HexagonController {
         bubbles.add(bub2);
         bubbleGrid.setBubble(0,1,bub2);
         stage.addActor(bub2);
-        draw();
+        drawGrid();
     }
 
-    private void draw(){
+    private void drawGrid(){
         for(BubbleActor bub : bubbles) {
             Vector2 vec = bubbleGrid.gridToWorld(bub.gridPos[0], bub.gridPos[1]);
             bub.center();
@@ -64,6 +64,7 @@ public class HexagonController {
         this.bubbles.remove(actor);
         this.bubbleGrid.setBubble(actor.gridPos[0], actor.gridPos[1], null);
         stage.getActors().removeValue(actor, true);
+        actor.remove();
     }
 
     /**
@@ -85,14 +86,6 @@ public class HexagonController {
                 counter += getPoppable(candidate, counter, visited);
             }
         }
-//        if (counter >= 3) {
-//            for (int j = 0; j < visited.size();  j++) {
-//                this.popSingleBubble(visited.get(j));
-//            }
-//            bubbles.remove(hit);
-//            stage.getActors().removeValue(hit, true);
-//            hit.remove();
-//        }
         return counter;
     }
 
@@ -109,7 +102,7 @@ public class HexagonController {
                 int[] gridPos = bubbleGrid.worldToGrid(bubble.getPosition().sub(this.bubbleGrid.origin));
                 this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
                 this.popBubbles(bubble);
-                draw();
+                drawGrid();
                 return true;
             }
             if (bubbles.get(i).outSideScreen()) {

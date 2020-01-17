@@ -19,11 +19,7 @@ public class BubbleActor extends Image implements Observer {
     private transient Vector2 movingDirection = new Vector2(0, 0);
     private transient Stage stage;
     public transient int[] gridPos = new int[2];
-    private transient ArrayList<BubbleActor> neighbours;
 
-    public ArrayList<BubbleActor> getNeighbours() {
-        return neighbours;
-    }
     private int colorId;
 
     /**
@@ -48,7 +44,6 @@ public class BubbleActor extends Image implements Observer {
      */
     public BubbleActor(Texture texture, Stage stage, int x, int y) {
         super(texture);
-        neighbours = new ArrayList<>();
         this.stage = stage;
         setSize(SIZE, SIZE);
         setOrigin(SIZE / 2, SIZE / 2);
