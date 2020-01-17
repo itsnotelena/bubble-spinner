@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum BadgesEnum {
-    Badge_Flawless_Victory("Badge_Flawless_Victory"),
+    Top_Of_The_Week("Top_Of_The_Week"),
     Badge_Gamer("Badge_Gamer"),
-    Badge_LEGEND("Badge_LEGEND"),
-    Badge_Live_Die("Badge_Live_Die"),
-    starterBadge("starterBadge");
+    Badge_Legend("Badge_Legend"),
+    Badge_Veteran("Badge_Veteran"),
+    First_Victory("First_Victory");
 
     private final String text;
 

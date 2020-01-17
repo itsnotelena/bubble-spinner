@@ -8,12 +8,12 @@ public class BadgeTest {
 
     @Test
     void gettersAndSetters() {
-        Badge a = new Badge("hh", BadgesEnum.Badge_LEGEND);
+        Badge a = new Badge("hh", BadgesEnum.Badge_Legend);
         a.setUsername("aa");
-        a.setAward(BadgesEnum.Badge_LEGEND);
+        a.setAward(BadgesEnum.Badge_Legend);
 
         Assertions.assertEquals("aa", a.getUsername());
-        Assertions.assertEquals(BadgesEnum.Badge_LEGEND, a.getAward());
+        Assertions.assertEquals(BadgesEnum.Badge_Legend, a.getAward());
     }
 
     @Test
@@ -25,14 +25,14 @@ public class BadgeTest {
 
     @Test
     void equalsFalseTest2() {
-        Badge one = new Badge("Beyonce", BadgesEnum.Badge_LEGEND);
-        Badge two = new Badge("Anitta", BadgesEnum.Badge_Flawless_Victory);
+        Badge one = new Badge("Beyonce", BadgesEnum.Badge_Legend);
+        Badge two = new Badge("Anitta", BadgesEnum.Top_Of_The_Week);
         Assert.assertNotEquals(one,two);
     }
 
     @Test
     void equalsSameObject() {
-        Badge one = new Badge("Bey", BadgesEnum.Badge_LEGEND);
+        Badge one = new Badge("Bey", BadgesEnum.Badge_Legend);
         Assert.assertEquals(one, one);
     }
 
@@ -45,7 +45,7 @@ public class BadgeTest {
 
     @Test
     void equalsUsernameFalse() {
-        Badge one = new Badge("Selena Gomez", BadgesEnum.Badge_Flawless_Victory);
+        Badge one = new Badge("Selena Gomez", BadgesEnum.Top_Of_The_Week);
         Badge two = new Badge("Hayley Kiyoko", BadgesEnum.Badge_Gamer);
 
         Assert.assertNotEquals(one, two);
@@ -53,8 +53,8 @@ public class BadgeTest {
 
     @Test
     void equalsUsernameFalse2() {
-        Badge one = new Badge("Selena Gomez", BadgesEnum.Badge_LEGEND);
-        Badge two = new Badge("Hayley Kiyoko", BadgesEnum.Badge_LEGEND);
+        Badge one = new Badge("Selena Gomez", BadgesEnum.Badge_Legend);
+        Badge two = new Badge("Hayley Kiyoko", BadgesEnum.Badge_Legend);
 
         Assert.assertNotEquals(one, two);
     }

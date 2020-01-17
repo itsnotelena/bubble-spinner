@@ -64,6 +64,7 @@ public class BubbleSpinner extends Game {
     //Suppressed error for UR anomaly error for the variable in the for loop.
     public List<Pair<Image,Label>> getThisUserBadge() {
         Badge[] badge = new Client().getBadges(user);
+        System.out.println(badge.length);
         List<Pair<Image,Label>> result = new ArrayList<>();
         for (Badge name : badge) {
             Image img = new Image(new Texture(Gdx.files

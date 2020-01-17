@@ -12,22 +12,27 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import game.Achievement;
 import game.BubbleSpinner;
 import game.Pair;
 
 import java.util.List;
 
-public class Achievement extends ScreenAdapter {
+public class AchievementScreen extends ScreenAdapter {
 
     private static String def = "default";
     private transient Label backButton;
     private transient Label badgeLabel;
     private transient Stage stage;
     private transient BubbleSpinner game; // screen to be shown after.
+    private transient Achievement achievement;
 
 
-    public Achievement(BubbleSpinner game) {
+    public AchievementScreen(BubbleSpinner game) {
         this.game = game;
+        this.achievement = new Achievement(game.getUser());
+        this.achievement.updateAchievements();
+        this.achievement.updateAchievements();
     }
 
     @Override

@@ -52,7 +52,7 @@ public class MenuScreen extends ScreenAdapter {
         startButton = new TextButton("Start game", skin, def);
         optionsButton = new TextButton("Difficulty: Hard", skin, def);
         logoutButton = new TextButton("Logout", skin, def);
-        achievementButton = new TextButton("Achievement",skin,def);
+        achievementButton = new TextButton("AchievementScreen",skin,def);
         exitButton = new TextButton("Exit", skin, def);
 
         computerButton = new TextButton("Computer Player OFF", skin, def);
@@ -248,7 +248,7 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void achievementPanel() {
-        game.setScreen(new Achievement(game));
+        game.setScreen(new AchievementScreen(game));
         stage.dispose();
     }
 

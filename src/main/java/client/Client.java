@@ -100,4 +100,10 @@ public class Client {
                 boolean.class);
         return res;
     }
+
+    public Score getSCore(User user) {
+        return new RestTemplate().postForObject(Config.Api.URL + "/getUserScore",
+                                user,
+                                Score.class);
+    }
 }

@@ -109,7 +109,7 @@ public class Shooter {
         stage.getViewport().project(bubblePos);
 
         Vector2 dir = newPos.sub(bubblePos).nor();
-        current().setMovingDirection(new Vector2(5 * dir.x, 5 * dir.y));
+        current().setMovingDirection(new Vector2(8 * dir.x, 8 * dir.y));
     }
 
     public void setBubbleFactory(BubbleFactory bubbleFactory) {

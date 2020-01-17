@@ -63,7 +63,7 @@ public class ClientTest {
     @Test
     void testAddBadge() {
         Client client = new Client();
-        Badge badge = new Badge("sasuke", BadgesEnum.starterBadge);
+        Badge badge = new Badge("sasuke", BadgesEnum.First_Victory);
         Assertions.assertThat(client.addBadge(badge)).isTrue();
         Assertions.assertThat(new Client().authenticate(new User("test", null, "test"))).isFalse();
     }
@@ -124,8 +124,8 @@ public class ClientTest {
         String maye = "maye";
 
         List<Badge> result = new ArrayList<>();
-        Badge bla = new Badge(maye, BadgesEnum.Badge_Live_Die);
-        Badge blaa = new Badge(maye, BadgesEnum.Badge_LEGEND);
+        Badge bla = new Badge(maye, BadgesEnum.Badge_Veteran);
+        Badge blaa = new Badge(maye, BadgesEnum.Badge_Legend);
         Badge blaaa = new Badge(maye, BadgesEnum.Badge_Gamer);
 
         result.add(bla);

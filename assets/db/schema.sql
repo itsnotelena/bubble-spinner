@@ -17,5 +17,6 @@ CREATE TABLE IF NOT EXISTS games (
 );
 CREATE TABLE IF NOT EXISTS badges (
 	username VARCHAR(64) NOT NULL,
-	award VARCHAR(64) NOT NULL
+	award VARCHAR(64) NOT NULL,
+	PRIMARY KEY (username, award)
 );
