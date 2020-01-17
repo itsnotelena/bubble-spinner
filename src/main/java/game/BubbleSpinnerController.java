@@ -32,10 +32,10 @@ public class BubbleSpinnerController {
      */
     public void update() {
         BubbleActor bubble = shooter.current();
-
         checkShoot(bubble);
-
         bubble.update();
+
+        hexagonController.drawGrid();
 
         if (hexagonController.checkCollisions(bubble)
             || bubble.belowScreen()) {

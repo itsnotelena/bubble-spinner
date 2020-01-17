@@ -6,15 +6,32 @@ import config.Config;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class BubbleGrid {
     private static final int RADIUS = 100;
     private transient BubbleActor[][] bubbles = new BubbleActor[RADIUS*2][RADIUS*2];
     public Vector2 origin;
+    private float theta = 30;
+    private float delta_theta = 100;
 
     public BubbleGrid(Vector2 origin){
         this.origin = origin;
+    }
+
+    public void apply_torque(Vector2 moveDirection, Vector2 strikePosition) {
+        Vector2 originToHit = strikePosition.sub(origin);
+        float torque = originToHit.crs(moveDirection) / 100;
+        delta_theta += torque;
+    }
+
+    public void update_rotation() {
+        if (Math.abs(delta_theta) > 0.1 ) {
+            delta_theta *= 0.98f;
+        }
+        else {
+            delta_theta = 0;
+        }
+        theta += delta_theta;
     }
 
     public void setBubble(int x, int y, BubbleActor bubbleActor) {
@@ -41,11 +58,16 @@ public class BubbleGrid {
         float colDistance = (float) (Config.Game.BUBBLE_SIZE * Math.sqrt(3) / 2.f);
         float dx = colDistance * x;
         float dy = (float) (y * Config.Game.BUBBLE_SIZE - offset * 0.5 * Config.Game.BUBBLE_SIZE);
-        return new Vector2(dx, dy);
+        Vector2 vec = new Vector2(dx, dy);
+
+        // Apply rotation
+        vec = vec.rotate(theta);
+        return vec;
     }
 
     // Takes an offset from the center and returns the grid coordinates
     public int[] worldToGrid(Vector2 vec) {
+        vec = vec.rotate(-theta); // Remove the rotation
         float colDistance = (float) (Config.Game.BUBBLE_SIZE * Math.sqrt(3) / 2.f);
         int x = Math.round((vec.x / colDistance));
         int offset = Math.abs(x) % 2;

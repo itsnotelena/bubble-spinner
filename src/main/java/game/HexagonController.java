@@ -52,7 +52,8 @@ public class HexagonController {
         drawGrid();
     }
 
-    private void drawGrid(){
+    public void drawGrid(){
+        this.bubbleGrid.update_rotation();
         for(BubbleActor bub : bubbles) {
             Vector2 vec = bubbleGrid.gridToWorld(bub.gridPos[0], bub.gridPos[1]);
             bub.center();
@@ -97,6 +98,7 @@ public class HexagonController {
     public boolean checkCollisions(BubbleActor bubble) {
         for (int i = 0; i < bubbles.size(); ++i) {
             if (bubble.collide(bubbles.get(i))) {
+                this.bubbleGrid.apply_torque(bubble.getMovingDirection(), bubble.getPosition());
                 bubble.stop();
                 bubbles.add(bubble);
                 int[] gridPos = bubbleGrid.worldToGrid(bubble.getPosition().sub(this.bubbleGrid.origin));
@@ -134,6 +136,7 @@ public class HexagonController {
 
     public int popFloatingBubbles() {
         int num = 0;
+        // Get all bubbles that are connected to the center
         List<BubbleActor> connected = this.bubbleGrid.getConnectedBubbles(0,0);
         List<BubbleActor> oldBubbles = new ArrayList<>(this.bubbles);
         for(BubbleActor actor : oldBubbles) {
