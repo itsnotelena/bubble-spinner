@@ -153,10 +153,10 @@ public class HexagonController {
     public int popFloatingBubbles() {
         int num = 0;
         List<BubbleActor> oldBubbles = new ArrayList<>(this.bubbles);
+        List<BubbleActor> connectedBubbles = this.bubbleGrid.getConnectedBubbles(0,0);
         for (int i = 0; i < oldBubbles.size(); i++) {
             BubbleActor actor = oldBubbles.get(i);
-            if( !this.bubbleGrid.getConnectedBubbles(0,0)
-                    .contains(actor) ) {
+            if ( !connectedBubbles.contains(actor) ) {
                 popSingleBubble(actor);
                 num+=1;
             }
