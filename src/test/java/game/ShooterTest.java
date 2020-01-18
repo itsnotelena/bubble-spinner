@@ -162,6 +162,27 @@ public class ShooterTest {
         Mockito.verify(current.get()).setMovingDirection(Mockito.any(Vector2.class));
     }
 
+    @Test
+    public void testShiftBubblesEmptyShooter() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        Gdx.app.postRunnable(() -> {
+            Mockito.when(stage.getViewport()).thenReturn(viewport);
+            Shooter shooter = new Shooter(stage);
+            shooter.setBubbleFactory(bubbleFactory);
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            shooter.shiftBubbles(new int[] { 0, 1 });
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Mockito.verify(bubbleActor, Mockito.times(5))
+                .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
+        Mockito.verify(stage, Mockito.times(5))
+                .addActor(Mockito.any(BubbleActor.class));
+    }
+
     @AfterEach
     public void after() {
         app.exit();

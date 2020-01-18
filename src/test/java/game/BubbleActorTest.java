@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import config.Config;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.assertj.core.api.Assertions;
@@ -82,16 +83,20 @@ public class BubbleActorTest {
     public void testBubbleActorConstructor() {
         AtomicReference<Vector2> pos = new AtomicReference<>(new Vector2(0, 0));
         AtomicBoolean done = new AtomicBoolean(false);
+        AtomicInteger colorId = new AtomicInteger(0);
         Gdx.app.postRunnable(() -> {
             Gdx.graphics = new GraphicsWrapper();
             BubbleActor bubbleActor = new BubbleActor(texture, stage);
             pos.set(bubbleActor.getPosition());
+            bubbleActor.setColorId(1);
+            colorId.set(bubbleActor.getColorId());
             done.set(true);
         });
         while (!done.get()) {
             assert true;
         }
         Assertions.assertThat(pos.get()).isEqualTo(new Vector2(50, 68));
+        Assertions.assertThat(colorId.get()).isEqualTo(1);
     }
 
     @Test
@@ -307,12 +312,14 @@ public class BubbleActorTest {
         AtomicBoolean done = new AtomicBoolean(false);
         AtomicBoolean notMoving = new AtomicBoolean(true);
         AtomicBoolean moving = new AtomicBoolean(false);
+        AtomicReference<Vector2> movingDirection = new AtomicReference<>();
         Gdx.app.postRunnable(() -> {
             Gdx.graphics = new GraphicsWrapper();
             BubbleActor bubbleActor = new BubbleActor(texture, stage, -100, -100);
             notMoving.set(bubbleActor.isMoving());
             bubbleActor.setMovingDirection(new Vector2(1,1));
             moving.set(bubbleActor.isMoving());
+            movingDirection.set(bubbleActor.getMovingDirection());
             done.set(true);
         });
         while (!done.get()) {
@@ -320,6 +327,7 @@ public class BubbleActorTest {
         }
         Assertions.assertThat(notMoving).isFalse();
         Assertions.assertThat(moving).isTrue();
+        Assertions.assertThat(movingDirection.get()).isEqualTo(new Vector2(1, 1));
     }
 
     @Test
