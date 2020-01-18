@@ -77,6 +77,7 @@ public class HexagonController {
         this.bubbleGrid.setBubble(actor.gridPos[0], actor.gridPos[1], null);
         stage.getActors().removeValue(actor, true);
         actor.remove();
+        mapBubbles[actor.getColorId()]--;
     }
 
     /**
@@ -116,6 +117,7 @@ public class HexagonController {
                 this.bubbleGrid.apply_torque(bubble.getMovingDirection(), bubble.getPosition());
                 bubble.stop();
                 bubbles.add(bubble);
+                mapBubbles[bubble.getColorId()]++;
                 int[] gridPos = bubbleGrid.worldToGrid(bubble.getPosition().sub(this.bubbleGrid.origin));
                 this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
                 result += this.popBubbles(bubble);
@@ -150,6 +152,9 @@ public class HexagonController {
         return result;
     }
 
+    @SuppressWarnings(value="PMD")
+    // The warning is a DU anomaly on connectedBubbles, PMD sees it as undefined which is a false
+    // positive. A fix would make the complexity from linear to quadratic.
     public int popFloatingBubbles() {
         int num = 0;
         List<BubbleActor> oldBubbles = new ArrayList<>(this.bubbles);
@@ -162,7 +167,6 @@ public class HexagonController {
             }
         }
         return num;
-
     }
 
     /**
@@ -192,5 +196,13 @@ public class HexagonController {
             // Add more bubbles to the grid.
             missedBubbles = 0;
         }
+    }
+
+    /**
+     * Get the hash map of bubbles.
+     * @return a map for the bubbles contained.
+     */
+    public int[] getMapBubbles() {
+        return mapBubbles;
     }
 }

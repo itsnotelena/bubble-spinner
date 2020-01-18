@@ -10,7 +10,7 @@ import java.util.Stack;
 
 public class Shooter {
 
-    private transient Deque<BubbleActor> available;
+    private transient Stack<BubbleActor> available;
     private transient BubbleFactory bubbleFactory;
     private static final int MIN_BUBBLES = 7;
 
@@ -23,27 +23,23 @@ public class Shooter {
      */
     public Shooter(Stage stage, int difficulty) {
         this.stage = stage;
-        this.available = new LinkedList<>();
+        this.available = new Stack<>();
         this.bubbleFactory = new BubbleFactory(stage, difficulty);
+    }
+
+    public Shooter(Stage stage) {
+        this(stage, 0);
     }
 
     /**
      * This function creates the bubbles at the top
      * of the screen and adds them to the Stage.
      */
-    public void initialize() {
-        //max is the Difficulty of the level
+    public void initialize(int[] mapBubbles) {
         this.bubbleFactory.addAllTextures();
-        refill();
-        Stack<BubbleActor> stack = new Stack<>();
-        assert available.size() > 5;
-        for (int i = 0; i < 5; ++i) {
-            current().shiftX(true, i);
+        for (int i = 4; i >= 0; --i) {
+            available.push(bubbleFactory.createBubbleGivenMap(mapBubbles).shiftX(true, i));
             stage.addActor(current());
-            stack.push(available.poll());
-        }
-        while (!stack.isEmpty()) {
-            available.addFirst(stack.pop());
         }
     }
 
@@ -65,22 +61,24 @@ public class Shooter {
      * After the bubble has been shot shift the other
      * ones to the left and add a new one at the end.
      */
-    public void shiftBubbles() {
-        refill();
+    public void shiftBubbles(int[] mapBubbles) {
+        if (available.size() == 0) {
+            initialize(mapBubbles);
+            return;
+        }
+
         Stack<BubbleActor> stack = new Stack<>();
-        for (int i = 0; i < 4; ++i) {
+        while (!available.isEmpty()) {
             current().shiftX(false);
             stack.push(poll());
         }
-        current().shiftX(true, 4);
-        stage.addActor(current());
         while (!stack.isEmpty()) {
-            available.addFirst(stack.pop());
+            available.push(stack.pop());
         }
     }
 
     public BubbleActor poll() {
-        return available.poll();
+        return available.pop();
     }
 
     public BubbleActor current() {

@@ -24,7 +24,7 @@ public class BubbleSpinnerController {
         this.shooter = new Shooter(stage, difficulty);
         this.hexagonController = new HexagonController(stage, difficulty);
         this.hexagonController.drawGrid();
-        this.shooter.initialize();
+        this.shooter.initialize(hexagonController.getMapBubbles());
     }
 
     /**
@@ -41,7 +41,7 @@ public class BubbleSpinnerController {
         if (hexagonController.checkCollisions(bubble)
             || bubble.belowScreen()) {
             shooter.poll();
-            shooter.shiftBubbles();
+            shooter.shiftBubbles(hexagonController.getMapBubbles());
             if (bubble.belowScreen()) {
                 bubble.remove();
                 hexagonController.bubbleMissed();
