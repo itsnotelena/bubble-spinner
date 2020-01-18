@@ -44,6 +44,7 @@ public class BubbleSpinnerController {
             shooter.shiftBubbles();
             if (bubble.belowScreen()) {
                 bubble.remove();
+                hexagonController.bubbleMissed();
             }
         }
 

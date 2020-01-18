@@ -2,9 +2,8 @@ package game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import config.Config;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,8 @@ public class HexagonController {
     private transient BubbleGrid bubbleGrid;
     private transient BubbleFactory bubbleFactory;
     public transient boolean lostGame;
+    private transient int[] mapBubbles;
+    private transient int missedBubbles;
 
     public List<BubbleActor> getBubbles() {
         return bubbles;
@@ -26,7 +27,7 @@ public class HexagonController {
      * @param stage Stage where objects reside.
      */
     public HexagonController(Stage stage) {
-
+        this.mapBubbles = new int[Config.Bubbles.textures.length];
         this.bubbleFactory = new BubbleFactory(stage);
         this.bubbleFactory.addAllTextures(4);
         this.bubbles = new ArrayList<>();
@@ -54,6 +55,7 @@ public class HexagonController {
                     bubbles.add(bub2);
                     bubbleGrid.setBubble(j, i, bub2);
                     stage.addActor(bub2);
+                    mapBubbles[bub2.getColorId()]++;
                 }
             }
         }
@@ -177,6 +179,18 @@ public class HexagonController {
             return 5;
         } else {
             return (int)(1.5 * formula(num - 1));
+        }
+    }
+
+    /**
+     * Called when a bubble is missed.
+     */
+    public void bubbleMissed() {
+        final int MAX_MISSED_BUBBLES = 3;
+        missedBubbles++;
+        if (missedBubbles >= MAX_MISSED_BUBBLES) {
+            // Add more bubbles to the grid.
+            missedBubbles = 0;
         }
     }
 }
