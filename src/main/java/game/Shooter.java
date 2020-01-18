@@ -21,10 +21,10 @@ public class Shooter {
      * top of the screen.
      * @param stage Stage where all objects reside.
      */
-    public Shooter(Stage stage) {
+    public Shooter(Stage stage, int difficulty) {
         this.stage = stage;
         this.available = new LinkedList<>();
-        this.bubbleFactory = new BubbleFactory(stage);
+        this.bubbleFactory = new BubbleFactory(stage, difficulty);
     }
 
     /**
@@ -33,7 +33,7 @@ public class Shooter {
      */
     public void initialize() {
         //max is the Difficulty of the level
-        this.bubbleFactory.addAllTextures(4);
+        this.bubbleFactory.addAllTextures();
         refill();
         Stack<BubbleActor> stack = new Stack<>();
         assert available.size() > 5;

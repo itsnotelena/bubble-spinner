@@ -18,8 +18,8 @@ public class BotController extends BubbleSpinnerController {
      * @param gameScreen GameScreen the game is currently played in.
      * @param stage      Stage where all objects reside.
      */
-    public BotController(GameScreen gameScreen, Stage stage) {
-        super(gameScreen, stage);
+    public BotController(GameScreen gameScreen, Stage stage, int difficulty) {
+        super(gameScreen, stage, difficulty);
         calculateBounds();
     }
 

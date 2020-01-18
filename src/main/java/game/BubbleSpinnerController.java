@@ -18,11 +18,11 @@ public class BubbleSpinnerController {
      * @param gameScreen GameScreen the game is currently played in.
      * @param stage Stage where all objects reside.
      */
-    public BubbleSpinnerController(GameScreen gameScreen, Stage stage) {
+    public BubbleSpinnerController(GameScreen gameScreen, Stage stage, int difficulty) {
         this.gameScreen = gameScreen;
         this.stage = stage;
-        this.shooter = new Shooter(stage);
-        this.hexagonController = new HexagonController(stage);
+        this.shooter = new Shooter(stage, difficulty);
+        this.hexagonController = new HexagonController(stage, difficulty);
         this.hexagonController.drawGrid();
         this.shooter.initialize();
     }

@@ -26,10 +26,10 @@ public class HexagonController {
      * Constructor for the HexagonController.
      * @param stage Stage where objects reside.
      */
-    public HexagonController(Stage stage) {
+    public HexagonController(Stage stage, int difficulty) {
         this.mapBubbles = new int[Config.Bubbles.textures.length];
-        this.bubbleFactory = new BubbleFactory(stage);
-        this.bubbleFactory.addAllTextures(4);
+        this.bubbleFactory = new BubbleFactory(stage, difficulty);
+        this.bubbleFactory.addAllTextures();
         this.bubbles = new ArrayList<>();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
         stage.addActor(center);
