@@ -46,6 +46,9 @@ public class BubbleFactory implements AbstractBubbleFactory {
                 possibleColors.add(i);
             }
         }
+        if (possibleColors.size() == 0) {
+            return null;
+        }
 
         int pos = rnd.nextInt(possibleColors.size());
         BubbleActor actor = new BubbleActor(texture.get(possibleColors.get(pos)), stage);

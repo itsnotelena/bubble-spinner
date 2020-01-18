@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Stack;
 
 public class Shooter {
@@ -44,20 +42,6 @@ public class Shooter {
     }
 
     /**
-     * If the queue is running short in bubbles
-     * refill them.
-     */
-    public void refill() {
-        if (available.size() > MIN_BUBBLES) {
-            return;
-        }
-
-        for (int i = 0; i < 2 * MIN_BUBBLES; ++i) {
-            available.add(bubbleFactory.createBubble());
-        }
-    }
-
-    /**
      * After the bubble has been shot shift the other
      * ones to the left and add a new one at the end.
      */
@@ -66,7 +50,7 @@ public class Shooter {
             initialize(mapBubbles);
             return;
         }
-
+        System.out.println(available.size());
         Stack<BubbleActor> stack = new Stack<>();
         while (!available.isEmpty()) {
             current().shiftX(false);
@@ -78,11 +62,11 @@ public class Shooter {
     }
 
     public BubbleActor poll() {
-        return available.pop();
+        return available.empty() ? null : available.pop();
     }
 
     public BubbleActor current() {
-        return available.peek();
+        return available.empty() ? null : available.peek();
     }
 
     /**

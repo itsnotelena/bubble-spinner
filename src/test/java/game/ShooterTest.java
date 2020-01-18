@@ -101,31 +101,13 @@ public class ShooterTest {
     }
 
     @Test
-    public void testRefill() {
-        AtomicReference<BubbleActor> result = new AtomicReference<>(null);
+    public void testInitialize() {
         AtomicBoolean done = new AtomicBoolean(false);
         Gdx.app.postRunnable(() -> {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
-            shooter.refill();
-            result.set(shooter.current());
-            done.set(true);
-        });
-        while (!done.get()) {
-            assert true;
-        }
-        Assertions.assertThat(result.get()).isEqualTo(bubbleActor);
-    }
-
-    @Test
-    public void testInitialize() throws InterruptedException {
-        AtomicBoolean done = new AtomicBoolean(false);
-        Gdx.app.postRunnable(() -> {
-            Shooter shooter = new Shooter(stage);
-            shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
-            shooter.initialize();
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
+            shooter.initialize(new int[] { 0, 1 });
             done.set(true);
         });
         while (!done.get()) {
@@ -143,10 +125,11 @@ public class ShooterTest {
         Gdx.app.postRunnable(() -> {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
-            shooter.initialize();
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            shooter.initialize(new int[] { 0, 1 });
             shooter.poll();
-            shooter.shiftBubbles();
+            shooter.shiftBubbles(new int[] { 0, 1 });
             done.set(true);
         });
         while (!done.get()) {
@@ -154,7 +137,7 @@ public class ShooterTest {
         }
         Mockito.verify(bubbleActor, Mockito.times(4))
                 .shiftX(false);
-        Mockito.verify(bubbleActor, Mockito.times(6))
+        Mockito.verify(bubbleActor, Mockito.times(5))
                 .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
     }
 
@@ -166,8 +149,9 @@ public class ShooterTest {
             Mockito.when(stage.getViewport()).thenReturn(viewport);
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
-            shooter.initialize();
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            shooter.initialize(new int[] { 0, 1 });
             shooter.shootBubble();
             current.set(shooter.current());
             done.set(true);
