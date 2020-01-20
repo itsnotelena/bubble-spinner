@@ -58,6 +58,7 @@ public class GameScreen implements Screen {
             bubbleSpinnerController = new BubbleSpinnerController(this, stage,
                                     gameSettings.getDifficulty());
         }
+        bubbleSpinnerController.initialize();
 
         if (!gameSettings.isInfinite()) {
             timer = new Timer();

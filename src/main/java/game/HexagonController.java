@@ -29,15 +29,20 @@ public class HexagonController {
     public HexagonController(Stage stage, int difficulty) {
         this.mapBubbles = new int[Config.Bubbles.textures.length];
         this.bubbleFactory = new BubbleFactory(stage, difficulty);
-        this.bubbleFactory.addAllTextures();
         this.bubbles = new ArrayList<>();
+        this.stage = stage;
+    }
+
+    /**
+     * Create the grid and draw it at the centre of the screen.
+     */
+    public void initialize() {
+        this.bubbleFactory.addAllTextures();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
         stage.addActor(center);
         bubbles.add(center);
         this.bubbleGrid = new BubbleGrid(center.getPosition());
         bubbleGrid.setBubble(0,0, center);
-
-        this.stage = stage;
         BubbleActor bub2;
 
         //This loop iterates over all of the

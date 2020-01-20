@@ -23,6 +23,13 @@ public class BubbleSpinnerController {
         this.stage = stage;
         this.shooter = new Shooter(stage, difficulty);
         this.hexagonController = new HexagonController(stage, difficulty);
+    }
+
+    /**
+     * Create the shooter and hexagon objects in the game.
+     */
+    public void initialize() {
+        this.hexagonController.initialize();
         this.hexagonController.drawGrid();
         this.shooter.initialize(hexagonController.getMapBubbles());
     }
@@ -69,7 +76,28 @@ public class BubbleSpinnerController {
         }
     }
 
+    /**
+     * Get the game score.
+     * @return Int with the result.
+     */
     public int getResult() {
         return hexagonController.getResult();
     }
+
+    /**
+     * Set custom hexagon.
+     * @param hexagonController HexagonController object.
+     */
+    public void setHexagonController(HexagonController hexagonController) {
+        this.hexagonController = hexagonController;
+    }
+
+    /**
+     * Set custom shooter.
+     * @param shooter Shooter object.
+     */
+    public void setShooter(Shooter shooter) {
+        this.shooter = shooter;
+    }
+
 }

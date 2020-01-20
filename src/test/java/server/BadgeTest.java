@@ -75,4 +75,11 @@ public class BadgeTest {
 
         Assertions.assertEquals(one.toString(), two.toString());
     }
+
+    @Test
+    void testEqualsNull() {
+        Badge one = new Badge("", BadgesEnum.First_Victory);
+
+        Assertions.assertFalse(one.equals(null));
+    }
 }

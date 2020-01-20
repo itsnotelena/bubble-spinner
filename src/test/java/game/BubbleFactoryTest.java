@@ -87,6 +87,39 @@ public class BubbleFactoryTest {
         Assertions.assertThat(next.get()).isInstanceOf(BubbleActor.class);
     }
 
+    @Test
+    public void testCreateBubbleGivenMapEmpty() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        AtomicReference<BubbleActor> actor = new AtomicReference<>();
+        Gdx.app.postRunnable(() -> {
+            BubbleFactory bubbleFactory = new BubbleFactory(stage);
+            bubbleFactory.addTexture(texture);
+            actor.set(bubbleFactory.createBubbleGivenMap(new int[] { 0, 0 }));
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Assertions.assertThat(actor.get()).isNull();
+    }
+
+    @Test
+    public void testCreateBubbleGivenMap() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        AtomicReference<BubbleActor> actor = new AtomicReference<>();
+        Gdx.app.postRunnable(() -> {
+            BubbleFactory bubbleFactory = new BubbleFactory(stage);
+            bubbleFactory.addTexture(texture);
+            actor.set(bubbleFactory.createBubbleGivenMap(new int[] { 2, 0 }));
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Assertions.assertThat(actor.get()).isInstanceOf(BubbleActor.class);
+        Assertions.assertThat(actor.get().getColorId()).isEqualTo(0);
+    }
+
     @AfterEach
     public void after() {
         app.exit();
