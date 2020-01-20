@@ -10,8 +10,6 @@ public class Shooter {
 
     private transient Stack<BubbleActor> available;
     private transient BubbleFactory bubbleFactory;
-    private static final int MIN_BUBBLES = 7;
-
     private transient Stage stage;
 
     /**
@@ -36,8 +34,11 @@ public class Shooter {
     public void initialize(int[] mapBubbles) {
         this.bubbleFactory.addAllTextures();
         for (int i = 4; i >= 0; --i) {
-            available.push(bubbleFactory.createBubbleGivenMap(mapBubbles).shiftX(true, i));
-            stage.addActor(current());
+            BubbleActor bubble = bubbleFactory.createBubbleGivenMap(mapBubbles);
+            if (bubble != null) {
+                available.push(bubble.shiftX(true, i));
+                stage.addActor(current());
+            }
         }
     }
 
@@ -45,19 +46,31 @@ public class Shooter {
      * After the bubble has been shot shift the other
      * ones to the left and add a new one at the end.
      */
+    @SuppressWarnings(value="PMD")
+    // The PMD warning is an anomaly on the variable removed which is only used
+    // by the function to keep track of the number of removed bubbles.
     public void shiftBubbles(int[] mapBubbles) {
         if (available.size() == 0) {
             initialize(mapBubbles);
             return;
         }
 
+        int removed = 0;
         Stack<BubbleActor> stack = new Stack<>();
         while (!available.isEmpty()) {
-            current().shiftX(false);
-            stack.push(poll());
+            BubbleActor current = poll();
+            if (mapBubbles[current.getColorId()] != 0) {
+                stack.push(current.shiftX(false, 1 + removed));
+            } else {
+                removed++;
+                current.remove();
+            }
         }
         while (!stack.isEmpty()) {
             available.push(stack.pop());
+        }
+        if (available.size() == 0) {
+            initialize(mapBubbles);
         }
     }
 

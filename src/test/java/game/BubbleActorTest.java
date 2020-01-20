@@ -8,6 +8,7 @@ import com.badlogic.gdx.backends.headless.mock.graphics.MockGraphics;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import config.Config;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -390,6 +391,23 @@ public class BubbleActorTest {
             assert true;
         }
         Assertions.assertThat(direction.get()).isEqualTo(new Vector2(-1, 1));
+    }
+
+    @Test
+    public void testBubbleRemove() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        AtomicBoolean correct = new AtomicBoolean(false);
+        Gdx.app.postRunnable(() -> {
+            Gdx.graphics = new GraphicsWrapper();
+            BubbleActor bubbleActor = new BubbleActor(texture, stage);
+            Mockito.when(stage.getActors()).thenReturn(new Array<>());
+            correct.set(bubbleActor.remove());
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Assertions.assertThat(correct.get()).isTrue();
     }
 
     @After

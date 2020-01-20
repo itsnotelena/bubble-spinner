@@ -80,7 +80,6 @@ public class HexagonController {
     private void popSingleBubble(BubbleActor actor) {
         this.bubbles.remove(actor);
         this.bubbleGrid.setBubble(actor.gridPos[0], actor.gridPos[1], null);
-        stage.getActors().removeValue(actor, true);
         actor.remove();
         mapBubbles[actor.getColorId()]--;
     }

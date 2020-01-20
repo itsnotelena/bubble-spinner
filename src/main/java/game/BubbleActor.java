@@ -138,6 +138,13 @@ public class BubbleActor extends Image implements Observer {
         this.circle.y += y;
     }
 
+    @Override
+    public boolean remove() {
+        stage.getActors().removeValue(this, true);
+        super.remove();
+        return true;
+    }
+
     public void setMovingDirection(Vector2 movingDirection) {
         this.movingDirection = movingDirection;
     }

@@ -135,9 +135,7 @@ public class ShooterTest {
         while (!done.get()) {
             assert true;
         }
-        Mockito.verify(bubbleActor, Mockito.times(4))
-                .shiftX(false);
-        Mockito.verify(bubbleActor, Mockito.times(5))
+        Mockito.verify(bubbleActor, Mockito.times(10))
                 .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
     }
 
@@ -181,6 +179,25 @@ public class ShooterTest {
                 .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
         Mockito.verify(stage, Mockito.times(5))
                 .addActor(Mockito.any(BubbleActor.class));
+    }
+
+    @Test
+    public void testShiftBubblesMultiples() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        Gdx.app.postRunnable(() -> {
+            Mockito.when(stage.getViewport()).thenReturn(viewport);
+            Shooter shooter = new Shooter(stage);
+            shooter.setBubbleFactory(bubbleFactory);
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            shooter.shiftBubbles(new int[] { 1, 0 });
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Mockito.verify(bubbleActor, Mockito.times(5))
+                .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
     }
 
     @After
