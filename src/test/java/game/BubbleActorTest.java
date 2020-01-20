@@ -220,6 +220,7 @@ public class BubbleActorTest {
         Gdx.app.postRunnable(() -> {
             Gdx.graphics = new GraphicsWrapper();
             Mockito.when(stage.getViewport()).thenReturn(viewport);
+            Mockito.when(viewport.project(Mockito.any(Vector2.class))).thenReturn(new Vector2(1,1));
             BubbleActor bubbleActor = new BubbleActor(texture,
                     stage);
             firstPos.set(bubbleActor.getPosition());
@@ -261,6 +262,7 @@ public class BubbleActorTest {
         Gdx.app.postRunnable(() -> {
             Gdx.graphics = new GraphicsWrapper();
             Mockito.when(stage.getViewport()).thenReturn(viewport);
+            Mockito.when(viewport.project(Mockito.any(Vector2.class))).thenReturn(new Vector2(1,1));
             BubbleActor bubbleActor = new BubbleActor(texture, stage);
             bubbleActor.bounce();
             bubbleActor.setMovingDirection(new Vector2(2, 2));
@@ -348,6 +350,46 @@ public class BubbleActorTest {
         }
         Assertions.assertThat(isBelow).isTrue();
         Assertions.assertThat(isNotBelow).isFalse();
+    }
+
+    @Test
+    public void testBounceLeftWall() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        AtomicReference<Vector2> direction = new AtomicReference<>(new Vector2(0, 0));
+        Gdx.app.postRunnable(() -> {
+            Gdx.graphics = new GraphicsWrapper();
+            BubbleActor bubbleActor = new BubbleActor(texture, stage, -100, -100);
+            bubbleActor.setMovingDirection(new Vector2(1, 1));
+            Mockito.when(stage.getViewport()).thenReturn(viewport);
+            Mockito.when(viewport.project(Mockito.any(Vector2.class))).thenReturn(new Vector2(-100, -100));
+            bubbleActor.update();
+            direction.set(bubbleActor.getMovingDirection());
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Assertions.assertThat(direction.get()).isEqualTo(new Vector2(-1, 1));
+    }
+
+    @Test
+    public void testBounceRightWall() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        AtomicReference<Vector2> direction = new AtomicReference<>(new Vector2(0, 0));
+        Gdx.app.postRunnable(() -> {
+            Gdx.graphics = new GraphicsWrapper();
+            BubbleActor bubbleActor = new BubbleActor(texture, stage, -100, -100);
+            bubbleActor.setMovingDirection(new Vector2(1, 1));
+            Mockito.when(stage.getViewport()).thenReturn(viewport);
+            Mockito.when(viewport.project(Mockito.any(Vector2.class))).thenReturn(new Vector2(150, 0));
+            bubbleActor.update();
+            direction.set(bubbleActor.getMovingDirection());
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Assertions.assertThat(direction.get()).isEqualTo(new Vector2(-1, 1));
     }
 
     @AfterEach

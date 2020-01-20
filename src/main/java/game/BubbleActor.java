@@ -66,7 +66,7 @@ public class BubbleActor extends Image implements Observer {
         }
         Vector2 pos = vec(0, 0);
         localToStageCoordinates(pos);
-        stage.getViewport().project(pos);
+        pos = stage.getViewport().project(pos);
         if (pos.x + SIZE > Gdx.graphics.getWidth() || pos.x < 0) {
             bounce();
         }
