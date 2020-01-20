@@ -16,22 +16,22 @@ import java.util.List;
 public class BubbleSpinnerControllerTest {
 
     @Mock
-    private GameScreen gameScreen;
+    private transient GameScreen gameScreen;
 
     @Mock
-    private Stage stage;
+    private transient Stage stage;
 
     @Mock
-    private Shooter shooter;
+    private transient Shooter shooter;
 
     @Mock
-    private HexagonController hexagonController;
+    private transient HexagonController hexagonController;
 
     @Mock
-    private BubbleActor bubble;
+    private transient BubbleActor bubble;
 
-    private BubbleSpinnerController controller;
-    private CustomMockInput input;
+    private transient BubbleSpinnerController controller;
+    private transient CustomMockInput input;
 
     @BeforeEach
     public void before() {
@@ -97,32 +97,32 @@ public class BubbleSpinnerControllerTest {
         Mockito.verify(gameScreen, Mockito.never()).dispose();
         Mockito.verify(gameScreen, Mockito.times(1)).nextLevel();
     }
-}
 
-class CustomMockInput extends MockInput {
+    class CustomMockInput extends MockInput {
 
-    private boolean touched = false;
-    private boolean keyPressed = false;
+        private transient boolean touched = false;
+        private transient boolean keyPressed = false;
 
-    public CustomMockInput() {
-        super();
-    }
+        public CustomMockInput() {
+            super();
+        }
 
-    @Override
-    public boolean isTouched() {
-        return touched;
-    }
+        @Override
+        public boolean isTouched() {
+            return touched;
+        }
 
-    public void setTouched(boolean touched) {
-        this.touched = touched;
-    }
+        public void setTouched(boolean touched) {
+            this.touched = touched;
+        }
 
-    @Override
-    public boolean isKeyJustPressed(int key) {
-        return keyPressed;
-    }
+        @Override
+        public boolean isKeyJustPressed(int key) {
+            return keyPressed;
+        }
 
-    public void setKeyPresed(boolean keyPressed) {
-        this.keyPressed = keyPressed;
+        public void setKeyPresed(boolean keyPressed) {
+            this.keyPressed = keyPressed;
+        }
     }
 }

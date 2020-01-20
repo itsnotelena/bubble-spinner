@@ -79,7 +79,7 @@ public class BadgeTest {
     @Test
     void testEqualsNull() {
         Badge one = new Badge("", BadgesEnum.First_Victory);
-
-        Assertions.assertFalse(one.equals(null));
+        Badge nullBadge = null;
+        Assertions.assertFalse(one.equals(nullBadge));
     }
 }

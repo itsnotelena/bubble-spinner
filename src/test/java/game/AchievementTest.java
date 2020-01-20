@@ -13,10 +13,10 @@ import server.User;
 public class AchievementTest {
 
     @Mock
-    private Client client;
+    private transient Client client;
 
-    private User user;
-    private Achievement achievement;
+    private transient User user;
+    private transient Achievement achievement;
 
     @BeforeEach
     public void before() {
