@@ -4,9 +4,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import server.Badge;
 import server.BadgesEnum;
 import server.Score;
@@ -18,7 +18,7 @@ public class ClientTest {
     /**
      * Database Test Set up.
      */
-    @Before
+    @BeforeEach
     public void before() {
         String[] args = {"test"};
         Server.main(args);
@@ -30,7 +30,7 @@ public class ClientTest {
      *
      * @throws FileNotFoundException Exception type file not found
      */
-    @After
+    @AfterEach
     public void cleanUp() throws FileNotFoundException {
         Server.deleteData();
         Server.schemaCreate();

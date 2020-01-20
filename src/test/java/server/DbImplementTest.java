@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
-import org.junit.After;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 
 public class DbImplementTest {
@@ -24,7 +24,7 @@ public class DbImplementTest {
         dbAdapter.importTables();
     }
 
-    @After
+    @AfterEach
     public void clean() throws SQLException {
         dbAdapter.clearData();
     }
@@ -71,7 +71,7 @@ public class DbImplementTest {
         Assertions.assertThat(resA).isTrue();
 
         Score scoreOptional = dbImplement.getScoreByUser(a.getUsername());
-        Assertions.assertThat(scoreOptional).isEqualTo(a);
+        Assert.assertEquals(scoreOptional,a);
     }
 
     @Test

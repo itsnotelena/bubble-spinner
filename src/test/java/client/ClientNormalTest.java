@@ -3,9 +3,9 @@ package client;
 import java.io.FileNotFoundException;
 
 import org.assertj.core.api.Assertions;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import server.Server;
 import server.User;
 
@@ -17,7 +17,7 @@ public class ClientNormalTest {
     /**
      * Sets up the environment for each test.
      */
-    @Before
+    @BeforeEach
     public void start() {
         server.main(new String[0]);
         try {
@@ -30,7 +30,7 @@ public class ClientNormalTest {
     /**
      * Cleans up everything to start the new tests properly.
      */
-    @After
+    @AfterEach
     public void end() {
         server.stop();
     }

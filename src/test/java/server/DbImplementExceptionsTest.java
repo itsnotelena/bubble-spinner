@@ -1,6 +1,5 @@
 package server;
 
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -8,8 +7,8 @@ import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 
@@ -23,8 +22,8 @@ public class DbImplementExceptionsTest {
      * @throws SQLException throws SQL Exception in case
      *                      something goes from the connection class
      */
-    @Before
-    public void setUp() throws SQLException, FileNotFoundException {
+    @BeforeEach
+    public void setUp() throws SQLException {
         dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
         Mockito.when(dbImplement.getDbAdapter().getConn())
                 .thenReturn(Mockito.mock(Connection.class));
@@ -97,10 +96,6 @@ public class DbImplementExceptionsTest {
         dbImplement.removeFromUser("baka");
         Optional<User> optional = dbImplement.getUserByUsername("baka");
         Assertions.assertThat(optional.isEmpty()).isTrue();
-
-        dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
-        Mockito.when(dbImplement.getDbAdapter().getConn())
-                .thenReturn(Mockito.mock(Connection.class));
     }
 
     @Test
@@ -109,23 +104,15 @@ public class DbImplementExceptionsTest {
 
         Score optional = dbImplement.getScoreByUser("naruto");
         Assert.assertEquals(optional,new Score("",0,0));
-
-        dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
-        Mockito.when(dbImplement.getDbAdapter().getConn())
-                .thenReturn(Mockito.mock(Connection.class));
     }
 
     @Test
-    public void emptyBadgesByGettingBadgesByUser() throws SQLException, FileNotFoundException {
+    public void emptyBadgesByGettingBadgesByUser() throws SQLException {
         dbImplement = new DbImplement(new DbAdapter("test"));
 
         dbImplement.removeFromUser("elena");
         List optional = dbImplement.getBadgeByUser("elena");
         Assertions.assertThat(optional.isEmpty()).isTrue();
-
-        dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
-        Mockito.when(dbImplement.getDbAdapter().getConn())
-                .thenReturn(Mockito.mock(Connection.class)); 
     }
 
     @Test

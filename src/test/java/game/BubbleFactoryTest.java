@@ -12,9 +12,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.assertj.core.api.Assertions;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -33,7 +33,7 @@ public class BubbleFactoryTest {
     /**
      * Setup the GDX headless application.
      */
-    @Before
+    @BeforeEach
     public void before() {
         stage = Mockito.mock(Stage.class);
         texture = Mockito.mock(Texture.class);
@@ -120,7 +120,7 @@ public class BubbleFactoryTest {
         Assertions.assertThat(actor.get().getColorId()).isEqualTo(0);
     }
 
-    @After
+    @AfterEach
     public void after() {
         app.exit();
     }

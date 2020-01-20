@@ -13,9 +13,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.assertj.core.api.Assertions;
 
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -40,7 +40,7 @@ public class ShooterTest {
     /**
      * Setup the GDX headless application.
      */
-    @Before
+    @BeforeEach
     public void before() {
         stage = Mockito.mock(Stage.class);
         viewport = Mockito.mock(Viewport.class);
@@ -200,7 +200,7 @@ public class ShooterTest {
                 .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
     }
 
-    @After
+    @AfterEach
     public void after() {
         app.exit();
     }

@@ -5,8 +5,8 @@ import com.badlogic.gdx.backends.headless.mock.input.MockInput;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.ui.GameScreen;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -33,7 +33,7 @@ public class BubbleSpinnerControllerTest {
     private transient BubbleSpinnerController controller;
     private transient CustomMockInput input;
 
-    @Before
+    @BeforeEach
     public void before() {
         gameScreen = Mockito.mock(GameScreen.class);
         stage = Mockito.mock(Stage.class);
