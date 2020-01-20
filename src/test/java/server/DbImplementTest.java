@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -19,13 +19,13 @@ public class DbImplementTest {
     public DbImplementTest() {
     }
 
-    @BeforeAll
-    static void setUp() throws FileNotFoundException {
+    @BeforeClass
+    public static void setUp() throws FileNotFoundException {
         dbAdapter.importTables();
     }
 
-    @AfterEach
-    void clean() throws SQLException {
+    @After
+    public void clean() throws SQLException {
         dbAdapter.clearData();
     }
 

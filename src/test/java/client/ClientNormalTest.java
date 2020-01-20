@@ -3,8 +3,8 @@ package client;
 import java.io.FileNotFoundException;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import server.Server;
 import server.User;
@@ -17,8 +17,8 @@ public class ClientNormalTest {
     /**
      * Sets up the environment for each test.
      */
-    @BeforeEach
-    void start() {
+    @Before
+    public void start() {
         server.main(new String[0]);
         try {
             server.schemaCreate();
@@ -30,8 +30,8 @@ public class ClientNormalTest {
     /**
      * Cleans up everything to start the new tests properly.
      */
-    @AfterEach
-    void end() {
+    @After
+    public void end() {
         server.stop();
     }
 

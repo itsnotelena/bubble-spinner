@@ -4,7 +4,7 @@ import config.Config;
 import java.util.Calendar;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.After;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -13,8 +13,8 @@ public class CheckTimeTest {
 
     transient boolean res = Config.Time.NeedToBeRestarted;
 
-    @AfterEach
-    void clean() {
+    @After
+    public void clean() {
         Config.Time.NeedToBeRestarted = res;
     }
 

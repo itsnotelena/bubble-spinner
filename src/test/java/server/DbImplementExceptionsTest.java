@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -23,7 +23,7 @@ public class DbImplementExceptionsTest {
      * @throws SQLException throws SQL Exception in case
      *                      something goes from the connection class
      */
-    @BeforeEach
+    @Before
     public void setUp() throws SQLException, FileNotFoundException {
         dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
         Mockito.when(dbImplement.getDbAdapter().getConn())

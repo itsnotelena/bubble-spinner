@@ -1,7 +1,7 @@
 package game;
 
 import client.Client;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -18,7 +18,7 @@ public class AchievementTest {
     private transient User user;
     private transient Achievement achievement;
 
-    @BeforeEach
+    @Before
     public void before() {
         client = Mockito.mock(Client.class);
         user = new User("", "", "");

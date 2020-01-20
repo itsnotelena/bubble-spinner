@@ -13,8 +13,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.assertj.core.api.Assertions;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 
 import org.mockito.Mock;
@@ -40,7 +40,7 @@ public class ShooterTest {
     /**
      * Setup the GDX headless application.
      */
-    @BeforeEach
+    @Before
     public void before() {
         stage = Mockito.mock(Stage.class);
         viewport = Mockito.mock(Viewport.class);
@@ -183,7 +183,7 @@ public class ShooterTest {
                 .addActor(Mockito.any(BubbleActor.class));
     }
 
-    @AfterEach
+    @After
     public void after() {
         app.exit();
     }
