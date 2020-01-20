@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.mockito.Mockito;
 
 
@@ -32,7 +32,7 @@ public class DbImplementExceptionsTest {
 
 
     @Test
-    void catchSqlExceptionCheckLogin() throws SQLException {
+    public void catchSqlExceptionCheckLogin() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn().prepareStatement(Mockito.any()))
                 .thenThrow(Mockito.mock(SQLException.class));
 
@@ -41,7 +41,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void catchSqlExceptionInsertUser() throws SQLException {
+    public void catchSqlExceptionInsertUser() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn().prepareStatement(Mockito.any()))
                 .thenThrow(Mockito.mock(SQLException.class));
 
@@ -50,7 +50,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void errorGettingTop5() throws SQLException {
+    public void errorGettingTop5() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
         List<Score> list = dbImplement.getTop5Score();
@@ -58,7 +58,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void errorGettingScoreByUsername() throws SQLException {
+    public void errorGettingScoreByUsername() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
         Assertions.assertThat(dbImplement.getScoreByUser("lol"))
@@ -66,14 +66,14 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void errorRemovingUser() throws SQLException {
+    public void errorRemovingUser() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
         Assertions.assertThat(dbImplement.removeFromBadge("a")).isFalse();
     }
 
     @Test
-    void errorGettingUserByUsername() throws SQLException {
+    public void errorGettingUserByUsername() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
         Assertions.assertThatThrownBy(() -> dbImplement.getUserByUsername("baba"))
@@ -81,7 +81,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void exceptionByGettingTopXScores() throws SQLException {
+    public void exceptionByGettingTopXScores() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
         List<Score> list = dbImplement.getTop5Score();
@@ -91,7 +91,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void notGettingUserByUsername() throws SQLException {
+    public void notGettingUserByUsername() throws SQLException {
         dbImplement = new DbImplement(new DbAdapter("test"));
 
         dbImplement.removeFromUser("baka");
@@ -104,7 +104,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void emptyScoreByGettingScoreByUser() throws SQLException {
+    public void emptyScoreByGettingScoreByUser() throws SQLException {
         dbImplement = new DbImplement(new DbAdapter("test"));
 
         Score optional = dbImplement.getScoreByUser("naruto");
@@ -116,7 +116,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void emptyBadgesByGettingBadgesByUser() throws SQLException, FileNotFoundException {
+    public void emptyBadgesByGettingBadgesByUser() throws SQLException, FileNotFoundException {
         dbImplement = new DbImplement(new DbAdapter("test"));
 
         dbImplement.removeFromUser("elena");
@@ -129,7 +129,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void errorGettingBadgeByUsername() throws SQLException {
+    public void errorGettingBadgeByUsername() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
         Assertions.assertThatThrownBy(() -> dbImplement.getBadgeByUser("lol"))

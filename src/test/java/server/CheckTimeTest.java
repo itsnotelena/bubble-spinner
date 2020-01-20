@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.mockito.Mockito;
 
 
@@ -19,7 +19,7 @@ public class CheckTimeTest {
     }
 
     @Test
-    void testTimeItsMonday() {
+    public void testTimeItsMonday() {
         CalendarWrapper date = Mockito.mock(CalendarWrapper.class);
         Mockito.doNothing().when(date).setTime(Mockito.any());
         Mockito.when(date.get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.MONDAY);
@@ -29,7 +29,7 @@ public class CheckTimeTest {
     }
 
     @Test
-    void testTimeItsMondayAndDoesntNeedToBeChanged() {
+    public void testTimeItsMondayAndDoesntNeedToBeChanged() {
         CalendarWrapper date = Mockito.mock(CalendarWrapper.class);
         Mockito.doNothing().when(date).setTime(Mockito.any());
         Mockito.when(date.get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.MONDAY);
@@ -40,7 +40,7 @@ public class CheckTimeTest {
     }
 
     @Test
-    void testTimeItsNotMonday() {
+    public void testTimeItsNotMonday() {
         CalendarWrapper date = Mockito.mock(CalendarWrapper.class);
         Mockito.doNothing().when(date).setTime(Mockito.any());
         Mockito.when(date.get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.SUNDAY);

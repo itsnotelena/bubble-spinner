@@ -1,7 +1,5 @@
 package server;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,7 +9,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 
 public class DbImplementTest {
@@ -32,7 +30,7 @@ public class DbImplementTest {
     }
 
     @Test
-    void insertAndCheckLogin() throws SQLException {
+    public void insertAndCheckLogin() throws SQLException {
         User a = new User("lalal","nsg","zal");
         dbImplement.removeFromUser(a.getUsername());
         boolean resA = dbImplement.insertUser(a);
@@ -44,7 +42,7 @@ public class DbImplementTest {
     }
 
     @Test
-    void searchProperly() throws SQLException {
+    public void searchProperly() throws SQLException {
         dbImplement.insertUser(new User("lalalq","a","a"));
         Score a = new Score("lalalq",1,1);
         Score b = new Score("lalalq",5,6);
@@ -59,14 +57,14 @@ public class DbImplementTest {
     }
 
     @Test
-    void searchFails() {
+    public void searchFails() {
         Assertions.assertThat(dbImplement.searchInUsers("lal")).isFalse();
         Assertions.assertThat(dbImplement.searchInScore("lal")).isFalse();
         Assertions.assertThat(dbImplement.searchInGame("lal")).isFalse();
     }
 
     @Test
-    void getScoreByUsername() throws SQLException {
+    public void getScoreByUsername() throws SQLException {
         dbImplement.insertUser(new User("cardi","b","b"));
         Score a = new Score("cardi", 3, 55);
         boolean resA = dbImplement.insertScore(a);
@@ -77,7 +75,7 @@ public class DbImplementTest {
     }
 
     @Test
-    void getBadgesByUsername() throws SQLException {
+    public void getBadgesByUsername() throws SQLException {
         Badge beyhive = new Badge("beyonce", BadgesEnum.Badge_Gamer);
         dbImplement.removeFromBadge(beyhive.getUsername());
         boolean resA = dbImplement.insertBadge(beyhive);
@@ -91,7 +89,7 @@ public class DbImplementTest {
     }
 
     @Test
-    void getTop5Score() throws SQLException {
+    public void getTop5Score() throws SQLException {
         Score one = new Score("carrdi", 3, 55);
         Score two = new Score("anitta", 4, 31);
         Score three = new Score("Lady Gaga", 2, 30);
@@ -138,7 +136,7 @@ public class DbImplementTest {
     }
 
     @Test
-    void alreadyExists() throws SQLException {
+    public void alreadyExists() throws SQLException {
         User a = new User("h","h","h");
         Game b = new Game("a",1,1);
         dbImplement.insertUser(a);

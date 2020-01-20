@@ -2,12 +2,12 @@ package server;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class BadgeTest {
 
     @Test
-    void gettersAndSetters() {
+    public void gettersAndSetters() {
         Badge a = new Badge("hh", BadgesEnum.Badge_Legend);
         a.setUsername("aa");
         a.setAward(BadgesEnum.Badge_Legend);
@@ -17,34 +17,34 @@ public class BadgeTest {
     }
 
     @Test
-    void equalsFalseTest1() {
+    public void equalsFalseTest1() {
         Badge one = new Badge("Cardi", BadgesEnum.Badge_Gamer);
         Object obj = new Object();
         Assert.assertNotEquals(one, obj);
     }
 
     @Test
-    void equalsFalseTest2() {
+    public void equalsFalseTest2() {
         Badge one = new Badge("Beyonce", BadgesEnum.Badge_Legend);
         Badge two = new Badge("Anitta", BadgesEnum.Top_Of_The_Week);
         Assert.assertNotEquals(one,two);
     }
 
     @Test
-    void equalsSameObject() {
+    public void equalsSameObject() {
         Badge one = new Badge("Bey", BadgesEnum.Badge_Legend);
         Assert.assertEquals(one, one);
     }
 
     @Test
-    void equalsTrueTest() {
+    public void equalsTrueTest() {
         Badge one = new Badge("TS", BadgesEnum.Badge_Gamer);
         Badge two = new Badge("TS", BadgesEnum.Badge_Gamer);
         Assert.assertEquals(one, two);
     }
 
     @Test
-    void equalsUsernameFalse() {
+    public void equalsUsernameFalse() {
         Badge one = new Badge("Selena Gomez", BadgesEnum.Top_Of_The_Week);
         Badge two = new Badge("Hayley Kiyoko", BadgesEnum.Badge_Gamer);
 
@@ -52,7 +52,7 @@ public class BadgeTest {
     }
 
     @Test
-    void equalsUsernameFalse2() {
+    public void equalsUsernameFalse2() {
         Badge one = new Badge("Selena Gomez", BadgesEnum.Badge_Legend);
         Badge two = new Badge("Hayley Kiyoko", BadgesEnum.Badge_Legend);
 
@@ -60,7 +60,7 @@ public class BadgeTest {
     }
 
     @Test
-    void testHashCode() {
+    public void testHashCode() {
         Badge one = new Badge("Jennifer", BadgesEnum.Badge_Gamer);
         Badge two = new Badge("Jennifer", BadgesEnum.Badge_Gamer);
 
@@ -69,7 +69,7 @@ public class BadgeTest {
     }
 
     @Test
-    void testToString() {
+    public void testToString() {
         Badge one = new Badge("Anna", BadgesEnum.Badge_Gamer);
         Badge two = new Badge("Anna", BadgesEnum.Badge_Gamer);
 
@@ -77,7 +77,7 @@ public class BadgeTest {
     }
 
     @Test
-    void testEqualsNull() {
+    public void testEqualsNull() {
         Badge one = new Badge("", BadgesEnum.First_Victory);
         Badge nullBadge = null;
         Assertions.assertFalse(one.equals(nullBadge));

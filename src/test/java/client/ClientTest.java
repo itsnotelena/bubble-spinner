@@ -6,7 +6,7 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import server.Badge;
 import server.BadgesEnum;
 import server.Score;
@@ -46,14 +46,14 @@ public class ClientTest {
 
 
     @Test
-    void testAddUser() {
+    public void testAddUser() {
         Client client = new Client();
         User user = new User("jesus", "jesus@amen", "carpediem");
         Assertions.assertThat(client.addUser(user)).isTrue();
     }
 
     @Test
-    void testAddScore() {
+    public void testAddScore() {
         Client client = new Client();
         Score score = new Score("rie", 0, 0);
         Assertions.assertThat(client.addScore(score)).isTrue();
@@ -61,7 +61,7 @@ public class ClientTest {
 
 
     @Test
-    void testAddBadge() {
+    public void testAddBadge() {
         Client client = new Client();
         Badge badge = new Badge("sasuke", BadgesEnum.First_Victory);
         Assertions.assertThat(client.addBadge(badge)).isTrue();
@@ -93,33 +93,33 @@ public class ClientTest {
     }
 
     @Test
-    void login() {
+    public void login() {
         User a = new User("bla","uk","uk");
         Assertions.assertThat(new Client().register(a)).isTrue();
         Assertions.assertThat(new Client().authenticate(a)).isTrue();
     }
 
     @Test
-    void loginFail() {
+    public void loginFail() {
         Assertions.assertThat(new Client().authenticate(new User(null,
                 "exit","ever"))).isFalse();
     }
 
     @Test
-    void loginFailAgain() {
+    public void loginFailAgain() {
         Assertions.assertThat(new Client().authenticate(new User("doesnt",
                 "exit",null))).isFalse();
     }
 
     @Test
-    void registerFalse() {
+    public void registerFalse() {
         Assertions.assertThat(new Client().register(new User(null,"s","a"))).isFalse();
         Assertions.assertThat(new Client().register(new User("a",null,"a"))).isFalse();
         Assertions.assertThat(new Client().register(new User("a","s",null))).isFalse();
     }
 
     @Test
-    void getBadges() {
+    public void getBadges() {
 
         String maye = "maye";
 

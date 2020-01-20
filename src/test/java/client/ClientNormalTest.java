@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import server.Server;
 import server.User;
 
@@ -36,7 +36,7 @@ public class ClientNormalTest {
     }
 
     @Test
-    void testNormally() {
+    public void testNormally() {
         Assertions.assertThat(new Client().authenticate(new User(null,null,null))).isFalse();
     }
 }

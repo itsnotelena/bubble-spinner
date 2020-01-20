@@ -1,53 +1,50 @@
 package server;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.Assert;
 
 public class ScoreTest {
 
     @Test
-    void gettersAndSetters() {
+    public void gettersAndSetters() {
         Score a = new Score("hh", 1, 1);
-        Assertions.assertEquals(a,a);
+        Assert.assertEquals(a,a);
         a.setUsername("aa");
         a.setScoreA(2);
         a.setHighestWeekScore(2);
-        Assertions.assertEquals(a.getUsername(),"aa");
-        Assertions.assertEquals(a.getScoreA(),2);
-        Assertions.assertEquals(a.getHighestWeekScore(),2);
+        Assert.assertEquals(a.getUsername(),"aa");
+        Assert.assertEquals(a.getScoreA(),2);
+        Assert.assertEquals(a.getHighestWeekScore(),2);
     }
 
     @Test
-    void equals1() {
+    public void equals1() {
         Score a = new Score("hh", 1, 1);
         Score b = new Score("hh", 1, 1);
-        Assertions.assertEquals(a,b);
+        Assert.assertEquals(a,b);
     }
 
     @Test
-    void equals2() {
+    public void equals2() {
         Score a = new Score("hh", 1, 1);
         Score b = new Score("hh", 0, 1);
-        Assertions.assertNotEquals(a,b);
-        Assertions.assertNotEquals(a,null);
-        Assertions.assertNotEquals(a,"sl");
+        Assert.assertNotEquals(a,b);
+        Assert.assertNotEquals(a,null);
+        Assert.assertNotEquals(a,"sl");
     }
 
     @Test
-    void equals3() {
+    public void equals3() {
         Score a = new Score("hh", 1, 1);
         Score b = new Score("hh", 1, 0);
-        Assertions.assertNotEquals(a,b);
+        Assert.assertNotEquals(a,b);
     }
 
     @Test
-    void equals4() {
+    public void equals4() {
         Score a = new Score("hhh", 1, 1);
         Score b = new Score("hh", 1, 1);
-        Assertions.assertNotEquals(a,b);
+        Assert.assertNotEquals(a,b);
     }
-
-
-
 
 }
