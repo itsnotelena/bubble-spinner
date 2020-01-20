@@ -20,6 +20,11 @@ public class BotController extends BubbleSpinnerController {
      */
     public BotController(GameScreen gameScreen, Stage stage, int difficulty) {
         super(gameScreen, stage, difficulty);
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
         calculateBounds();
     }
 

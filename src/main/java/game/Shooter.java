@@ -50,7 +50,7 @@ public class Shooter {
             initialize(mapBubbles);
             return;
         }
-        System.out.println(available.size());
+
         Stack<BubbleActor> stack = new Stack<>();
         while (!available.isEmpty()) {
             current().shiftX(false);
