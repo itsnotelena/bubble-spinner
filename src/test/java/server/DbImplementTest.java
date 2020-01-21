@@ -8,7 +8,6 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
@@ -16,11 +15,7 @@ public class DbImplementTest {
     private static DbAdapter dbAdapter = new DbAdapter("test");
     private transient DbImplement dbImplement = new DbImplement(dbAdapter);
 
-    public DbImplementTest() {
-    }
-
-    @BeforeEach
-    public static void setUp() throws FileNotFoundException {
+    public DbImplementTest() throws FileNotFoundException {
         dbAdapter.importTables();
     }
 
