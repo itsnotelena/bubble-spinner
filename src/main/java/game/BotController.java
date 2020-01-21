@@ -55,4 +55,11 @@ public class BotController extends BubbleSpinnerController {
         bounds[1] += Config.Game.BUBBLE_SIZE;
         bounds[3] += Config.Game.BUBBLE_SIZE;
     }
+
+    /**
+     * Set custom bounds for the bot to shoot.
+     */
+    public void setBounds(int[] bounds) {
+        this.bounds = bounds;
+    }
 }
