@@ -190,14 +190,34 @@ public class ShooterTest {
             shooter.setBubbleFactory(bubbleFactory);
             Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
             Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            shooter.initialize(new int[] { 1, 0 });
             shooter.shiftBubbles(new int[] { 1, 0 });
             done.set(true);
         });
         while (!done.get()) {
             assert true;
         }
-        Mockito.verify(bubbleActor, Mockito.times(5))
+        Mockito.verify(bubbleActor, Mockito.times(10))
                 .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
+    }
+
+    @Test
+    public void testInitializeNullBubble() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        Gdx.app.postRunnable(() -> {
+            Shooter shooter = new Shooter(stage);
+            shooter.setBubbleFactory(bubbleFactory);
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(null);
+            shooter.initialize(new int[] { 0, 1 });
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Mockito.verify(bubbleActor, Mockito.never())
+                .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
+        Mockito.verify(stage, Mockito.never())
+                .addActor(Mockito.any(BubbleActor.class));
     }
 
     @AfterEach
