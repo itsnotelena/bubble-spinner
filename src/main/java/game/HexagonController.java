@@ -196,6 +196,7 @@ public class HexagonController {
     public void bubbleMissed() {
         final int MAX_MISSED_BUBBLES = 3;
         missedBubbles++;
+        result--;
         if (missedBubbles >= MAX_MISSED_BUBBLES) {
             // Add more bubbles to the grid.
             missedBubbles = 0;

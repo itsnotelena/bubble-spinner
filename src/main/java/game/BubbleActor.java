@@ -169,6 +169,10 @@ public class BubbleActor extends Image implements Observer {
         return getY() < -SIZE;
     }
 
+    public boolean aboveScreen() {
+        return getY() > Gdx.graphics.getHeight();
+    }
+
     public Vector2 vec(float x, float y) {
         return new Vector2(x, y);
     }

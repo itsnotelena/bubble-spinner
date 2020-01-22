@@ -46,10 +46,10 @@ public class BubbleSpinnerController {
         hexagonController.drawGrid();
 
         if (hexagonController.checkCollisions(bubble)
-            || bubble.belowScreen()) {
+            || bubble.belowScreen() || bubble.aboveScreen()) {
             shooter.poll();
             shooter.shiftBubbles(hexagonController.getMapBubbles());
-            if (bubble.belowScreen()) {
+            if (bubble.belowScreen() || bubble.aboveScreen()) {
                 bubble.remove();
                 hexagonController.bubbleMissed();
             }

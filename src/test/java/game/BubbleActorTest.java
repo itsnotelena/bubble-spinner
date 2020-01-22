@@ -353,6 +353,26 @@ public class BubbleActorTest {
     }
 
     @Test
+    public void testAboveScreen() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        AtomicBoolean isAbove = new AtomicBoolean(false);
+        AtomicBoolean isNotAbove = new AtomicBoolean(true);
+        Gdx.app.postRunnable(() -> {
+            Gdx.graphics = new GraphicsWrapper();
+            BubbleActor bubbleActor = new BubbleActor(texture, stage, 200, 200);
+            isAbove.set(bubbleActor.aboveScreen());
+            bubbleActor.setPosition(0, 0);
+            isNotAbove.set(bubbleActor.aboveScreen());
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Assertions.assertThat(isAbove).isTrue();
+        Assertions.assertThat(isNotAbove).isFalse();
+    }
+
+    @Test
     public void testBounceLeftWall() {
         AtomicBoolean done = new AtomicBoolean(false);
         AtomicReference<Vector2> direction = new AtomicReference<>(new Vector2(0, 0));

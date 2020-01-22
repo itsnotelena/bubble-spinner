@@ -128,6 +128,18 @@ public class BubbleSpinnerControllerTest {
         Mockito.verify(hexagonController, Mockito.times(1)).bubbleMissed();
     }
 
+    @Test
+    public void testBubbleAboveScreen() {
+        Mockito.when(hexagonController.checkCollisions(Mockito.any())).thenReturn(false);
+        Mockito.when(bubble.belowScreen()).thenReturn(false);
+        Mockito.when(bubble.aboveScreen()).thenReturn(true);
+        controller.update();
+        Mockito.verify(shooter, Mockito.times(1)).poll();
+        Mockito.verify(shooter, Mockito.times(1)).shiftBubbles(Mockito.any());
+        Mockito.verify(bubble, Mockito.times(1)).remove();
+        Mockito.verify(hexagonController, Mockito.times(1)).bubbleMissed();
+    }
+
     class CustomMockInput extends MockInput {
 
         private transient boolean touched = false;
