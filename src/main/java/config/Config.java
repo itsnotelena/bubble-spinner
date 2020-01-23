@@ -53,9 +53,9 @@ public class Config {
 
     public static class Difficulty {
         public static final String[] types = {
-                "Easy",
-                "Medium",
-                "Hard"
+            "Easy",
+            "Medium",
+            "Hard"
         };
     }
 

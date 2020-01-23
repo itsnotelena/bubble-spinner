@@ -2,9 +2,6 @@ package game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +39,9 @@ public class HexagonController {
         if (difficulty == 0) {
             for (int i = -2; i <= 2; i++) {
                 for (int j = -2; j <= 2; j++) {
-                    if (!(Math.abs(i) == 2 && Math.abs(j) == 2) &&
-                            !(i == -2 && Math.abs(j) == 1) &&
-                            !(i == 0 && j == 0)) {
+                    if (!(Math.abs(i) == 2 && Math.abs(j) == 2)
+                            && !(i == -2 && Math.abs(j) == 1)
+                            && !(i == 0 && j == 0)) {
                         bub2 = bubbleFactory.createBubble();
                         bubbles.add(bub2);
                         bubbleGrid.setBubble(j, i, bub2);
@@ -55,25 +52,53 @@ public class HexagonController {
         } else if (difficulty == 1) {
             for (int k = -4; k <= 4; k++) {
                 for (int m = -4; m <= 4; m++) {
-                    bub2 = bubbleFactory.createBubble();
-                    bubbles.add(bub2);
-                    bubbleGrid.setBubble(m, k, bub2);
-                    stage.addActor(bub2);
+                    if(k == 0 && m == 0){
+
+                    } else if (k == -4 && (Math.abs(k) + Math.abs(m) >  4)) {
+
+                    } else if (k == -3 && Math.abs(m) >= 3){
+
+                    } else if (k == 4 && Math.abs(m)>= 2){
+
+                    } else if (Math.abs(m) == 4 && k == 3){
+
+                    }else {
+                        bub2 = bubbleFactory.createBubble();
+                        bubbles.add(bub2);
+                        bubbleGrid.setBubble(m, k, bub2);
+                        stage.addActor(bub2);
+                    }
                 }
             }
         } else if (difficulty == 2) {
             for (int k = -6; k <= 6; k++) {
                 for (int m = -6; m <= 6; m++) {
-                    bub2 = bubbleFactory.createBubble();
-                    bubbles.add(bub2);
-                    bubbleGrid.setBubble(m, k, bub2);
-                    stage.addActor(bub2);
+                    if (m == 0 && k == 0){
+
+                    } else if (k == -6 && Math.abs(m) >= 1) {
+
+                    } else if (k == -5 && Math.abs(m) >= 3) {
+
+                    } else if (k == -4 && Math.abs(m) >= 5) {
+
+                    } else if (k == 4 && Math.abs(m) >= 6) {
+
+                    } else if (k == 5 && Math.abs(m) >= 4) {
+
+                    }else if (k == 6 && Math.abs(m) >= 2) {
+
+                    } else {
+                        bub2 = bubbleFactory.createBubble();
+                        bubbles.add(bub2);
+                        bubbleGrid.setBubble(m, k, bub2);
+                        stage.addActor(bub2);
+                    }
                 }
             }
         }
     }
 
-    public void drawGrid(){
+    public void drawGrid() {
         this.bubbleGrid.update_rotation();
         for (int i = 1; i < bubbles.size(); i++) {
             BubbleActor bub = bubbles.get(i);
@@ -99,7 +124,8 @@ public class HexagonController {
     */
     public int getPoppable(BubbleActor hit, int counter, List<BubbleActor> visited) {
         visited.add(hit); // Add the bubbleActor to the list of visited bubbles
-        List<BubbleActor> candidates = this.bubbleGrid.getNeighbours(hit.gridPos[0], hit.gridPos[1]);
+        List<BubbleActor> candidates = this.bubbleGrid
+                .getNeighbours(hit.gridPos[0], hit.gridPos[1]);
 
         // Loop over the neighbours of the current bubble
         for (int i = 0; i < candidates.size(); i++) {
@@ -127,7 +153,8 @@ public class HexagonController {
                 this.bubbleGrid.apply_torque(bubble.getMovingDirection(), bubble.getPosition());
                 bubble.stop();
                 bubbles.add(bubble);
-                int[] gridPos = bubbleGrid.worldToGrid(bubble.getPosition().sub(this.bubbleGrid.origin));
+                int[] gridPos = bubbleGrid.worldToGrid(bubble
+                        .getPosition().sub(this.bubbleGrid.origin));
                 this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
                 result += this.popBubbles(bubble);
                 drawGrid();
@@ -150,7 +177,7 @@ public class HexagonController {
         List<BubbleActor> poppable = new ArrayList<>();
         int num = getPoppable(hitter, 0, poppable);
         int three = 3;
-        if(poppable.size() >= three){
+        if (poppable.size() >= three) {
             for (int i = 0; i < poppable.size(); i++) {
                 BubbleActor actor = poppable.get(i);
                 this.popSingleBubble(actor);
@@ -166,10 +193,10 @@ public class HexagonController {
         List<BubbleActor> oldBubbles = new ArrayList<>(this.bubbles);
         for (int i = 0; i < oldBubbles.size(); i++) {
             BubbleActor actor = oldBubbles.get(i);
-            if( !this.bubbleGrid.getConnectedBubbles(0,0)
-                    .contains(actor) ) {
+            if (!this.bubbleGrid.getConnectedBubbles(0,0)
+                    .contains(actor)) {
                 popSingleBubble(actor);
-                num+=1;
+                num += 1;
             }
         }
         return num;

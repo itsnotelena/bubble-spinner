@@ -141,7 +141,9 @@ public class BubbleActor extends Image implements Observer {
         this.movingDirection = movingDirection;
     }
 
-    public Vector2 getMovingDirection(){ return this.movingDirection; }
+    public Vector2 getMovingDirection() {
+        return this.movingDirection;
+    }
 
     public void stop() {
         setMovingDirection(vec(0, 0));

@@ -1,11 +1,12 @@
 package game;
 
 import com.badlogic.gdx.math.Vector2;
+
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.List;
 
 public class BubbleGridTest {
 
