@@ -17,10 +17,11 @@ public class PopupMenu extends Table {
 
     /**
      * PopMenu constructor.
-     * @param skin Skin
      */
-    public PopupMenu(Skin skin) {
+    public PopupMenu() {
         super();
+
+        Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
 
         gamePausedLabel = new Label("", skin, def);
         gamePausedLabel.setColor(0.f,0.f,0.f,1.f);

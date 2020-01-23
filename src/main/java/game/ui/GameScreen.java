@@ -54,6 +54,9 @@ public class GameScreen implements Screen {
         if (gameSettings.isComputerPlayer()) {
             bubbleSpinnerController = new BotController(this, stage,
                                     gameSettings.getDifficulty());
+            if (gameSettings.getHelpBox() == null) {
+                gameSettings.addHelpBox(new TutorialHelpBox(game.batch));
+            }
         } else {
             bubbleSpinnerController = new BubbleSpinnerController(this, stage,
                                     gameSettings.getDifficulty());

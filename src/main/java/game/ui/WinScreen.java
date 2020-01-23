@@ -25,8 +25,7 @@ public class WinScreen implements Screen {
     public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
-        popupMenu = new PopupMenu(skin);
+        popupMenu = new PopupMenu();
         popupMenu.setMessage("You won the game, Move to the next level!");
         stage.addActor(popupMenu);
     }

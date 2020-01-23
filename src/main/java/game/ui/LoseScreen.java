@@ -22,8 +22,7 @@ public class LoseScreen implements Screen {
     public void show() {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
-        popupMenu = new PopupMenu(skin);
+        popupMenu = new PopupMenu();
         popupMenu.setMessage("Game over.");
         stage.addActor(popupMenu);
     }
