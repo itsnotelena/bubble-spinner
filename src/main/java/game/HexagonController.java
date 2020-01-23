@@ -2,6 +2,8 @@ package game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import config.Config;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,8 @@ public class HexagonController {
     private transient BubbleGrid bubbleGrid;
     private transient BubbleFactory bubbleFactory;
     public transient boolean lostGame;
+    private transient int[] mapBubbles;
+    private transient int missedBubbles;
 
     public List<BubbleActor> getBubbles() {
         return bubbles;
@@ -27,13 +31,19 @@ public class HexagonController {
         this.bubbleFactory = new BubbleFactory(stage);
         this.bubbleFactory.addAllTextures(4);
         this.bubbles = new ArrayList<>();
+        this.stage = stage;
+    }
+
+    /**
+     * Create the grid and draw it at the centre of the screen.
+     */
+    public void initialize() {
+        this.bubbleFactory.addAllTextures();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
         stage.addActor(center);
         bubbles.add(center);
         this.bubbleGrid = new BubbleGrid(center.getPosition());
         bubbleGrid.setBubble(0,0, center);
-
-        this.stage = stage;
         BubbleActor bub2;
 
         if (difficulty == 0) {
@@ -111,8 +121,8 @@ public class HexagonController {
     private void popSingleBubble(BubbleActor actor) {
         this.bubbles.remove(actor);
         this.bubbleGrid.setBubble(actor.gridPos[0], actor.gridPos[1], null);
-        stage.getActors().removeValue(actor, true);
         actor.remove();
+        mapBubbles[actor.getColorId()]--;
     }
 
     /**
@@ -188,9 +198,13 @@ public class HexagonController {
         return result;
     }
 
+    @SuppressWarnings(value = "PMD")
+    // The warning is a DU anomaly on connectedBubbles, PMD sees it as undefined which is a false
+    // positive. A fix would make the complexity from linear to quadratic.
     public int popFloatingBubbles() {
         int num = 0;
         List<BubbleActor> oldBubbles = new ArrayList<>(this.bubbles);
+        List<BubbleActor> connectedBubbles = this.bubbleGrid.getConnectedBubbles(0,0);
         for (int i = 0; i < oldBubbles.size(); i++) {
             BubbleActor actor = oldBubbles.get(i);
             if (!this.bubbleGrid.getConnectedBubbles(0,0)
@@ -200,7 +214,6 @@ public class HexagonController {
             }
         }
         return num;
-
     }
 
     /**
@@ -218,5 +231,26 @@ public class HexagonController {
         } else {
             return (int)(1.5 * formula(num - 1));
         }
+    }
+
+    /**
+     * Called when a bubble is missed.
+     */
+    public void bubbleMissed() {
+        final int MAX_MISSED_BUBBLES = 3;
+        missedBubbles++;
+        result--;
+        if (missedBubbles >= MAX_MISSED_BUBBLES) {
+            // Add more bubbles to the grid.
+            missedBubbles = 0;
+        }
+    }
+
+    /**
+     * Get the hash map of bubbles.
+     * @return a map for the bubbles contained.
+     */
+    public int[] getMapBubbles() {
+        return mapBubbles;
     }
 }

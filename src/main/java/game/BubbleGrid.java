@@ -81,8 +81,8 @@ public class BubbleGrid {
         // Since our grid is hexagonal we have to do a bit of magic
         int offset = Math.abs(x) % 2;
 
-        // Start by checking the position on the bottom
-        // left of the current bubble and move clockwise around the bubble
+        // Start by checking the position on the bottom left of
+        // the current bubble and move clockwise around the bubble
         int[] dx = {-1, -1, 0, 1, 1,  0};
         int[] dy = { -offset,  1 - offset, 1, 1 - offset, -offset, -1}; //  fine as long as it works
 

@@ -18,14 +18,14 @@ public class BubbleSpinnerController {
      * @param gameScreen GameScreen the game is currently played in.
      * @param stage Stage where all objects reside.
      */
-    public BubbleSpinnerController(GameScreen gameScreen, Stage stage) {
+    public BubbleSpinnerController(GameScreen gameScreen, Stage stage, int difficulty) {
         this.gameScreen = gameScreen;
         this.stage = stage;
         this.shooter = new Shooter(stage);
         this.hexagonController = new HexagonController(stage,
                 gameScreen.getGameSettings().getDifficulty());
         this.hexagonController.drawGrid();
-        this.shooter.initialize();
+        this.shooter.initialize(hexagonController.getMapBubbles());
     }
 
     /**
@@ -40,11 +40,12 @@ public class BubbleSpinnerController {
         hexagonController.drawGrid();
 
         if (hexagonController.checkCollisions(bubble)
-            || bubble.belowScreen()) {
+            || bubble.belowScreen() || bubble.aboveScreen()) {
             shooter.poll();
-            shooter.shiftBubbles();
-            if (bubble.belowScreen()) {
+            shooter.shiftBubbles(hexagonController.getMapBubbles());
+            if (bubble.belowScreen() || bubble.aboveScreen()) {
                 bubble.remove();
+                hexagonController.bubbleMissed();
             }
         }
 
@@ -69,7 +70,28 @@ public class BubbleSpinnerController {
         }
     }
 
+    /**
+     * Get the game score.
+     * @return Int with the result.
+     */
     public int getResult() {
         return hexagonController.getResult();
     }
+
+    /**
+     * Set custom hexagon.
+     * @param hexagonController HexagonController object.
+     */
+    public void setHexagonController(HexagonController hexagonController) {
+        this.hexagonController = hexagonController;
+    }
+
+    /**
+     * Set custom shooter.
+     * @param shooter Shooter object.
+     */
+    public void setShooter(Shooter shooter) {
+        this.shooter = shooter;
+    }
+
 }

@@ -127,7 +127,7 @@ public class Server {
     @PostMapping(value = "/addScore")
     public boolean addScore(final @RequestBody Score score) {
         try {
-            return dbImplement.insertScore(score);
+            return dbImplement.addScoreAndIncrementGames(score);
         } catch (SQLException e) {
             return false;
         }

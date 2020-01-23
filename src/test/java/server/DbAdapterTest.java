@@ -19,7 +19,7 @@ public class DbAdapterTest {
     }
 
     @Test
-    void testConnFails() throws SQLException {
+    public void testConnFails() throws SQLException {
         DbAdapter dbAdapter = new DbAdapter("test");
 
         SQLiteDataSource dataSource = Mockito.mock(SQLiteDataSource.class);
@@ -30,14 +30,14 @@ public class DbAdapterTest {
     }
 
     @Test
-    void nullInClosingData() throws SQLException {
+    public void nullInClosingData() throws SQLException {
         DbAdapter dba = Mockito.mock(DbAdapter.class);
         Mockito.when(dba.getConn()).thenReturn(null);
         dba.closeData();
     }
 
     @Test
-    void noNullInClosingData() throws SQLException {
+    public void noNullInClosingData() throws SQLException {
         DbAdapter dba = new DbAdapter("test");
         dba.closeData();
     }

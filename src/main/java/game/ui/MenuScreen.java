@@ -270,7 +270,6 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void changeDifficulty() {
-        difficultyButton.setText("Diffulty: Easy");
         difficulty = (difficulty + 1) % Config.Difficulty.types.length;
         difficultyButton.setText("Diffulty: " + Config.Difficulty.types[difficulty]);
     }

@@ -1,7 +1,16 @@
 package client;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import config.Config;
+import game.Pair;
+
+import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -110,5 +119,30 @@ public class Client {
         return new RestTemplate().postForObject(Config.Api.URL + "/getUserScore",
                                 user,
                                 Score.class);
+    }
+
+    /**
+     * gets the user badges as a texture list.
+     * @return list of textures
+     */
+    @SuppressWarnings("PMD")
+    //Suppressed error for UR anomaly error for the variable in the for loop.
+    public List<Pair<Image, Label>> getUserBadge(User user) {
+        Badge[] badge = new Client().getBadges(user);
+        System.out.println(badge.length);
+        List<Pair<Image,Label>> result = new ArrayList<>();
+        for (Badge name : badge) {
+            Image img = new Image(new Texture(Gdx.files
+                    .internal("assets/Badges/"
+                            + name.getAward().getText()
+                            + ".png")));
+            img.setSize(3,1);
+            Label currentLabel = new Label(name.getAward().getText(),
+                    new Skin(Gdx.files.internal("assets/uiskin.json")),
+                    "default");
+            currentLabel.setColor(0.5f,0.5f,1,1);
+            result.add(new Pair(img,currentLabel));
+        }
+        return result;
     }
 }

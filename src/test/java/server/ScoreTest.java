@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class ScoreTest {
 
     @Test
-    void gettersAndSetters() {
+    public void gettersAndSetters() {
         Score a = new Score("hh", 1, 1);
         Assertions.assertEquals(a,a);
         a.setUsername("aa");
@@ -18,14 +18,14 @@ public class ScoreTest {
     }
 
     @Test
-    void equals1() {
+    public void equals1() {
         Score a = new Score("hh", 1, 1);
         Score b = new Score("hh", 1, 1);
         Assertions.assertEquals(a,b);
     }
 
     @Test
-    void equals2() {
+    public void equals2() {
         Score a = new Score("hh", 1, 1);
         Score b = new Score("hh", 0, 1);
         Assertions.assertNotEquals(a,b);
@@ -34,20 +34,17 @@ public class ScoreTest {
     }
 
     @Test
-    void equals3() {
+    public void equals3() {
         Score a = new Score("hh", 1, 1);
         Score b = new Score("hh", 1, 0);
         Assertions.assertNotEquals(a,b);
     }
 
     @Test
-    void equals4() {
+    public void equals4() {
         Score a = new Score("hhh", 1, 1);
         Score b = new Score("hh", 1, 1);
         Assertions.assertNotEquals(a,b);
     }
-
-
-
 
 }
