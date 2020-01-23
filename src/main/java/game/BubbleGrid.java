@@ -20,14 +20,14 @@ public class BubbleGrid {
 
     public void apply_torque(Vector2 moveDirection, Vector2 strikePosition) {
         Vector2 originToHit = strikePosition.sub(origin);
-        float torque = originToHit.crs(moveDirection) / 100;
+        float torque = originToHit.crs(moveDirection) / 250;
         delta_theta += torque;
     }
 
     public void update_rotation() {
         double zeroone = 0.1;
         if (Math.abs(delta_theta) > zeroone ) {
-            delta_theta *= 0.98f;
+            delta_theta *= 0.97f;
         }
         else {
             delta_theta = 0;
