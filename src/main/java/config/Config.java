@@ -50,4 +50,13 @@ public class Config {
             "assets/Bubbles/NavyBlue.png"
         };
     }
+
+    public static class Difficulty {
+        public static final String[] types = {
+                "Easy",
+                "Medium",
+                "Hard"
+        };
+    }
+
 }

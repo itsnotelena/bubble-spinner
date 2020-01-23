@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import config.Config;
 import config.Config.Game;
 import config.Config.Time;
 import game.BubbleSpinner;
@@ -25,7 +26,7 @@ public class MenuScreen extends ScreenAdapter {
     private transient TextButton startButton;
     private transient TextButton computerButton;
     private transient TextButton timerButton;
-    private transient TextButton optionsButton;
+    private transient TextButton difficultyButton;
     private transient TextButton exitButton;
     private transient boolean computerPlayer;
     private transient TextButton logoutButton;
@@ -33,6 +34,7 @@ public class MenuScreen extends ScreenAdapter {
     private transient TextButton achievementButton;
     private transient Leaderboard leaderboard;
     private transient GameSettings gameSettings;
+    private transient int difficulty = 0;
 
     /**
      * Login Screen.
@@ -51,7 +53,7 @@ public class MenuScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         String def = "default";
         startButton = new TextButton("Start game", skin, def);
-        optionsButton = new TextButton("Difficulty: Hard", skin, def);
+        difficultyButton = new TextButton("Difficulty: Hard", skin, def);
         logoutButton = new TextButton("Logout", skin, def);
         achievementButton = new TextButton("AchievementScreen",skin,def);
         exitButton = new TextButton("Exit", skin, def);
@@ -88,7 +90,7 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
-        optionsButton.addListener(new InputListener() {
+        difficultyButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 changeDifficulty();
@@ -153,7 +155,7 @@ public class MenuScreen extends ScreenAdapter {
         table.row();
         table.add(achievementButton).colspan(2);
         table.row();
-        table.add(optionsButton).colspan(2);
+        table.add(difficultyButton).colspan(2);
         table.row();
         table.add(logoutButton).colspan(2);
         table.row();
@@ -240,7 +242,7 @@ public class MenuScreen extends ScreenAdapter {
         gameSettings = new GameSettings.GameSettingsBuilder()
                 .withComputerPlayer(computerPlayer)
                 .withLevel(0)
-                .withDifficulty(0)
+                .withDifficulty(difficulty)
                 .withInfinite(Game.GAME_TIME == 0)
                 .withHelpBox(computerPlayer ? new TutorialHelpBox(game.batch) : null)
                 .build();
@@ -268,7 +270,9 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void changeDifficulty() {
-        optionsButton.setText("Diffulty: Easy");
+        difficultyButton.setText("Diffulty: Easy");
+        difficulty = (difficulty + 1) % Config.Difficulty.types.length;
+        difficultyButton.setText("Diffulty: " + Config.Difficulty.types[difficulty]);
     }
 
     private void logout() {
