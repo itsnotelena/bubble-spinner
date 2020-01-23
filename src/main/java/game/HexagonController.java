@@ -27,6 +27,7 @@ public class HexagonController {
      * @param stage Stage where objects reside.
      */
     public HexagonController(Stage stage, int difficulty) {
+        this.mapBubbles = new int[Config.Bubbles.textures.length];
         this.difficulty = difficulty;
         this.bubbleFactory = new BubbleFactory(stage);
         this.bubbleFactory.addAllTextures();
