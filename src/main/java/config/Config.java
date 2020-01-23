@@ -45,8 +45,10 @@ public class Config {
             "assets/Bubbles/Blue.png",
             "assets/Bubbles/Green.png",
             "assets/Bubbles/Pink.png",
-            "assets/Bubbles/Red.png",
+            "assets/Bubbles/Purple.png",
             "assets/Bubbles/Lavender.png",
+            "assets/Bubbles/Magenta.png",
+            "assets/Bubbles/LimeGreen.png",
             "assets/Bubbles/NavyBlue.png"
         };
     }
