@@ -256,4 +256,12 @@ public class GameScreen implements Screen {
             }
         }
     }
+
+    public GameSettings getGameSettings() {
+        return gameSettings;
+    }
+
+    public void setGameSettings(GameSettings gameSettings) {
+        this.gameSettings = gameSettings;
+    }
 }

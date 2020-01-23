@@ -11,7 +11,7 @@ public class BubbleGrid {
     private static final int RADIUS = 100;
     private transient BubbleActor[][] bubbles = new BubbleActor[RADIUS * 2][RADIUS * 2];
     public transient Vector2 origin;
-    private transient  float theta = 30;
+    private transient  float theta = 0;
     private transient float delta_theta = 0;
 
     public BubbleGrid(Vector2 origin) {
@@ -20,14 +20,14 @@ public class BubbleGrid {
 
     public void apply_torque(Vector2 moveDirection, Vector2 strikePosition) {
         Vector2 originToHit = strikePosition.sub(origin);
-        float torque = originToHit.crs(moveDirection) / 100;
+        float torque = originToHit.crs(moveDirection) / 250;
         delta_theta += torque;
     }
 
     public void update_rotation() {
         double zeroone = 0.1;
         if (Math.abs(delta_theta) > zeroone) {
-            delta_theta *= 0.98f;
+            delta_theta *= 0.97f;
         } else {
             delta_theta = 0;
         }
@@ -70,8 +70,8 @@ public class BubbleGrid {
         float colDistance = (float) (Config.Game.BUBBLE_SIZE * Math.sqrt(3) / 2.f);
         int x = Math.round((vec.x / colDistance));
         int offset = Math.abs(x) % 2;
-        int y = Math.round((float) (vec.y + offset * 0.5 * Config.Game.BUBBLE_SIZE)
-                / (float) Config.Game.BUBBLE_SIZE);
+        int y = Math.round((float) (vec.y + offset * 0.5
+                * Config.Game.BUBBLE_SIZE) / (float) Config.Game.BUBBLE_SIZE);
         return new int[]{x,y};
     }
 
@@ -115,6 +115,22 @@ public class BubbleGrid {
             }
         }
         return visited;
+    }
+
+    public float getTheta() {
+        return theta;
+    }
+
+    public void setTheta(float theta) {
+        this.theta = theta;
+    }
+
+    public float getDelta_theta() {
+        return delta_theta;
+    }
+
+    public void setDelta_theta(float delta_theta) {
+        this.delta_theta = delta_theta;
     }
 
 }

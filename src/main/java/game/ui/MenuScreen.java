@@ -33,7 +33,8 @@ public class MenuScreen extends ScreenAdapter {
     private transient TextButton loggedIn;
     private transient TextButton achievementButton;
     private transient Leaderboard leaderboard;
-    private transient int difficulty;
+    private transient GameSettings gameSettings;
+    private transient int difficulty = 0;
 
     /**
      * Login Screen.
@@ -238,13 +239,19 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void startGame() {
-        GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
+        GameSettings.GameSettingsBuilder builder =  new GameSettings.GameSettingsBuilder()
                 .withComputerPlayer(computerPlayer)
                 .withLevel(0)
                 .withDifficulty(difficulty)
-                .withInfinite(Game.GAME_TIME == 0)
-                .withHelpBox(computerPlayer ? new TutorialHelpBox(game.batch) : null)
-                .build();
+                .withInfinite(Game.GAME_TIME == 0);
+
+        gameSettings = builder.build();
+
+        if(computerPlayer) {
+            gameSettings = builder.withHelpBox(new TutorialHelpBox(game.batch)).build();
+        }
+
+
         game.setScreen(new GameScreen(game, gameSettings));
         stage.dispose();
     }
@@ -276,5 +283,13 @@ public class MenuScreen extends ScreenAdapter {
     private void logout() {
         game.setScreen(new LoginScreen(game));
         stage.dispose();
+    }
+
+    public GameSettings getGameSettings() {
+        return gameSettings;
+    }
+
+    public void setGameSettings(GameSettings gameSettings) {
+        this.gameSettings = gameSettings;
     }
 }

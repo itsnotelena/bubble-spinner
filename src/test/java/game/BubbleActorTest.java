@@ -94,8 +94,7 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(50, 68));
-        Assertions.assertThat(colorId.get()).isEqualTo(1);
+        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(50, 76));
     }
 
     @Test
@@ -121,10 +120,10 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(firstPos.get()).isEqualTo(new Vector2(114, 68));
-        Assertions.assertThat(secondPos.get()).isEqualTo(new Vector2(50, 68));
-        Assertions.assertThat(thirdPos.get()).isEqualTo(new Vector2(50, 132));
-        Assertions.assertThat(fourthPos.get()).isEqualTo(new Vector2(50, 68));
+        Assertions.assertThat(firstPos.get()).isEqualTo(new Vector2(98, 76));
+        Assertions.assertThat(secondPos.get()).isEqualTo(new Vector2(50, 76));
+        Assertions.assertThat(thirdPos.get()).isEqualTo(new Vector2(50, 124));
+        Assertions.assertThat(fourthPos.get()).isEqualTo(new Vector2(50, 76));
     }
 
     @Test
@@ -157,7 +156,7 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(32, 32));
+        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(24, 24));
     }
 
     @Test
@@ -174,7 +173,7 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(62, 82));
+        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(62, 90));
     }
 
     @Test
@@ -234,9 +233,9 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(firstPos.get()).isEqualTo(new Vector2(50, 68));
-        Assertions.assertThat(secondPos.get()).isEqualTo(new Vector2(51, 69));
-        Assertions.assertThat(thirdPos.get()).isEqualTo(new Vector2(51, 69));
+        Assertions.assertThat(firstPos.get()).isEqualTo(new Vector2(50, 76));
+        Assertions.assertThat(secondPos.get()).isEqualTo(new Vector2(51, 77));
+        Assertions.assertThat(thirdPos.get()).isEqualTo(new Vector2(51, 77));
     }
 
     @Test
@@ -272,7 +271,7 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(52, 70));
+        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(52, 78));
     }
 
     @Test
