@@ -29,8 +29,7 @@ public class HexagonController {
     public HexagonController(Stage stage, int difficulty) {
         this.mapBubbles = new int[Config.Bubbles.textures.length];
         this.difficulty = difficulty;
-        this.bubbleFactory = new BubbleFactory(stage);
-        this.bubbleFactory.addAllTextures();
+        this.bubbleFactory = new BubbleFactory(stage, difficulty);
         this.bubbles = new ArrayList<>();
         this.stage = stage;
     }
@@ -57,6 +56,7 @@ public class HexagonController {
                         bubbles.add(bub2);
                         bubbleGrid.setBubble(j, i, bub2);
                         stage.addActor(bub2);
+                        mapBubbles[bub2.getColorId()]++;
                     }
                 }
             }
@@ -78,6 +78,7 @@ public class HexagonController {
                         bubbles.add(bub2);
                         bubbleGrid.setBubble(m, k, bub2);
                         stage.addActor(bub2);
+                        mapBubbles[bub2.getColorId()]++;
                     }
                 }
             }
@@ -103,6 +104,8 @@ public class HexagonController {
                         bubbles.add(bub2);
                         bubbleGrid.setBubble(m, k, bub2);
                         stage.addActor(bub2);
+
+                        mapBubbles[bub2.getColorId()]++;
                     }
                 }
             }

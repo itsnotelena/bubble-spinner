@@ -23,7 +23,7 @@ public class BubbleSpinnerController {
         this.stage = stage;
         this.shooter = new Shooter(stage);
         this.hexagonController = new HexagonController(stage,
-                gameScreen.getGameSettings().getDifficulty());
+                difficulty);
     }
 
     public void initialize() {
