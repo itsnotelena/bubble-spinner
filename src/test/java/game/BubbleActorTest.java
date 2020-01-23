@@ -16,10 +16,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.assertj.core.api.Assertions;
-
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -95,8 +94,7 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(50, 68));
-        Assertions.assertThat(colorId.get()).isEqualTo(1);
+        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(50, 76));
     }
 
     @Test
@@ -122,10 +120,10 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(firstPos.get()).isEqualTo(new Vector2(114, 68));
-        Assertions.assertThat(secondPos.get()).isEqualTo(new Vector2(50, 68));
-        Assertions.assertThat(thirdPos.get()).isEqualTo(new Vector2(50, 132));
-        Assertions.assertThat(fourthPos.get()).isEqualTo(new Vector2(50, 68));
+        Assertions.assertThat(firstPos.get()).isEqualTo(new Vector2(98, 76));
+        Assertions.assertThat(secondPos.get()).isEqualTo(new Vector2(50, 76));
+        Assertions.assertThat(thirdPos.get()).isEqualTo(new Vector2(50, 124));
+        Assertions.assertThat(fourthPos.get()).isEqualTo(new Vector2(50, 76));
     }
 
     @Test
@@ -158,7 +156,7 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(32, 32));
+        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(24, 24));
     }
 
     @Test
@@ -175,7 +173,7 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(62, 82));
+        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(62, 90));
     }
 
     @Test
@@ -235,9 +233,9 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(firstPos.get()).isEqualTo(new Vector2(50, 68));
-        Assertions.assertThat(secondPos.get()).isEqualTo(new Vector2(51, 69));
-        Assertions.assertThat(thirdPos.get()).isEqualTo(new Vector2(51, 69));
+        Assertions.assertThat(firstPos.get()).isEqualTo(new Vector2(50, 76));
+        Assertions.assertThat(secondPos.get()).isEqualTo(new Vector2(51, 77));
+        Assertions.assertThat(thirdPos.get()).isEqualTo(new Vector2(51, 77));
     }
 
     @Test
@@ -273,7 +271,7 @@ public class BubbleActorTest {
         while (!done.get()) {
             assert true;
         }
-        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(52, 70));
+        Assertions.assertThat(pos.get()).isEqualTo(new Vector2(52, 78));
     }
 
     @Test
@@ -381,7 +379,8 @@ public class BubbleActorTest {
             BubbleActor bubbleActor = new BubbleActor(texture, stage, -100, -100);
             bubbleActor.setMovingDirection(new Vector2(1, 1));
             Mockito.when(stage.getViewport()).thenReturn(viewport);
-            Mockito.when(viewport.project(Mockito.any(Vector2.class))).thenReturn(new Vector2(-100, -100));
+            Mockito.when(viewport.project(Mockito.any(Vector2.class)))
+                    .thenReturn(new Vector2(-100, -100));
             bubbleActor.update();
             direction.set(bubbleActor.getMovingDirection());
             done.set(true);
@@ -401,7 +400,8 @@ public class BubbleActorTest {
             BubbleActor bubbleActor = new BubbleActor(texture, stage, -100, -100);
             bubbleActor.setMovingDirection(new Vector2(1, 1));
             Mockito.when(stage.getViewport()).thenReturn(viewport);
-            Mockito.when(viewport.project(Mockito.any(Vector2.class))).thenReturn(new Vector2(150, 0));
+            Mockito.when(viewport.project(Mockito.any(Vector2.class)))
+                    .thenReturn(new Vector2(150, 0));
             bubbleActor.update();
             direction.set(bubbleActor.getMovingDirection());
             done.set(true);

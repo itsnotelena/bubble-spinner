@@ -109,7 +109,7 @@ public class DbImplement {
      * @return true if the object is inserted
      * @throws SQLException in case of connection failure
      */
-    public boolean insertScore(Score score) throws SQLException {
+    public boolean addScoreAndIncrementGames(Score score) throws SQLException {
         Score result = getScoreByUser(score.getUsername());
         int scoreWeek = result.getHighestWeekScore();
         int total = result.getScoreA() + score.getScoreA();
@@ -126,7 +126,22 @@ public class DbImplement {
         statement.setString(3,score.getUsername());
         statement.execute();
         statement.close();
+        incrementGames(score.getUsername());
         return true;
+    }
+
+    private void incrementGames(String username) throws SQLException {
+
+        int game  = getGameByUser(username).getGamesPlayed() + 1;
+        try (PreparedStatement preparedStatement = dbAdapter.getConn()
+                .prepareStatement("UPDATE games SET gamesP = ? WHERE username = ?")) {
+            preparedStatement.setString(2,username);
+            preparedStatement.setInt(1,game);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -194,9 +209,6 @@ public class DbImplement {
      * @throws SQLException in case of connection failure
      */
     public boolean insertGame(Game game) throws SQLException {
-        if (searchInGame(game.getUsername())) {
-            return false;
-        }
         PreparedStatement statement = dbAdapter.getConn()
                 .prepareStatement("INSERT INTO games VALUES(?,?,?)");
         statement.setString(1,game.getUsername());
@@ -355,6 +367,40 @@ public class DbImplement {
             }
         } catch (SQLException e) {
             return new Score("",0,0);
+        } finally {
+            if (result != null) {
+                result.close();
+            }
+        }
+    }
+
+
+    /**
+     * Get the score by Username.
+     * @param username as a parameter.
+     * @return Score.
+     * @throws SQLException if no score.
+     */
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    // The ResultSet causes pmd violation even though it's safely closed we initialize it as null.
+    public Game getGameByUser(String username) throws SQLException {
+        ResultSet result = null;
+        try {
+            PreparedStatement statement = dbAdapter
+                    .getConn()
+                    .prepareStatement("SELECT * FROM games where username = ?");
+            statement.setString(1, username);
+            result = statement.executeQuery();
+            if (result.next()) {
+                return new Game(result.getString(1),
+                        result.getInt(2),
+                        result.getInt(3));
+            } else {
+                return new Game("",0,0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return new Game("",0,0);
         } finally {
             if (result != null) {
                 result.close();

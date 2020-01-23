@@ -13,9 +13,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.assertj.core.api.Assertions;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -126,7 +126,8 @@ public class ShooterTest {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
             Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
-            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(),
+                    Mockito.anyInt())).thenReturn(bubbleActor);
             shooter.initialize(new int[] { 0, 1 });
             shooter.poll();
             shooter.shiftBubbles(new int[] { 0, 1 });
@@ -148,7 +149,8 @@ public class ShooterTest {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
             Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
-            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(),
+                    Mockito.anyInt())).thenReturn(bubbleActor);
             shooter.initialize(new int[] { 0, 1 });
             shooter.shootBubble();
             current.set(shooter.current());
@@ -168,7 +170,8 @@ public class ShooterTest {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
             Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
-            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(),
+                    Mockito.anyInt())).thenReturn(bubbleActor);
             shooter.shiftBubbles(new int[] { 0, 1 });
             done.set(true);
         });
@@ -189,7 +192,8 @@ public class ShooterTest {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
             Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
-            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(),
+                    Mockito.anyInt())).thenReturn(bubbleActor);
             shooter.initialize(new int[] { 1, 0 });
             shooter.shiftBubbles(new int[] { 1, 0 });
             done.set(true);
