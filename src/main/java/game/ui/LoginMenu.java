@@ -11,9 +11,11 @@ import server.User;
 public class LoginMenu {
 
     private transient Label loginScreenLabel;
+    private transient Label forgotPass;
+    private transient Label register;
+    private transient TextButton playButton;
     private transient TextField userTextField;
     private transient TextField passTextField;
-    private transient Label forgotPass;
 
     public LoginMenu(Stage stage, LoginScreen screen) {
         loginScreenLabel = UIFactory.createLabel("Please login below",
@@ -24,8 +26,8 @@ public class LoginMenu {
         passTextField.setPasswordCharacter('*');
         passTextField.setPasswordMode(true);
 
-        TextButton playButton = UIFactory.createTextButton("Login");
-        Label register = UIFactory.createLabel("Register", UIFactory.LabelColor.NormalText);
+        playButton = UIFactory.createTextButton("Login");
+        register = UIFactory.createLabel("Register", UIFactory.LabelColor.NormalText);
         forgotPass = UIFactory.createLabel("Forgot password", UIFactory.LabelColor.NormalText);
 
         playButton.addListener(new InputListener() {
