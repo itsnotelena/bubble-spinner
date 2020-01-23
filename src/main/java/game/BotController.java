@@ -18,8 +18,13 @@ public class BotController extends BubbleSpinnerController {
      * @param gameScreen GameScreen the game is currently played in.
      * @param stage      Stage where all objects reside.
      */
-    public BotController(GameScreen gameScreen, Stage stage) {
-        super(gameScreen, stage);
+    public BotController(GameScreen gameScreen, Stage stage, int difficulty) {
+        super(gameScreen, stage, difficulty);
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
         calculateBounds();
     }
 
@@ -49,5 +54,12 @@ public class BotController extends BubbleSpinnerController {
         }
         bounds[1] += Config.Game.BUBBLE_SIZE;
         bounds[3] += Config.Game.BUBBLE_SIZE;
+    }
+
+    /**
+     * Set custom bounds for the bot to shoot.
+     */
+    public void setBounds(int[] bounds) {
+        this.bounds = bounds;
     }
 }

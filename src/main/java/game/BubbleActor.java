@@ -66,26 +66,26 @@ public class BubbleActor extends Image implements Observer {
         }
         Vector2 pos = vec(0, 0);
         localToStageCoordinates(pos);
-        stage.getViewport().project(pos);
+        pos = stage.getViewport().project(pos);
         if (pos.x + SIZE > Gdx.graphics.getWidth() || pos.x < 0) {
             bounce();
         }
     }
 
-    public void shiftX(boolean positive, float scale) {
-        shiftAxis(positive, scale, true);
+    public BubbleActor shiftX(boolean positive, float scale) {
+        return shiftAxis(positive, scale, true);
     }
 
-    public void shiftX(boolean positive) {
-        shiftX(positive, 1);
+    public BubbleActor shiftX(boolean positive) {
+        return shiftX(positive, 1);
     }
 
-    public void shiftY(boolean positive, float scale) {
-        shiftAxis(positive, scale, false);
+    public BubbleActor shiftY(boolean positive, float scale) {
+        return shiftAxis(positive, scale, false);
     }
 
-    public void shiftY(boolean positive) {
-        shiftY(positive, 1);
+    public BubbleActor shiftY(boolean positive) {
+        return shiftY(positive, 1);
     }
 
     public int getColorId() {
@@ -102,12 +102,13 @@ public class BubbleActor extends Image implements Observer {
      * @param scale The number of times to shift.
      * @param axis True for X axis, False for Y axis.
      */
-    public void shiftAxis(boolean positive, float scale, boolean axis) {
+    public BubbleActor shiftAxis(boolean positive, float scale, boolean axis) {
         if (axis) {
             moveBy((positive ? 1 : -1) * scale * SIZE, 0);
         } else {
             moveBy(0,(positive ? 1 : - 1) * scale * SIZE);
         }
+        return this;
     }
 
     public boolean collide(BubbleActor other) {
@@ -137,11 +138,20 @@ public class BubbleActor extends Image implements Observer {
         this.circle.y += y;
     }
 
+    @Override
+    public boolean remove() {
+        stage.getActors().removeValue(this, true);
+        super.remove();
+        return true;
+    }
+
     public void setMovingDirection(Vector2 movingDirection) {
         this.movingDirection = movingDirection;
     }
 
-    public Vector2 getMovingDirection(){ return this.movingDirection; }
+    public Vector2 getMovingDirection() {
+        return this.movingDirection;
+    }
 
     public void stop() {
         setMovingDirection(vec(0, 0));
@@ -157,6 +167,10 @@ public class BubbleActor extends Image implements Observer {
 
     public boolean belowScreen() {
         return getY() < -SIZE;
+    }
+
+    public boolean aboveScreen() {
+        return getY() > Gdx.graphics.getHeight();
     }
 
     public Vector2 vec(float x, float y) {

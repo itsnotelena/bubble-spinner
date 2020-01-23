@@ -13,9 +13,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.assertj.core.api.Assertions;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -101,31 +101,13 @@ public class ShooterTest {
     }
 
     @Test
-    public void testRefill() {
-        AtomicReference<BubbleActor> result = new AtomicReference<>(null);
+    public void testInitialize() {
         AtomicBoolean done = new AtomicBoolean(false);
         Gdx.app.postRunnable(() -> {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
-            shooter.refill();
-            result.set(shooter.current());
-            done.set(true);
-        });
-        while (!done.get()) {
-            assert true;
-        }
-        Assertions.assertThat(result.get()).isEqualTo(bubbleActor);
-    }
-
-    @Test
-    public void testInitialize() throws InterruptedException {
-        AtomicBoolean done = new AtomicBoolean(false);
-        Gdx.app.postRunnable(() -> {
-            Shooter shooter = new Shooter(stage);
-            shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
-            shooter.initialize();
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
+            shooter.initialize(new int[] { 0, 1 });
             done.set(true);
         });
         while (!done.get()) {
@@ -143,18 +125,17 @@ public class ShooterTest {
         Gdx.app.postRunnable(() -> {
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
-            shooter.initialize();
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            shooter.initialize(new int[] { 0, 1 });
             shooter.poll();
-            shooter.shiftBubbles();
+            shooter.shiftBubbles(new int[] { 0, 1 });
             done.set(true);
         });
         while (!done.get()) {
             assert true;
         }
-        Mockito.verify(bubbleActor, Mockito.times(4))
-                .shiftX(false);
-        Mockito.verify(bubbleActor, Mockito.times(6))
+        Mockito.verify(bubbleActor, Mockito.times(10))
                 .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
     }
 
@@ -166,8 +147,9 @@ public class ShooterTest {
             Mockito.when(stage.getViewport()).thenReturn(viewport);
             Shooter shooter = new Shooter(stage);
             shooter.setBubbleFactory(bubbleFactory);
-            Mockito.when(bubbleFactory.createBubble()).thenReturn(bubbleActor);
-            shooter.initialize();
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            shooter.initialize(new int[] { 0, 1 });
             shooter.shootBubble();
             current.set(shooter.current());
             done.set(true);
@@ -176,6 +158,66 @@ public class ShooterTest {
             assert true;
         }
         Mockito.verify(current.get()).setMovingDirection(Mockito.any(Vector2.class));
+    }
+
+    @Test
+    public void testShiftBubblesEmptyShooter() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        Gdx.app.postRunnable(() -> {
+            Mockito.when(stage.getViewport()).thenReturn(viewport);
+            Shooter shooter = new Shooter(stage);
+            shooter.setBubbleFactory(bubbleFactory);
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            shooter.shiftBubbles(new int[] { 0, 1 });
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Mockito.verify(bubbleActor, Mockito.times(5))
+                .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
+        Mockito.verify(stage, Mockito.times(5))
+                .addActor(Mockito.any(BubbleActor.class));
+    }
+
+    @Test
+    public void testShiftBubblesMultiples() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        Gdx.app.postRunnable(() -> {
+            Mockito.when(stage.getViewport()).thenReturn(viewport);
+            Shooter shooter = new Shooter(stage);
+            shooter.setBubbleFactory(bubbleFactory);
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(bubbleActor);
+            Mockito.when(bubbleActor.shiftX(Mockito.anyBoolean(), Mockito.anyInt())).thenReturn(bubbleActor);
+            shooter.initialize(new int[] { 1, 0 });
+            shooter.shiftBubbles(new int[] { 1, 0 });
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Mockito.verify(bubbleActor, Mockito.times(10))
+                .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
+    }
+
+    @Test
+    public void testInitializeNullBubble() {
+        AtomicBoolean done = new AtomicBoolean(false);
+        Gdx.app.postRunnable(() -> {
+            Shooter shooter = new Shooter(stage);
+            shooter.setBubbleFactory(bubbleFactory);
+            Mockito.when(bubbleFactory.createBubbleGivenMap(Mockito.any())).thenReturn(null);
+            shooter.initialize(new int[] { 0, 1 });
+            done.set(true);
+        });
+        while (!done.get()) {
+            assert true;
+        }
+        Mockito.verify(bubbleActor, Mockito.never())
+                .shiftX(Mockito.anyBoolean(), Mockito.anyInt());
+        Mockito.verify(stage, Mockito.never())
+                .addActor(Mockito.any(BubbleActor.class));
     }
 
     @AfterEach
