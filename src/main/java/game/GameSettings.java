@@ -46,6 +46,9 @@ public class GameSettings {
         this.level++;
     }
 
+    public void addHelpBox(TutorialHelpBox helpBox) {
+        this.helpBox = helpBox;
+    }
 
     public static class GameSettingsBuilder {
 
