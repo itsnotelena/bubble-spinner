@@ -32,6 +32,7 @@ public class MenuScreen extends ScreenAdapter {
     private transient TextButton loggedIn;
     private transient TextButton achievementButton;
     private transient Leaderboard leaderboard;
+    private transient GameSettings gameSettings;
 
     /**
      * Login Screen.
@@ -236,7 +237,7 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void startGame() {
-        GameSettings gameSettings = new GameSettings.GameSettingsBuilder()
+        gameSettings = new GameSettings.GameSettingsBuilder()
                 .withComputerPlayer(computerPlayer)
                 .withLevel(0)
                 .withDifficulty(0)
@@ -273,5 +274,13 @@ public class MenuScreen extends ScreenAdapter {
     private void logout() {
         game.setScreen(new LoginScreen(game));
         stage.dispose();
+    }
+
+    public GameSettings getGameSettings() {
+        return gameSettings;
+    }
+
+    public void setGameSettings(GameSettings gameSettings) {
+        this.gameSettings = gameSettings;
     }
 }
