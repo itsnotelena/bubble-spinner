@@ -25,7 +25,7 @@ public class HexagonController {
      * Constructor for the HexagonController.
      * @param stage Stage where objects reside.
      */
-    public HexagonController(Stage stage) {
+    public HexagonController(Stage stage, int difficulty) {
 
         this.bubbleFactory = new BubbleFactory(stage);
         this.bubbleFactory.addAllTextures(4);
@@ -39,20 +39,34 @@ public class HexagonController {
         this.stage = stage;
         BubbleActor bub2;
 
-        //This loop iterates over all of the
-        //possible combinations for bubble positions
-        //and only allows certain combinations
-        //to be placed. Feel free to do it
-        //in a smarter way
-
-        for (int i = -2; i <= 2; i++) {
-            for (int j = -2; j <= 2; j++) {
-                if (!(Math.abs(i)==2 && Math.abs(j)==2) &&
-                        !(i==-2 && Math.abs(j)==1) &&
-                        !(i==0 && j==0)) {
+        if (difficulty == 0) {
+            for (int i = -2; i <= 2; i++) {
+                for (int j = -2; j <= 2; j++) {
+                    if (!(Math.abs(i) == 2 && Math.abs(j) == 2) &&
+                            !(i == -2 && Math.abs(j) == 1) &&
+                            !(i == 0 && j == 0)) {
+                        bub2 = bubbleFactory.createBubble();
+                        bubbles.add(bub2);
+                        bubbleGrid.setBubble(j, i, bub2);
+                        stage.addActor(bub2);
+                    }
+                }
+            }
+        } else if (difficulty == 1) {
+            for (int k = -4; k <= 4; k++) {
+                for (int m = -4; m <= 4; m++) {
                     bub2 = bubbleFactory.createBubble();
                     bubbles.add(bub2);
-                    bubbleGrid.setBubble(j, i, bub2);
+                    bubbleGrid.setBubble(m, k, bub2);
+                    stage.addActor(bub2);
+                }
+            }
+        } else if (difficulty == 2) {
+            for (int k = -6; k <= 6; k++) {
+                for (int m = -6; m <= 6; m++) {
+                    bub2 = bubbleFactory.createBubble();
+                    bubbles.add(bub2);
+                    bubbleGrid.setBubble(m, k, bub2);
                     stage.addActor(bub2);
                 }
             }
@@ -66,7 +80,6 @@ public class HexagonController {
             Vector2 vec = bubbleGrid.gridToWorld(bub.gridPos[0], bub.gridPos[1]);
             bub.center();
             bub.moveBy(vec.x, vec.y);
-
         }
     }
 
