@@ -27,6 +27,10 @@ public class BubbleFactory implements AbstractBubbleFactory {
         return actor;
     }
 
+    /**
+     * Creates the central bubble.
+     * @return BubbleActor Object
+     */
     public BubbleActor createCenterBubble() {
         Texture centerTexture = new Texture("assets/Bubbles/Black.png");
         BubbleActor actor = new BubbleActor(centerTexture, stage);
