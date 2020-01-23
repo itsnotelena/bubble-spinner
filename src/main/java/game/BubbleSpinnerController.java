@@ -24,6 +24,10 @@ public class BubbleSpinnerController {
         this.shooter = new Shooter(stage);
         this.hexagonController = new HexagonController(stage,
                 gameScreen.getGameSettings().getDifficulty());
+    }
+
+    public void initialize() {
+        this.hexagonController.initialize();
         this.hexagonController.drawGrid();
         this.shooter.initialize(hexagonController.getMapBubbles());
     }

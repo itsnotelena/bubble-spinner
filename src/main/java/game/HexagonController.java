@@ -17,7 +17,7 @@ public class HexagonController {
     public transient boolean lostGame;
     private transient int[] mapBubbles;
     private transient int missedBubbles;
-
+    private transient int difficulty;
     public List<BubbleActor> getBubbles() {
         return bubbles;
     }
@@ -27,9 +27,9 @@ public class HexagonController {
      * @param stage Stage where objects reside.
      */
     public HexagonController(Stage stage, int difficulty) {
-
+        this.difficulty = difficulty;
         this.bubbleFactory = new BubbleFactory(stage);
-        this.bubbleFactory.addAllTextures(4);
+        this.bubbleFactory.addAllTextures();
         this.bubbles = new ArrayList<>();
         this.stage = stage;
     }
