@@ -20,6 +20,14 @@ public class BubbleGridTest {
     }
 
     @Test
+    public void getBubbleOutOfBounds() {
+        BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
+        BubbleActor bub = grid.getBubble(1000, 1000);
+        Assertions.assertThat(bub).isEqualTo(null);
+    }
+
+
+    @Test
     public void getNeighbours() {
         BubbleActor bub = Mockito.mock(BubbleActor.class);
         BubbleActor bub2 = Mockito.mock(BubbleActor.class);
@@ -40,6 +48,18 @@ public class BubbleGridTest {
     }
 
     @Test
+    public void getNeighboursEmpty() {
+        BubbleActor bub = Mockito.mock(BubbleActor.class);
+
+        BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
+        grid.setBubble(0,0, bub);
+
+        List<BubbleActor> list = grid.getNeighbours(0,0);
+        Assertions.assertThat(list.isEmpty());
+    }
+
+
+    @Test
     public void getConnectedBubbles() {
         BubbleActor bub = Mockito.mock(BubbleActor.class);
         BubbleActor bub2 = Mockito.mock(BubbleActor.class);
@@ -57,5 +77,30 @@ public class BubbleGridTest {
         Assertions.assertThat(list.contains(bub2));
         Assertions.assertThat(!list.contains(bub3));
         Assertions.assertThat(list.contains(bub4));
+    }
+
+    @Test
+    public void getConnectedBubblesEmpty() {
+        BubbleActor bub = Mockito.mock(BubbleActor.class);
+
+        BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
+        grid.setBubble(0,0, bub);
+
+        List<BubbleActor> list = grid.getConnectedBubbles(0,0);
+        Assertions.assertThat(list.isEmpty());
+    }
+
+    @Test
+    public void applyZeroTorqueTest() {
+        BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
+        grid.apply_torque(new Vector2(0,0), new Vector2(0,0));
+        Assertions.assertThat(grid.getDelta_theta()).isEqualTo(0);
+    }
+
+    @Test
+    public void applyTorqueTest() {
+        BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
+        grid.apply_torque(new Vector2(0,1), new Vector2(1,0));
+        Assertions.assertThat(grid.getDelta_theta()).isEqualTo(0.004f);
     }
 }

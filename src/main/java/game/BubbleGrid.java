@@ -12,7 +12,7 @@ public class BubbleGrid {
     private transient BubbleActor[][] bubbles = new BubbleActor[RADIUS * 2][RADIUS * 2];
     public transient Vector2 origin;
     private transient  float theta = 30;
-    private transient float deltaTheta = 0;
+    private transient float delta_theta = 0;
 
     public BubbleGrid(Vector2 origin) {
         this.origin = origin;
@@ -21,17 +21,17 @@ public class BubbleGrid {
     public void apply_torque(Vector2 moveDirection, Vector2 strikePosition) {
         Vector2 originToHit = strikePosition.sub(origin);
         float torque = originToHit.crs(moveDirection) / 250;
-        deltaTheta += torque;
+        delta_theta += torque;
     }
 
     public void update_rotation() {
         double zeroone = 0.1;
-        if (Math.abs(deltaTheta) > zeroone) {
-            deltaTheta *= 0.97f;
+        if (Math.abs(delta_theta) > zeroone) {
+            delta_theta *= 0.97f;
         } else {
-            deltaTheta = 0;
+            delta_theta = 0;
         }
-        theta += deltaTheta;
+        theta += delta_theta;
     }
 
     public void setBubble(int x, int y, BubbleActor bubbleActor) {
@@ -115,6 +115,22 @@ public class BubbleGrid {
             }
         }
         return visited;
+    }
+
+    public float getTheta() {
+        return theta;
+    }
+
+    public void setTheta(float theta) {
+        this.theta = theta;
+    }
+
+    public float getDelta_theta() {
+        return delta_theta;
+    }
+
+    public void setDelta_theta(float delta_theta) {
+        this.delta_theta = delta_theta;
     }
 
 }
