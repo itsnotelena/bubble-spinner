@@ -239,13 +239,19 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void startGame() {
-        gameSettings = new GameSettings.GameSettingsBuilder()
+        GameSettings.GameSettingsBuilder builder =  new GameSettings.GameSettingsBuilder()
                 .withComputerPlayer(computerPlayer)
                 .withLevel(0)
                 .withDifficulty(difficulty)
-                .withInfinite(Game.GAME_TIME == 0)
-                .withHelpBox(computerPlayer ? new TutorialHelpBox(game.batch) : null)
-                .build();
+                .withInfinite(Game.GAME_TIME == 0);
+
+        gameSettings = builder.build();
+
+        if(computerPlayer) {
+            gameSettings = builder.withHelpBox(new TutorialHelpBox(game.batch)).build();
+        }
+
+
         game.setScreen(new GameScreen(game, gameSettings));
         stage.dispose();
     }
