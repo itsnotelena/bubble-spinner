@@ -53,7 +53,7 @@ public class MenuScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         String def = "default";
         startButton = new TextButton("Start game", skin, def);
-        difficultyButton = new TextButton("Difficulty: Hard", skin, def);
+        difficultyButton = new TextButton("Difficulty: Easy", skin, def);
         logoutButton = new TextButton("Logout", skin, def);
         achievementButton = new TextButton("AchievementScreen",skin,def);
         exitButton = new TextButton("Exit", skin, def);

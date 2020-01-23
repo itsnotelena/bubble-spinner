@@ -2,9 +2,6 @@ package game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,19 +52,47 @@ public class HexagonController {
         } else if (difficulty == 1) {
             for (int k = -4; k <= 4; k++) {
                 for (int m = -4; m <= 4; m++) {
-                    bub2 = bubbleFactory.createBubble();
-                    bubbles.add(bub2);
-                    bubbleGrid.setBubble(m, k, bub2);
-                    stage.addActor(bub2);
+                    if(k == 0 && m == 0){
+
+                    } else if (k == -4 && (Math.abs(k) + Math.abs(m) >  4)) {
+
+                    } else if (k == -3 && Math.abs(m) >= 3){
+
+                    } else if (k == 4 && Math.abs(m)>= 2){
+
+                    } else if (Math.abs(m) == 4 && k == 3){
+
+                    }else {
+                        bub2 = bubbleFactory.createBubble();
+                        bubbles.add(bub2);
+                        bubbleGrid.setBubble(m, k, bub2);
+                        stage.addActor(bub2);
+                    }
                 }
             }
         } else if (difficulty == 2) {
             for (int k = -6; k <= 6; k++) {
                 for (int m = -6; m <= 6; m++) {
-                    bub2 = bubbleFactory.createBubble();
-                    bubbles.add(bub2);
-                    bubbleGrid.setBubble(m, k, bub2);
-                    stage.addActor(bub2);
+                    if (m == 0 && k == 0){
+
+                    } else if (k == -6 && Math.abs(m) >= 1) {
+
+                    } else if (k == -5 && Math.abs(m) >= 3) {
+
+                    } else if (k == -4 && Math.abs(m) >= 5) {
+
+                    } else if (k == 4 && Math.abs(m) >= 6) {
+
+                    } else if (k == 5 && Math.abs(m) >= 4) {
+
+                    }else if (k == 6 && Math.abs(m) >= 2) {
+
+                    } else {
+                        bub2 = bubbleFactory.createBubble();
+                        bubbles.add(bub2);
+                        bubbleGrid.setBubble(m, k, bub2);
+                        stage.addActor(bub2);
+                    }
                 }
             }
         }

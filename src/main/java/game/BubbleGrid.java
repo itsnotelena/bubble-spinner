@@ -11,7 +11,7 @@ public class BubbleGrid {
     private static final int RADIUS = 100;
     private transient BubbleActor[][] bubbles = new BubbleActor[RADIUS * 2][RADIUS * 2];
     public transient Vector2 origin;
-    private transient  float theta = 30;
+    private transient  float theta = 0;
     private transient float delta_theta = 0;
 
     public BubbleGrid(Vector2 origin) {
