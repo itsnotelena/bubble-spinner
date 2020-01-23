@@ -3,13 +3,13 @@ package game;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.ui.GameScreen;
-import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class BotControllerTest {
 
@@ -69,7 +69,8 @@ public class BotControllerTest {
         controller.setBounds(new int[] { 0, 100, 0, 100 });
         Mockito.when(shooter.current()).thenReturn(bubble);
         Mockito.when(bubble.isMoving()).thenReturn(false);
-        Mockito.doNothing().when(shooter).shootBubbleScreenCoords(Mockito.anyInt(), Mockito.anyInt());
+        Mockito.doNothing().when(shooter)
+                .shootBubbleScreenCoords(Mockito.anyInt(), Mockito.anyInt());
         controller.update();
         Mockito.verify(shooter, Mockito.times(1))
                 .shootBubbleScreenCoords(Mockito.anyInt(), Mockito.anyInt());

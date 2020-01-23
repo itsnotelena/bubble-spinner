@@ -46,7 +46,7 @@ public class Shooter {
      * After the bubble has been shot shift the other
      * ones to the left and add a new one at the end.
      */
-    @SuppressWarnings(value="PMD")
+    @SuppressWarnings(value = "PMD")
     // The PMD warning is an anomaly on the variable removed which is only used
     // by the function to keep track of the number of removed bubbles.
     public void shiftBubbles(int[] mapBubbles) {

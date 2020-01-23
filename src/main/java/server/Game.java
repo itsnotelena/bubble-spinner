@@ -48,12 +48,16 @@ public class Game {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Game game = (Game) o;
-        return gamesPlayed == game.gamesPlayed &&
-                highestLevel == game.highestLevel &&
-                Objects.equals(username, game.username);
+        return gamesPlayed == game.gamesPlayed
+                && highestLevel == game.highestLevel
+                && Objects.equals(username, game.username);
     }
 
     @Override

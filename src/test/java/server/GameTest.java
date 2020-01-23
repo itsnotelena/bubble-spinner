@@ -11,9 +11,9 @@ public class GameTest {
         game.setGamesPlayed(100);
         game.setHighestLevel(1999);
         game.setUsername("asadd");
-        Assertions.assertEquals(game.getGamesPlayed() , 100);
-        Assertions.assertEquals(game.getHighestLevel() , 1999);
-        Assertions.assertEquals(game.getUsername() , "asadd");
+        Assertions.assertEquals(game.getGamesPlayed(), 100);
+        Assertions.assertEquals(game.getHighestLevel(), 1999);
+        Assertions.assertEquals(game.getUsername(), "asadd");
     }
 
     @Test

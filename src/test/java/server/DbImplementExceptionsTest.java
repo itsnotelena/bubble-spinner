@@ -117,7 +117,7 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
-    void emptyBadgesByGettingBadgesByUser() throws SQLException, FileNotFoundException {
+    void emptyBadgesByGettingBadgesByUser() throws SQLException {
         dbImplement = new DbImplement(new DbAdapter(test));
 
         dbImplement.removeFromUser("elena");
