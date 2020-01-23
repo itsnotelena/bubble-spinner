@@ -2,9 +2,8 @@ package game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import config.Config;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +15,8 @@ public class HexagonController {
     private transient BubbleGrid bubbleGrid;
     private transient BubbleFactory bubbleFactory;
     public transient boolean lostGame;
+    private transient int[] mapBubbles;
+    private transient int missedBubbles;
 
     public List<BubbleActor> getBubbles() {
         return bubbles;
@@ -25,18 +26,23 @@ public class HexagonController {
      * Constructor for the HexagonController.
      * @param stage Stage where objects reside.
      */
-    public HexagonController(Stage stage) {
-
-        this.bubbleFactory = new BubbleFactory(stage);
-        this.bubbleFactory.addAllTextures(4);
+    public HexagonController(Stage stage, int difficulty) {
+        this.mapBubbles = new int[Config.Bubbles.textures.length];
+        this.bubbleFactory = new BubbleFactory(stage, difficulty);
         this.bubbles = new ArrayList<>();
+        this.stage = stage;
+    }
+
+    /**
+     * Create the grid and draw it at the centre of the screen.
+     */
+    public void initialize() {
+        this.bubbleFactory.addAllTextures();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
         stage.addActor(center);
         bubbles.add(center);
         this.bubbleGrid = new BubbleGrid(center.getPosition());
         bubbleGrid.setBubble(0,0, center);
-
-        this.stage = stage;
         BubbleActor bub2;
 
         //This loop iterates over all of the
@@ -54,6 +60,7 @@ public class HexagonController {
                     bubbles.add(bub2);
                     bubbleGrid.setBubble(j, i, bub2);
                     stage.addActor(bub2);
+                    mapBubbles[bub2.getColorId()]++;
                 }
             }
         }
@@ -73,8 +80,8 @@ public class HexagonController {
     private void popSingleBubble(BubbleActor actor) {
         this.bubbles.remove(actor);
         this.bubbleGrid.setBubble(actor.gridPos[0], actor.gridPos[1], null);
-        stage.getActors().removeValue(actor, true);
         actor.remove();
+        mapBubbles[actor.getColorId()]--;
     }
 
     /**
@@ -114,6 +121,7 @@ public class HexagonController {
                 this.bubbleGrid.apply_torque(bubble.getMovingDirection(), bubble.getPosition());
                 bubble.stop();
                 bubbles.add(bubble);
+                mapBubbles[bubble.getColorId()]++;
                 int[] gridPos = bubbleGrid.worldToGrid(bubble.getPosition().sub(this.bubbleGrid.origin));
                 this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
                 result += this.popBubbles(bubble);
@@ -148,19 +156,21 @@ public class HexagonController {
         return result;
     }
 
+    @SuppressWarnings(value="PMD")
+    // The warning is a DU anomaly on connectedBubbles, PMD sees it as undefined which is a false
+    // positive. A fix would make the complexity from linear to quadratic.
     public int popFloatingBubbles() {
         int num = 0;
         List<BubbleActor> oldBubbles = new ArrayList<>(this.bubbles);
+        List<BubbleActor> connectedBubbles = this.bubbleGrid.getConnectedBubbles(0,0);
         for (int i = 0; i < oldBubbles.size(); i++) {
             BubbleActor actor = oldBubbles.get(i);
-            if( !this.bubbleGrid.getConnectedBubbles(0,0)
-                    .contains(actor) ) {
+            if ( !connectedBubbles.contains(actor) ) {
                 popSingleBubble(actor);
                 num+=1;
             }
         }
         return num;
-
     }
 
     /**
@@ -178,5 +188,26 @@ public class HexagonController {
         } else {
             return (int)(1.5 * formula(num - 1));
         }
+    }
+
+    /**
+     * Called when a bubble is missed.
+     */
+    public void bubbleMissed() {
+        final int MAX_MISSED_BUBBLES = 3;
+        missedBubbles++;
+        result--;
+        if (missedBubbles >= MAX_MISSED_BUBBLES) {
+            // Add more bubbles to the grid.
+            missedBubbles = 0;
+        }
+    }
+
+    /**
+     * Get the hash map of bubbles.
+     * @return a map for the bubbles contained.
+     */
+    public int[] getMapBubbles() {
+        return mapBubbles;
     }
 }

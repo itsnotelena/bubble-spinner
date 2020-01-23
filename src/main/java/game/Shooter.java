@@ -4,16 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Stack;
 
 public class Shooter {
 
-    private transient Deque<BubbleActor> available;
+    private transient Stack<BubbleActor> available;
     private transient BubbleFactory bubbleFactory;
-    private static final int MIN_BUBBLES = 7;
-
     private transient Stage stage;
 
     /**
@@ -21,43 +17,28 @@ public class Shooter {
      * top of the screen.
      * @param stage Stage where all objects reside.
      */
-    public Shooter(Stage stage) {
+    public Shooter(Stage stage, int difficulty) {
         this.stage = stage;
-        this.available = new LinkedList<>();
-        this.bubbleFactory = new BubbleFactory(stage);
+        this.available = new Stack<>();
+        this.bubbleFactory = new BubbleFactory(stage, difficulty);
+    }
+
+    public Shooter(Stage stage) {
+        this(stage, 0);
     }
 
     /**
      * This function creates the bubbles at the top
      * of the screen and adds them to the Stage.
      */
-    public void initialize() {
-        //max is the Difficulty of the level
-        this.bubbleFactory.addAllTextures(4);
-        refill();
-        Stack<BubbleActor> stack = new Stack<>();
-        assert available.size() > 5;
-        for (int i = 0; i < 5; ++i) {
-            current().shiftX(true, i);
-            stage.addActor(current());
-            stack.push(available.poll());
-        }
-        while (!stack.isEmpty()) {
-            available.addFirst(stack.pop());
-        }
-    }
-
-    /**
-     * If the queue is running short in bubbles
-     * refill them.
-     */
-    public void refill() {
-        if (available.size() > MIN_BUBBLES) {
-            return;
-        }
-
-        for (int i = 0; i < 2 * MIN_BUBBLES; ++i) {
-            available.add(bubbleFactory.createBubble());
+    public void initialize(int[] mapBubbles) {
+        this.bubbleFactory.addAllTextures();
+        for (int i = 4; i >= 0; --i) {
+            BubbleActor bubble = bubbleFactory.createBubbleGivenMap(mapBubbles);
+            if (bubble != null) {
+                available.push(bubble.shiftX(true, i));
+                stage.addActor(current());
+            }
         }
     }
 
@@ -65,26 +46,40 @@ public class Shooter {
      * After the bubble has been shot shift the other
      * ones to the left and add a new one at the end.
      */
-    public void shiftBubbles() {
-        refill();
-        Stack<BubbleActor> stack = new Stack<>();
-        for (int i = 0; i < 4; ++i) {
-            current().shiftX(false);
-            stack.push(poll());
+    @SuppressWarnings(value="PMD")
+    // The PMD warning is an anomaly on the variable removed which is only used
+    // by the function to keep track of the number of removed bubbles.
+    public void shiftBubbles(int[] mapBubbles) {
+        if (available.size() == 0) {
+            initialize(mapBubbles);
+            return;
         }
-        current().shiftX(true, 4);
-        stage.addActor(current());
+
+        int removed = 0;
+        Stack<BubbleActor> stack = new Stack<>();
+        while (!available.isEmpty()) {
+            BubbleActor current = poll();
+            if (mapBubbles[current.getColorId()] != 0) {
+                stack.push(current.shiftX(false, 1 + removed));
+            } else {
+                removed++;
+                current.remove();
+            }
+        }
         while (!stack.isEmpty()) {
-            available.addFirst(stack.pop());
+            available.push(stack.pop());
+        }
+        if (available.size() == 0) {
+            initialize(mapBubbles);
         }
     }
 
     public BubbleActor poll() {
-        return available.poll();
+        return available.empty() ? null : available.pop();
     }
 
     public BubbleActor current() {
-        return available.peek();
+        return available.empty() ? null : available.peek();
     }
 
     /**

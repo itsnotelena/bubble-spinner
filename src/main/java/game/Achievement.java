@@ -9,6 +9,7 @@ import server.User;
 public class Achievement {
 
     private transient User user;
+    private transient Client client;
 
     private static final int VETERAN_SCORE = 1024;
     private static final int LEGEND_SCORE = 512;
@@ -21,34 +22,43 @@ public class Achievement {
      */
     public Achievement(User user) {
         this.user = user;
+        this.client = new Client();
     }
 
     /**
      * Calculate and add achievements to the database.
      */
     public void updateAchievements() {
-        Score score = new Client().getSCore(user);
+        Score score = getScore();
 
         // Award based on total score
         if (score.getScoreA() > VETERAN_SCORE) {
-            new Client().addBadge(new Badge(score.getUsername(),
+            client.addBadge(new Badge(score.getUsername(),
                             BadgesEnum.Badge_Veteran));
         } else if (score.getScoreA() > LEGEND_SCORE) {
-            new Client().addBadge(new Badge(score.getUsername(),
+            client.addBadge(new Badge(score.getUsername(),
                             BadgesEnum.Badge_Legend));
         } else if (score.getScoreA() > GAMER_SCORE) {
-            new Client().addBadge(new Badge(score.getUsername(),
+            client.addBadge(new Badge(score.getUsername(),
                             BadgesEnum.Badge_Gamer));
         } else if (score.getScoreA() > 0) {
-            new Client().addBadge(new Badge(score.getUsername(),
+            client.addBadge(new Badge(score.getUsername(),
                             BadgesEnum.First_Victory));
         }
 
         // If Week score is high award badge
         if (score.getHighestWeekScore() > TOP_OF_WEEK_SCORE) {
-            new Client().addBadge(new Badge(score.getUsername(),
+            client.addBadge(new Badge(score.getUsername(),
                         BadgesEnum.Top_Of_The_Week));
         }
 
+    }
+
+    public Score getScore() {
+        return client.getSCore(user);
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 }
