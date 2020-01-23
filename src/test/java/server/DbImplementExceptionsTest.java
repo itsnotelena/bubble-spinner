@@ -16,6 +16,7 @@ import org.mockito.Mockito;
 public class DbImplementExceptionsTest {
 
     private transient DbImplement dbImplement;
+    private transient String test = "test";
 
     /**
      * SetUp proper environment before each test.
@@ -92,7 +93,7 @@ public class DbImplementExceptionsTest {
 
     @Test
     void notGettingUserByUsername() throws SQLException {
-        dbImplement = new DbImplement(new DbAdapter("test"));
+        dbImplement = new DbImplement(new DbAdapter(test));
 
         dbImplement.removeFromUser("baka");
         Optional<User> optional = dbImplement.getUserByUsername("baka");
@@ -104,8 +105,17 @@ public class DbImplementExceptionsTest {
     }
 
     @Test
+    void notGettingGameByUsername() throws SQLException {
+        dbImplement = new DbImplement(new DbAdapter(test));
+
+        dbImplement = new DbImplement(Mockito.mock(DbAdapter.class));
+        Mockito.when(dbImplement.getDbAdapter().getConn())
+                .thenReturn(Mockito.mock(Connection.class));
+    }
+
+    @Test
     void emptyScoreByGettingScoreByUser() throws SQLException {
-        dbImplement = new DbImplement(new DbAdapter("test"));
+        dbImplement = new DbImplement(new DbAdapter(test));
 
         Score optional = dbImplement.getScoreByUser("naruto");
         Assert.assertEquals(optional,new Score("",0,0));
@@ -117,7 +127,7 @@ public class DbImplementExceptionsTest {
 
     @Test
     void emptyBadgesByGettingBadgesByUser() throws SQLException, FileNotFoundException {
-        dbImplement = new DbImplement(new DbAdapter("test"));
+        dbImplement = new DbImplement(new DbAdapter(test));
 
         dbImplement.removeFromUser("elena");
         List optional = dbImplement.getBadgeByUser("elena");
@@ -134,5 +144,11 @@ public class DbImplementExceptionsTest {
 
         Assertions.assertThatThrownBy(() -> dbImplement.getBadgeByUser("lol"))
                 .isInstanceOf(SQLException.class);
+    }
+
+    @Test
+    void errorGettingGameByUsername() throws SQLException {
+        Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
+        Assertions.assertThat(dbImplement.getGameByUser("asd")).isEqualTo(new Game("",0,0));
     }
 }

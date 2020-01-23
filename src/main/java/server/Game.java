@@ -1,9 +1,13 @@
 package server;
 
+import java.util.Objects;
+
 public class Game {
     private String username;
     private int gamesPlayed;
     private int highestLevel;
+
+
 
 
     /**
@@ -40,5 +44,20 @@ public class Game {
 
     public void setHighestLevel(int highestLevel) {
         this.highestLevel = highestLevel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game = (Game) o;
+        return gamesPlayed == game.gamesPlayed &&
+                highestLevel == game.highestLevel &&
+                Objects.equals(username, game.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, gamesPlayed, highestLevel);
     }
 }

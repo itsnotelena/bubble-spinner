@@ -48,14 +48,14 @@ public class DbImplementTest {
         dbImplement.insertUser(new User("lalalq","a","a"));
         Score a = new Score("lalalq",1,1);
         Score b = new Score("lalalq",5,6);
-        boolean resA = dbImplement.insertScore(a);
-        dbImplement.insertScore(b);
+        boolean resA = dbImplement.addScoreAndIncrementGames(a);
+        dbImplement.addScoreAndIncrementGames(b);
         Assertions.assertThat(resA).isTrue();
         Assertions.assertThat(dbImplement
                 .getScoreByUser(a.getUsername())
                 .getHighestWeekScore()).isEqualTo(5);
-        Assertions.assertThat(dbImplement.removeFromScore(a.getUsername()));
-        dbImplement.removeFromScore(a.getUsername());
+        Game game = dbImplement.getGameByUser(a.getUsername());
+        Assertions.assertThat(game.getGamesPlayed()).isEqualTo(2);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class DbImplementTest {
     void getScoreByUsername() throws SQLException {
         dbImplement.insertUser(new User("cardi","b","b"));
         Score a = new Score("cardi", 3, 55);
-        boolean resA = dbImplement.insertScore(a);
+        boolean resA = dbImplement.addScoreAndIncrementGames(a);
         Assertions.assertThat(resA).isTrue();
 
         Score scoreOptional = dbImplement.getScoreByUser(a.getUsername());
@@ -116,11 +116,11 @@ public class DbImplementTest {
         dbImplement.insertUser(taylorswift);
         dbImplement.insertUser(rosalia);
 
-        dbImplement.insertScore(one);
-        dbImplement.insertScore(two);
-        dbImplement.insertScore(three);
-        dbImplement.insertScore(four);
-        dbImplement.insertScore(five);
+        dbImplement.addScoreAndIncrementGames(one);
+        dbImplement.addScoreAndIncrementGames(two);
+        dbImplement.addScoreAndIncrementGames(three);
+        dbImplement.addScoreAndIncrementGames(four);
+        dbImplement.addScoreAndIncrementGames(five);
 
 
         List<User> list = new ArrayList<>();
@@ -140,11 +140,7 @@ public class DbImplementTest {
     @Test
     void alreadyExists() throws SQLException {
         User a = new User("h","h","h");
-        Game b = new Game("a",1,1);
         dbImplement.insertUser(a);
-        dbImplement.insertGame(b);
         Assertions.assertThat(dbImplement.insertUser(a)).isFalse();
-        Assertions.assertThat(dbImplement.insertGame(b)).isFalse();
     }
-
 }
