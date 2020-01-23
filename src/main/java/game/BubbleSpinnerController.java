@@ -21,13 +21,11 @@ public class BubbleSpinnerController {
     public BubbleSpinnerController(GameScreen gameScreen, Stage stage, int difficulty) {
         this.gameScreen = gameScreen;
         this.stage = stage;
-        this.shooter = new Shooter(stage, difficulty);
-        this.hexagonController = new HexagonController(stage, difficulty);
+        this.shooter = new Shooter(stage);
+        this.hexagonController = new HexagonController(stage,
+                difficulty);
     }
 
-    /**
-     * Create the shooter and hexagon objects in the game.
-     */
     public void initialize() {
         this.hexagonController.initialize();
         this.hexagonController.drawGrid();

@@ -21,6 +21,7 @@ public class BadgeTest {
         Badge one = new Badge("Cardi", BadgesEnum.Badge_Gamer);
         Object obj = new Object();
         Assert.assertNotEquals(one, obj);
+        Assert.assertNotEquals(one, null);
     }
 
     @Test

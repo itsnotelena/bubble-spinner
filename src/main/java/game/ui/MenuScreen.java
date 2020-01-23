@@ -140,4 +140,12 @@ public class MenuScreen extends ScreenAdapter {
         game.setScreen(new GameScreen(game, gameSettings));
         stage.dispose();
     }
+
+    public GameSettings getGameSettings() {
+        return gameSettings;
+    }
+
+    public void setGameSettings(GameSettings gameSettings) {
+        this.gameSettings = gameSettings;
+    }
 }
