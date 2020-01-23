@@ -105,9 +105,30 @@ public class BubbleGridTest {
     }
 
     @Test
+    public void updateRotation() {
+        BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
+        grid.setDelta_theta(1);
+        grid.update_rotation();
+        Assertions.assertThat(grid.getDelta_theta()).isEqualTo(0.97f);
+    }
+
+    @Test
     public void updateRotationTest() {
         BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
         grid.update_rotation();
         Assertions.assertThat(grid.getDelta_theta()).isEqualTo(0);
+    }
+
+    @Test
+    public void gridToWorld() {
+        BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
+        Assertions.assertThat(grid.worldToGrid(grid.gridToWorld(10, 10))).isEqualTo(new int[]{10, 10});
+    }
+
+    @Test
+    public void setBubbleNull() {
+        BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
+        grid.setBubble(0,0, null);
+        Assertions.assertThat(grid.getBubble(0,0)).isEqualTo(null);
     }
 }
