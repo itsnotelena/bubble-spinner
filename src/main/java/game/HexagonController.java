@@ -38,9 +38,6 @@ public class HexagonController {
      * Create the grid and draw it at the centre of the screen.
      */
     public void initialize() {
-        int easy = 0;
-        int med = 1;
-        int diff = 2;
 
         this.bubbleFactory.addAllTextures();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
@@ -50,7 +47,7 @@ public class HexagonController {
         bubbleGrid.setBubble(0,0, center);
         BubbleActor bub2;
 
-        if (difficulty == easy) {
+        if (difficulty == Config.Difficulty.easy) {
             for (int i = -2; i <= 2; i++) {
                 for (int j = -2; j <= 2; j++) {
                     if (!(Math.abs(i) == 2 && Math.abs(j) == 2)
@@ -64,7 +61,7 @@ public class HexagonController {
                     }
                 }
             }
-        } else if (difficulty == med) {
+        } else if (difficulty == Config.Difficulty.med) {
             for (int k = -4; k <= 4; k++) {
                 for (int m = -4; m <= 4; m++) {
                     if(!((k == 0 && m == 0) || (k == -4 && Math.abs(m) >= 1)
@@ -79,7 +76,7 @@ public class HexagonController {
                     }
                 }
             }
-        } else if (difficulty == diff) {
+        } else if (difficulty == Config.Difficulty.diff) {
             for (int k = -6; k <= 6; k++) {
                 for (int m = -6; m <= 6; m++) {
                     if (!((m == 0 && k == 0)

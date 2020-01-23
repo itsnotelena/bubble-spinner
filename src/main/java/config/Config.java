@@ -43,12 +43,13 @@ public class Config {
     public static class Bubbles {
         public static final String[] textures = {
             "assets/Bubbles/Blue.png",
-            "assets/Bubbles/Green.png",
+            "assets/Bubbles/ForestGreen.png",
+            "assets/Bubbles/Lavender.png",
+            "assets/Bubbles/LimeGreen.png",
+            "assets/Bubbles/Magenta.png",
             "assets/Bubbles/Pink.png",
             "assets/Bubbles/Purple.png",
-            "assets/Bubbles/Lavender.png",
-            "assets/Bubbles/Magenta.png",
-            "assets/Bubbles/LimeGreen.png",
+            "assets/Bubbles/Red.png",
             "assets/Bubbles/NavyBlue.png"
         };
     }
@@ -59,5 +60,8 @@ public class Config {
             "Medium",
             "Hard"
         };
+        public static final int easy = 0;
+        public static final int med = 1;
+        public static final int diff = 2;
     }
 }
