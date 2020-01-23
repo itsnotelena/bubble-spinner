@@ -39,6 +39,10 @@ public class HexagonController {
      * Create the grid and draw it at the centre of the screen.
      */
     public void initialize() {
+        int easy = 0;
+        int med = 1;
+        int diff = 2;
+
         this.bubbleFactory.addAllTextures();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
         stage.addActor(center);
@@ -47,7 +51,7 @@ public class HexagonController {
         bubbleGrid.setBubble(0,0, center);
         BubbleActor bub2;
 
-        if (difficulty == 0) {
+        if (difficulty == easy) {
             for (int i = -2; i <= 2; i++) {
                 for (int j = -2; j <= 2; j++) {
                     if (!(Math.abs(i) == 2 && Math.abs(j) == 2)
@@ -60,20 +64,13 @@ public class HexagonController {
                     }
                 }
             }
-        } else if (difficulty == 1) {
+        } else if (difficulty == med) {
             for (int k = -4; k <= 4; k++) {
                 for (int m = -4; m <= 4; m++) {
-                    if(k == 0 && m == 0){
-
-                    } else if (k == -4 && (Math.abs(k) + Math.abs(m) >  4)) {
-
-                    } else if (k == -3 && Math.abs(m) >= 3){
-
-                    } else if (k == 4 && Math.abs(m)>= 2){
-
-                    } else if (Math.abs(m) == 4 && k == 3){
-
-                    }else {
+                    if(!((k == 0 && m == 0) || (k == -4 && Math.abs(m) >= 1)
+                        || (k == -4 && Math.abs(m) >= 1)
+                        || (k == -3 && Math.abs(m) >= 3) ||(k == 4 && Math.abs(m)>= 2)
+                        || (Math.abs(m) == 4 && k == 3))) {
                         bub2 = bubbleFactory.createBubble();
                         bubbles.add(bub2);
                         bubbleGrid.setBubble(m, k, bub2);
@@ -81,24 +78,16 @@ public class HexagonController {
                     }
                 }
             }
-        } else if (difficulty == 2) {
+        } else if (difficulty == diff) {
             for (int k = -6; k <= 6; k++) {
                 for (int m = -6; m <= 6; m++) {
-                    if (m == 0 && k == 0){
+                    if (!((m == 0 && k == 0)
+                        || (k == -6 && Math.abs(m) >= 1)
+                        ||(k == -5 && Math.abs(m) >= 3)
+                        ||(k == -4 && Math.abs(m) >= 5)
+                        ||(k == 4 && Math.abs(m) >= 6)
+                        ||(k == 5 && Math.abs(m) >= 4) || (k == 6 && Math.abs(m) >= 2))) {
 
-                    } else if (k == -6 && Math.abs(m) >= 1) {
-
-                    } else if (k == -5 && Math.abs(m) >= 3) {
-
-                    } else if (k == -4 && Math.abs(m) >= 5) {
-
-                    } else if (k == 4 && Math.abs(m) >= 6) {
-
-                    } else if (k == 5 && Math.abs(m) >= 4) {
-
-                    }else if (k == 6 && Math.abs(m) >= 2) {
-
-                    } else {
                         bub2 = bubbleFactory.createBubble();
                         bubbles.add(bub2);
                         bubbleGrid.setBubble(m, k, bub2);
