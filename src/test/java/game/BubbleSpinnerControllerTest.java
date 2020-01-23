@@ -34,6 +34,9 @@ public class BubbleSpinnerControllerTest {
     private transient BubbleSpinnerController controller;
     private transient CustomMockInput input;
 
+    /**
+     * Setup method.
+     */
     @BeforeEach
     public void before() {
         gameScreen = Mockito.mock(GameScreen.class);

@@ -19,15 +19,20 @@ public class MainMenu {
     private transient boolean computerPlayer;
     private transient int difficulty;
 
+    /**
+     * Constructor.
+     * @param stage Stage instance.
+     * @param screen MenuScreen instance.
+     */
     public MainMenu(Stage stage, MenuScreen screen) {
-        startButton = UIFactory.createTextButton("Start game");
-        difficultyButton = UIFactory.createTextButton("Difficulty: Easy");
-        logoutButton = UIFactory.createTextButton("Logout");
-        achievementButton = UIFactory.createTextButton("AchievementScreen");
-        exitButton = UIFactory.createTextButton("Exit");
+        startButton = UserInterfaceFactory.createTextButton("Start game");
+        difficultyButton = UserInterfaceFactory.createTextButton("Difficulty: Easy");
+        logoutButton = UserInterfaceFactory.createTextButton("Logout");
+        achievementButton = UserInterfaceFactory.createTextButton("AchievementScreen");
+        exitButton = UserInterfaceFactory.createTextButton("Exit");
 
-        computerButton = UIFactory.createTextButton("Computer Player OFF");
-        timerButton = UIFactory.createTextButton("Timer: 10 minutes");
+        computerButton = UserInterfaceFactory.createTextButton("Computer Player OFF");
+        timerButton = UserInterfaceFactory.createTextButton("Timer: 10 minutes");
 
         Config.Game.GAME_TIME = Config.Time.DEFAULT;
         computerPlayer = false;
@@ -118,6 +123,10 @@ public class MainMenu {
                 .addItem(exitButton);
     }
 
+    /**
+     * Get the current gameSettings of the game.
+     * @return GameSettings instance.
+     */
     public GameSettings getGameSettings() {
         return new GameSettings.GameSettingsBuilder()
                 .withComputerPlayer(computerPlayer)
@@ -127,12 +136,19 @@ public class MainMenu {
                 .build();
     }
 
+    /**
+     * Switch between computer and normal player.
+     * @return computerPlayer boolean.
+     */
     public boolean switchComputerPlayer() {
         computerPlayer = !computerPlayer;
         computerButton.setText("Computer Player " + (computerPlayer ? "ON" : "OFF"));
         return computerPlayer;
     }
 
+    /**
+     * Increment the timer by 10 minutes.
+     */
     public void incrementTimer() {
         Config.Game.GAME_TIME = (Config.Game.GAME_TIME + Config.Time.DEFAULT) % Config.Time.HOUR;
         String time = Config.Game.GAME_TIME == 0
@@ -141,6 +157,9 @@ public class MainMenu {
         timerButton.setText("Timer: " + time + " minutes");
     }
 
+    /**
+     * Change the difficulty of the game.
+     */
     public void changeDifficulty() {
         difficulty = (difficulty + 1) % Config.Difficulty.types.length;
         difficultyButton.setText("Diffulty: " + Config.Difficulty.types[difficulty]);

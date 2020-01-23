@@ -107,7 +107,7 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        if (bubbleSpinnerController instanceof BotController) {
+        if (gameSettings.isComputerPlayer()) {
             game.setScreen(new GameScreen(game, gameSettings));
         } else {
             game.setScreen(new LoseScreen(game));

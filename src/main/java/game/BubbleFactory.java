@@ -15,12 +15,21 @@ public class BubbleFactory implements AbstractBubbleFactory {
     private transient List<Texture> texture = new ArrayList<>();
     private transient int maximumBubbles;
 
+    /**
+     * Constructor.
+     * @param stage Stage instance.
+     * @param difficulty 0-1-2 for Easy-Medium-Hard.
+     */
     public BubbleFactory(Stage stage, int difficulty) {
         this.stage = stage;
         this.rnd = new Random();
         this.maximumBubbles = 5 + difficulty * 2;
     }
 
+    /**
+     * Easy level Constructor.
+     * @param stage Stage instance.
+     */
     public BubbleFactory(Stage stage) {
         this(stage, 0);
     }
@@ -57,6 +66,10 @@ public class BubbleFactory implements AbstractBubbleFactory {
         return actor;
     }
 
+    /**
+     * Create the center gray bubble.
+     * @return BubbleActor instance.
+     */
     public BubbleActor createCenterBubble() {
         Texture centerTexture = new Texture("assets/Bubbles/Black.png");
         BubbleActor actor = new BubbleActor(centerTexture, stage);
@@ -64,6 +77,10 @@ public class BubbleFactory implements AbstractBubbleFactory {
         return actor;
     }
 
+    /**
+     * Add a texture to the current available.
+     * @param texture Texture instance.
+     */
     public void addTexture(Texture texture) {
         this.texture.add(texture);
     }

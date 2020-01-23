@@ -41,7 +41,8 @@ public class MenuScreen extends ScreenAdapter {
         );
         stage.addActor(leaderboard);
 
-        loggedIn = UIFactory.createTextButton("Player : " + game.getUser().getUsername());
+        loggedIn = UserInterfaceFactory.createTextButton("Player : "
+                                    + game.getUser().getUsername());
         loggedIn.setPosition(Gdx.graphics.getWidth() / 8.f,
                 7 * Gdx.graphics.getHeight() / 8.f);
         stage.addActor(loggedIn);

@@ -17,6 +17,12 @@ public class GameMenu implements Observer {
     private transient Timer timer;
     private transient BitmapFont timerFont;
 
+    /**
+     * Constructor.
+     * @param batch SpriteBatch instance.
+     * @param gameSettings GameSettings of the current game.
+     * @param gameScreen GameScreen instance.
+     */
     public GameMenu(SpriteBatch batch, GameSettings gameSettings, GameScreen gameScreen) {
         this.batch = batch;
         this.gameSettings = gameSettings;
@@ -38,6 +44,9 @@ public class GameMenu implements Observer {
         }
     }
 
+    /**
+     * Initialize timer and tutorial box.
+     */
     public void initialize() {
         if (!gameSettings.isInfinite()) {
             addTimer();
@@ -48,6 +57,9 @@ public class GameMenu implements Observer {
         }
     }
 
+    /**
+     * Add a timer to the game.
+     */
     public void addTimer() {
         timer = new Timer();
         timerFont = new BitmapFont();
@@ -55,6 +67,9 @@ public class GameMenu implements Observer {
         timerFont.getData().setScale(2);
     }
 
+    /**
+     * Draw the timer on the screen.
+     */
     public void drawTimer() {
         batch.begin();
         timerFont.draw(batch,
@@ -65,6 +80,10 @@ public class GameMenu implements Observer {
         batch.end();
     }
 
+    /**
+     * Check whether the game is in pause.
+     * @return true if paused, false otherwise.
+     */
     public boolean isPaused() {
         return paused;
     }

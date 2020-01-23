@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
-public class UIFactory {
+public class UserInterfaceFactory {
 
     private static Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     private static String DEFAULT = "default";
@@ -25,12 +25,22 @@ public class UIFactory {
         return new TextButton(text, skin, DEFAULT);
     }
 
+    /**
+     * Create a TextField UI element.
+     * @param text text.
+     * @return TextField.
+     */
     public static TextField createTextField(String text) {
         TextField textField = new TextField("", skin, DEFAULT);
         textField.setMessageText(text);
         return textField;
     }
 
+    /**
+     * Create a Label UI element.
+     * @param text text.
+     * @return Label.
+     */
     public static Label createLabel(String text, LabelColor color) {
         Label label = new Label(text, skin, DEFAULT);
         if (color == LabelColor.ButtonText) {

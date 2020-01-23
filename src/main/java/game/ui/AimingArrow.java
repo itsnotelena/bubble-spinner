@@ -15,6 +15,11 @@ public class AimingArrow {
     private transient Stage stage;
     private transient Camera camera;
 
+    /**
+     * Constructor.
+     * @param stage Stage instance.
+     * @param camera OrthographicCamera instance.
+     */
     public AimingArrow(Stage stage, Camera camera) {
         this.shapeRenderer = new ShapeRenderer();
         this.stage = stage;

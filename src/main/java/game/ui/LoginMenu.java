@@ -17,18 +17,25 @@ public class LoginMenu {
     private transient TextField userTextField;
     private transient TextField passTextField;
 
+    /**
+     * Constructor.
+     * @param stage Stage instance.
+     * @param screen LoginScreen instance.
+     */
     public LoginMenu(Stage stage, LoginScreen screen) {
-        loginScreenLabel = UIFactory.createLabel("Please login below",
-                UIFactory.LabelColor.ButtonText);
+        loginScreenLabel = UserInterfaceFactory.createLabel("Please login below",
+                UserInterfaceFactory.LabelColor.ButtonText);
 
-        userTextField = UIFactory.createTextField("Username");
-        passTextField = UIFactory.createTextField("Password");
+        userTextField = UserInterfaceFactory.createTextField("Username");
+        passTextField = UserInterfaceFactory.createTextField("Password");
         passTextField.setPasswordCharacter('*');
         passTextField.setPasswordMode(true);
 
-        playButton = UIFactory.createTextButton("Login");
-        register = UIFactory.createLabel("Register", UIFactory.LabelColor.NormalText);
-        forgotPass = UIFactory.createLabel("Forgot password", UIFactory.LabelColor.NormalText);
+        playButton = UserInterfaceFactory.createTextButton("Login");
+        register = UserInterfaceFactory.createLabel("Register",
+                UserInterfaceFactory.LabelColor.NormalText);
+        forgotPass = UserInterfaceFactory.createLabel("Forgot password",
+                UserInterfaceFactory.LabelColor.NormalText);
 
         playButton.addListener(new InputListener() {
             @Override

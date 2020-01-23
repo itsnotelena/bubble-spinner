@@ -18,6 +18,9 @@ public class AchievementTest {
     private transient User user;
     private transient Achievement achievement;
 
+    /**
+     * Setup method.
+     */
     @BeforeEach
     public void before() {
         client = Mockito.mock(Client.class);
