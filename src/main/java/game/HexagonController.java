@@ -5,7 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import config.Config;
 import game.ui.GameScreen;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class HexagonController {
 
@@ -47,7 +50,7 @@ public class HexagonController {
     }
 
     public void positionBubble(int x, int y) {
-        if(bubbleGrid.getBubble(x, y) == null) {
+        if (bubbleGrid.getBubble(x, y) == null) {
             BubbleActor bub2 = bubbleFactory.createBubble();
             bubbles.add(bub2);
             bubbleGrid.setBubble(x, y, bub2);
@@ -57,7 +60,7 @@ public class HexagonController {
     }
 
     public void positionBubbleGivenMap(int x, int y) {
-        if(bubbleGrid.getBubble(x, y) == null) {
+        if (bubbleGrid.getBubble(x, y) == null) {
             BubbleActor bub2 = bubbleFactory.createBubbleGivenMap(mapBubbles);
             bubbles.add(bub2);
             bubbleGrid.setBubble(x, y, bub2);
