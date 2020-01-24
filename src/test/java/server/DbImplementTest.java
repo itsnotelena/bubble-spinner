@@ -44,10 +44,10 @@ public class DbImplementTest {
         boolean resA = dbImplement.addScoreAndIncrementGames(a);
         dbImplement.addScoreAndIncrementGames(b);
         Assertions.assertThat(resA).isTrue();
-        Assertions.assertThat(dbImplement
+        Assertions.assertThat(dbImplement.getDbImplementGet()
                 .getScoreByUser(a.getUsername())
                 .getHighestWeekScore()).isEqualTo(5);
-        Game game = dbImplement.getGameByUser(a.getUsername());
+        Game game = dbImplement.getDbImplementGet().getGameByUser(a.getUsername());
         Assertions.assertThat(game.getGamesPlayed()).isEqualTo(2);
     }
 
@@ -65,7 +65,7 @@ public class DbImplementTest {
         boolean resA = dbImplement.addScoreAndIncrementGames(a);
         Assertions.assertThat(resA).isTrue();
 
-        Score scoreOptional = dbImplement.getScoreByUser(a.getUsername());
+        Score scoreOptional = dbImplement.getDbImplementGet().getScoreByUser(a.getUsername());
         Assert.assertEquals(scoreOptional,a);
     }
 
@@ -76,7 +76,7 @@ public class DbImplementTest {
         boolean resA = dbImplement.insertBadge(beyhive);
         Assertions.assertThat(resA).isTrue();
 
-        ArrayList badgeOptional = dbImplement.getBadgeByUser(beyhive.getUsername());
+        ArrayList badgeOptional = dbImplement.getDbImplementGet().getBadgeByUser(beyhive.getUsername());
         Assertions.assertThat(badgeOptional).isNotEqualTo(new ArrayList<>());
         ArrayList e = new ArrayList<>();
         e.add(beyhive);
@@ -117,13 +117,13 @@ public class DbImplementTest {
 
 
         List<User> list = new ArrayList<>();
-        list.add(dbImplement.getUserByUsername(one.getUsername()).get());
-        list.add(dbImplement.getUserByUsername(two.getUsername()).get());
-        list.add(dbImplement.getUserByUsername(three.getUsername()).get());
-        list.add(dbImplement.getUserByUsername(four.getUsername()).get());
-        list.add(dbImplement.getUserByUsername(five.getUsername()).get());
+        list.add(dbImplement.getDbImplementGet().getUserByUsername(one.getUsername()).get());
+        list.add(dbImplement.getDbImplementGet().getUserByUsername(two.getUsername()).get());
+        list.add(dbImplement.getDbImplementGet().getUserByUsername(three.getUsername()).get());
+        list.add(dbImplement.getDbImplementGet().getUserByUsername(four.getUsername()).get());
+        list.add(dbImplement.getDbImplementGet().getUserByUsername(five.getUsername()).get());
 
-        List<Score> scoreOptional = dbImplement.getTop5Score();
+        List<Score> scoreOptional = dbImplement.getDbImplementGet().getTop5Score();
         Assert.assertEquals(scoreOptional.size(), 5);
         for (int i = 0; i < scoreOptional.size(); i++) {
             Assert.assertEquals(scoreOptional.get(i).getUsername(), list.get(i).getUsername());

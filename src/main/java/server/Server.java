@@ -100,7 +100,7 @@ public class Server {
      */
     @GetMapping(value = "/top5")
     public List<Score> getTop5() {
-        return dbImplement.getTop5Score();
+        return dbImplement.getDbImplementGet().getTop5Score();
     }
 
 
@@ -112,7 +112,7 @@ public class Server {
     @GetMapping(value = "/getBadges")
     public Badge[] getBadges(final @RequestParam String username) {
         try {
-            ArrayList<Badge> result = dbImplement.getBadgeByUser(username);
+            ArrayList<Badge> result = dbImplement.getDbImplementGet().getBadgeByUser(username);
             return result.toArray(new Badge[result.size()]);
         } catch (SQLException e) {
             return new Badge[0];
@@ -170,7 +170,7 @@ public class Server {
     @PostMapping(value = "/getUserScore")
     public Score getUserScore(final @RequestBody User user) {
         try {
-            return dbImplement.getScoreByUser(user.getUsername());
+            return dbImplement.getDbImplementGet().getScoreByUser(user.getUsername());
         } catch (SQLException e) {
             return null;
         }
