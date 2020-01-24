@@ -3,6 +3,7 @@ package game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import config.Config;
 import game.ui.GameScreen;
 
 public class BubbleSpinnerController {
@@ -27,10 +28,10 @@ public class BubbleSpinnerController {
     }
 
     private void difficultyLevel(int difficulty) {
-        if(difficulty == 0) {
+        if(difficulty == Config.Difficulty.easy) {
             this.hexagonController.setBuilder(new EasyHexagonBuilder());
             this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
-        } else if (difficulty == 1) {
+        } else if (difficulty == Config.Difficulty.med) {
             this.hexagonController.setBuilder(new MediumHexagonBuilder());
             this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
         } else {
