@@ -5,8 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import config.Config;
 import game.ui.GameScreen;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class HexagonController {
 
@@ -20,7 +19,7 @@ public class HexagonController {
     private transient int[] mapBubbles;
     private transient int missedBubbles;
     private transient int difficulty;
-    private transient HexagonBuilder builder;
+    private transient HexagonStrategy builder;
     public List<BubbleActor> getBubbles() {
         return bubbles;
     }
@@ -35,7 +34,6 @@ public class HexagonController {
         this.bubbleFactory = new BubbleFactory(stage, difficulty);
         this.bubbles = new ArrayList<>();
         this.stage = stage;
-
     }
 
     public void initialize(){
@@ -49,11 +47,23 @@ public class HexagonController {
     }
 
     public void positionBubble(int x, int y) {
-        BubbleActor bub2 = bubbleFactory.createBubble();
-        bubbles.add(bub2);
-        bubbleGrid.setBubble(x, y, bub2);
-        stage.addActor(bub2);
-        mapBubbles[bub2.getColorId()]++;
+        if(bubbleGrid.getBubble(x, y) == null) {
+            BubbleActor bub2 = bubbleFactory.createBubble();
+            bubbles.add(bub2);
+            bubbleGrid.setBubble(x, y, bub2);
+            stage.addActor(bub2);
+            mapBubbles[bub2.getColorId()]++;
+        }
+    }
+
+    public void positionBubbleGivenMap(int x, int y) {
+        if(bubbleGrid.getBubble(x, y) == null) {
+            BubbleActor bub2 = bubbleFactory.createBubbleGivenMap(mapBubbles);
+            bubbles.add(bub2);
+            bubbleGrid.setBubble(x, y, bub2);
+            stage.addActor(bub2);
+            mapBubbles[bub2.getColorId()]++;
+        }
     }
 
     public void drawGrid() {
@@ -66,11 +76,11 @@ public class HexagonController {
         }
     }
 
-    public void setBuilder(HexagonBuilder builder) {
+    public void setBuilder(HexagonStrategy builder) {
         this.builder = builder;
     }
 
-    public HexagonBuilder getBuilder() {
+    public HexagonStrategy getBuilder() {
         return this.builder;
     }
 
@@ -203,6 +213,17 @@ public class HexagonController {
         result--;
         if (missedBubbles >= MAX_MISSED_BUBBLES) {
             missedBubbles = 0;
+            // Add new bubbles to the grid
+            Set<Pair<Integer, Integer>> set = this.bubbleGrid.getPossiblePositions();
+
+            for(int i = 0; i < set.size() || i < 5; i++ ) {
+                int size = set.size();
+                int index = new Random().nextInt(size);
+                Object[] pairs = set.toArray();
+                Pair<Integer, Integer> randomValue = (Pair<Integer, Integer>) pairs[index];
+                positionBubbleGivenMap(randomValue.getLeft(), randomValue.getRight());
+                set.remove(randomValue.getLeft());
+            }
         }
     }
 

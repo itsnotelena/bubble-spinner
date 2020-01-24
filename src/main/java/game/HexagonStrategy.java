@@ -1,6 +1,6 @@
 package game;
 
-public interface HexagonBuilder {
+public interface HexagonStrategy {
 
     void setupUpHexagon(HexagonController hex);
 }
