@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import game.ui.GameScreen;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.assertj.core.api.Assertions;
@@ -54,6 +55,7 @@ class HexagonControllerTest {
 
     @Test
     void popFloatingBubbles() {
+
     }
 
     @Test
@@ -63,14 +65,22 @@ class HexagonControllerTest {
 
     @Test
     void bubbleMissed() {
+
     }
 
     @Test
-    void getMapBubbles() {
+    void checkGameStatusLost() {
+        this.controller.lostGame = true;
+        GameScreen gs = Mockito.mock(GameScreen.class);
+        this.controller.checkGameStatus(gs);
+        Mockito.verify(gs, Mockito.times(1)).dispose();
     }
 
     @Test
-    void checkGameStatus() {
-
+    void checkGameStatusNextLevel() {
+        this.controller.lostGame = false;
+        GameScreen gs = Mockito.mock(GameScreen.class);
+        this.controller.checkGameStatus(gs);
+        Mockito.verify(gs, Mockito.times(1)).nextLevel();
     }
 }

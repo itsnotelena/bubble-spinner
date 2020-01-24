@@ -197,11 +197,6 @@ public class HexagonController {
         missedBubbles++;
         result--;
         if (missedBubbles >= MAX_MISSED_BUBBLES) {
-            // Add more bubbles to the grid.
-            // Should be something like this with random coords.
-//            BubbleActor bubble = bubbleFactory.createBubbleGivenMap(mapBubbles);
-//            mapBubbles[bubble.getColorId()]++;
-//            bubbleGrid.setBubble(0, 0, bubble);
             missedBubbles = 0;
         }
     }
