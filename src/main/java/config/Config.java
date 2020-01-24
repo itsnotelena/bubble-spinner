@@ -67,9 +67,9 @@ public class Config {
 
     public static class Mode {
         public static final String[] types = {
-                "None",
-                "Casual",
-                "Competitive"
+            "None",
+            "Casual",
+            "Competitive"
         };
     }
 }
