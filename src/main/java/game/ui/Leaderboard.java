@@ -1,6 +1,7 @@
 package game.ui;
 
 import client.Client;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -9,19 +10,19 @@ import server.Score;
 
 public class Leaderboard extends Table {
 
+    private transient Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
     private transient List<Score> scores;
 
     /**
      * Contructor for a leaderboard scene2D element.
-     * @param skin the libGDX skin we've got loaded
      */
-    public Leaderboard(Skin skin) {
-        super(skin);
+    public Leaderboard() {
+        super(new Skin(Gdx.files.internal("assets/uiskin.json")));
         this.setBackground("default-window");
         scores = new Client().getTop5();
 
         this.add(new Label("User", skin));
-        this.add(new Label("Score a", skin));
+        this.add(new Label("Score", skin));
         this.add(new Label("Weekly", skin));
         this.row();
 

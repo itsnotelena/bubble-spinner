@@ -1,7 +1,5 @@
 package server;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,7 +8,6 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 
@@ -18,21 +15,17 @@ public class DbImplementTest {
     private static DbAdapter dbAdapter = new DbAdapter("test");
     private transient DbImplement dbImplement = new DbImplement(dbAdapter);
 
-    public DbImplementTest() {
-    }
-
-    @BeforeAll
-    static void setUp() throws FileNotFoundException {
+    public DbImplementTest() throws FileNotFoundException {
         dbAdapter.importTables();
     }
 
     @AfterEach
-    void clean() throws SQLException {
+    public void clean() throws SQLException {
         dbAdapter.clearData();
     }
 
     @Test
-    void insertAndCheckLogin() throws SQLException {
+    public void insertAndCheckLogin() throws SQLException {
         User a = new User("lalal","nsg","zal");
         dbImplement.removeFromUser(a.getUsername());
         boolean resA = dbImplement.insertUser(a);
@@ -44,46 +37,47 @@ public class DbImplementTest {
     }
 
     @Test
-    void searchProperly() throws SQLException {
+    public void searchProperly() throws SQLException {
         dbImplement.insertUser(new User("lalalq","a","a"));
         Score a = new Score("lalalq",1,1);
         Score b = new Score("lalalq",5,6);
-        boolean resA = dbImplement.insertScore(a);
-        dbImplement.insertScore(b);
+        boolean resA = dbImplement.addScoreAndIncrementGames(a);
+        dbImplement.addScoreAndIncrementGames(b);
         Assertions.assertThat(resA).isTrue();
-        Assertions.assertThat(dbImplement
+        Assertions.assertThat(dbImplement.getDbImplementGet()
                 .getScoreByUser(a.getUsername())
                 .getHighestWeekScore()).isEqualTo(5);
-        Assertions.assertThat(dbImplement.removeFromScore(a.getUsername()));
-        dbImplement.removeFromScore(a.getUsername());
+        Game game = dbImplement.getDbImplementGet().getGameByUser(a.getUsername());
+        Assertions.assertThat(game.getGamesPlayed()).isEqualTo(2);
     }
 
     @Test
-    void searchFails() {
+    public void searchFails() {
         Assertions.assertThat(dbImplement.searchInUsers("lal")).isFalse();
         Assertions.assertThat(dbImplement.searchInScore("lal")).isFalse();
         Assertions.assertThat(dbImplement.searchInGame("lal")).isFalse();
     }
 
     @Test
-    void getScoreByUsername() throws SQLException {
+    public void getScoreByUsername() throws SQLException {
         dbImplement.insertUser(new User("cardi","b","b"));
         Score a = new Score("cardi", 3, 55);
-        boolean resA = dbImplement.insertScore(a);
+        boolean resA = dbImplement.addScoreAndIncrementGames(a);
         Assertions.assertThat(resA).isTrue();
 
-        Score scoreOptional = dbImplement.getScoreByUser(a.getUsername());
-        Assertions.assertThat(scoreOptional).isEqualTo(a);
+        Score scoreOptional = dbImplement.getDbImplementGet().getScoreByUser(a.getUsername());
+        Assert.assertEquals(scoreOptional,a);
     }
 
     @Test
-    void getBadgesByUsername() throws SQLException {
+    public void getBadgesByUsername() throws SQLException {
         Badge beyhive = new Badge("beyonce", BadgesEnum.Badge_Gamer);
         dbImplement.removeFromBadge(beyhive.getUsername());
         boolean resA = dbImplement.insertBadge(beyhive);
         Assertions.assertThat(resA).isTrue();
 
-        ArrayList badgeOptional = dbImplement.getBadgeByUser(beyhive.getUsername());
+        ArrayList badgeOptional = dbImplement.getDbImplementGet()
+                .getBadgeByUser(beyhive.getUsername());
         Assertions.assertThat(badgeOptional).isNotEqualTo(new ArrayList<>());
         ArrayList e = new ArrayList<>();
         e.add(beyhive);
@@ -91,7 +85,7 @@ public class DbImplementTest {
     }
 
     @Test
-    void getTop5Score() throws SQLException {
+    public void getTop5Score() throws SQLException {
         Score one = new Score("carrdi", 3, 55);
         Score two = new Score("anitta", 4, 31);
         Score three = new Score("Lady Gaga", 2, 30);
@@ -116,21 +110,21 @@ public class DbImplementTest {
         dbImplement.insertUser(taylorswift);
         dbImplement.insertUser(rosalia);
 
-        dbImplement.insertScore(one);
-        dbImplement.insertScore(two);
-        dbImplement.insertScore(three);
-        dbImplement.insertScore(four);
-        dbImplement.insertScore(five);
+        dbImplement.addScoreAndIncrementGames(one);
+        dbImplement.addScoreAndIncrementGames(two);
+        dbImplement.addScoreAndIncrementGames(three);
+        dbImplement.addScoreAndIncrementGames(four);
+        dbImplement.addScoreAndIncrementGames(five);
 
 
         List<User> list = new ArrayList<>();
-        list.add(dbImplement.getUserByUsername(one.getUsername()).get());
-        list.add(dbImplement.getUserByUsername(two.getUsername()).get());
-        list.add(dbImplement.getUserByUsername(three.getUsername()).get());
-        list.add(dbImplement.getUserByUsername(four.getUsername()).get());
-        list.add(dbImplement.getUserByUsername(five.getUsername()).get());
+        list.add(dbImplement.getDbImplementGet().getUserByUsername(one.getUsername()).get());
+        list.add(dbImplement.getDbImplementGet().getUserByUsername(two.getUsername()).get());
+        list.add(dbImplement.getDbImplementGet().getUserByUsername(three.getUsername()).get());
+        list.add(dbImplement.getDbImplementGet().getUserByUsername(four.getUsername()).get());
+        list.add(dbImplement.getDbImplementGet().getUserByUsername(five.getUsername()).get());
 
-        List<Score> scoreOptional = dbImplement.getTop5Score();
+        List<Score> scoreOptional = dbImplement.getDbImplementGet().getTop5Score();
         Assert.assertEquals(scoreOptional.size(), 5);
         for (int i = 0; i < scoreOptional.size(); i++) {
             Assert.assertEquals(scoreOptional.get(i).getUsername(), list.get(i).getUsername());
@@ -138,13 +132,9 @@ public class DbImplementTest {
     }
 
     @Test
-    void alreadyExists() throws SQLException {
+    public void alreadyExists() throws SQLException {
         User a = new User("h","h","h");
-        Game b = new Game("a",1,1);
         dbImplement.insertUser(a);
-        dbImplement.insertGame(b);
         Assertions.assertThat(dbImplement.insertUser(a)).isFalse();
-        Assertions.assertThat(dbImplement.insertGame(b)).isFalse();
     }
-
 }

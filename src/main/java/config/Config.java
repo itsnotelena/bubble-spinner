@@ -5,10 +5,10 @@ public class Config {
     public static class Game {
         public static final String TITLE = "Bubble Spinner";
         public static final int WIDTH = 1280;
-        public static final int HEIGHT = 720;
+        public static final int HEIGHT = 1080;
         public static final String ICON = "assets/icon.png";
         public static int GAME_TIME = 600;
-        public static int BUBBLE_SIZE = 64;
+        public static int BUBBLE_SIZE = 48;
     }
 
     public static class Time {
@@ -31,7 +31,7 @@ public class Config {
                     + " connected together they will pop and you will get points for it.",
             "If you miss the hexagon structure you will lose points but you will not lose points"
                     + " if you don't hit a bubble of he same color.",
-            "In order to win the game you need to pop all the bubbles from the hexagon structure.",
+            "In order to win the game Only one bubble color is left on the grid.",
             "Have fun!"
         };
     }
@@ -43,11 +43,33 @@ public class Config {
     public static class Bubbles {
         public static final String[] textures = {
             "assets/Bubbles/Blue.png",
-            "assets/Bubbles/Green.png",
-            "assets/Bubbles/Pink.png",
-            "assets/Bubbles/Red.png",
+            "assets/Bubbles/ForestGreen.png",
             "assets/Bubbles/Lavender.png",
+            "assets/Bubbles/LimeGreen.png",
+            "assets/Bubbles/Magenta.png",
+            "assets/Bubbles/Pink.png",
+            "assets/Bubbles/Purple.png",
+            "assets/Bubbles/Red.png",
             "assets/Bubbles/NavyBlue.png"
+        };
+    }
+
+    public static class Difficulty {
+        public static final String[] types = {
+            "Easy",
+            "Medium",
+            "Hard"
+        };
+        public static final int easy = 0;
+        public static final int med = 1;
+        public static final int diff = 2;
+    }
+
+    public static class Mode {
+        public static final String[] types = {
+            "None",
+            "Casual",
+            "Competitive"
         };
     }
 }

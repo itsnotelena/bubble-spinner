@@ -3,6 +3,7 @@ package game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import config.Config;
 import game.ui.GameScreen;
 
 public class BubbleSpinnerController {
@@ -11,20 +12,43 @@ public class BubbleSpinnerController {
     transient Stage stage;
     transient Shooter shooter;
     transient HexagonController hexagonController;
-    private static int THRESHOLD_BUBBLES = 1;
+    transient int difficulty;
 
     /**
      * Constructor for the Controller of the Bubble Spinner game.
      * @param gameScreen GameScreen the game is currently played in.
      * @param stage Stage where all objects reside.
      */
-    public BubbleSpinnerController(GameScreen gameScreen, Stage stage) {
+    public BubbleSpinnerController(GameScreen gameScreen, Stage stage, int difficulty) {
         this.gameScreen = gameScreen;
         this.stage = stage;
-        this.shooter = new Shooter(stage);
-        this.hexagonController = new HexagonController(stage);
+        this.shooter = new Shooter(stage, difficulty);
+        this.hexagonController = new HexagonController(stage, difficulty);
+        this.difficulty = difficulty;
+    }
+
+    private void difficultyLevel(int difficulty) {
+        if (difficulty == Config.Difficulty.easy) {
+            this.hexagonController.setBuilder(new EasyHexagonStrategy());
+        } else if (difficulty == Config.Difficulty.med) {
+            this.hexagonController.setBuilder(new MediumHexagonStrategy());
+        } else {
+            this.hexagonController.setBuilder(new HardHexagonStrategy());
+        }
+        this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
+    }
+
+    /**
+     * Initialize the hexagon and shooter.
+     */
+    public void initialize() {
+
+        this.hexagonController.initialize();
+
         this.hexagonController.drawGrid();
-        this.shooter.initialize();
+        this.difficultyLevel(difficulty);
+
+        this.shooter.initialize(hexagonController.getMapBubbles());
     }
 
     /**
@@ -38,21 +62,20 @@ public class BubbleSpinnerController {
 
         hexagonController.drawGrid();
 
+        checkCurrentBubble(bubble);
+
+        hexagonController.checkGameStatus(gameScreen);
+    }
+
+    private void checkCurrentBubble(BubbleActor bubble) {
         if (hexagonController.checkCollisions(bubble)
-            || bubble.belowScreen()) {
+                || bubble.belowScreen() || bubble.aboveScreen()) {
             shooter.poll();
-            shooter.shiftBubbles();
-            if (bubble.belowScreen()) {
+            shooter.shiftBubbles(hexagonController.getMapBubbles());
+            if (bubble.belowScreen() || bubble.aboveScreen()) {
                 bubble.remove();
+                hexagonController.bubbleMissed();
             }
-        }
-
-        if (hexagonController.lostGame) {
-            gameScreen.dispose();
-        }
-
-        if (hexagonController.getBubbles().size() == THRESHOLD_BUBBLES) {
-            gameScreen.nextLevel();
         }
     }
 
@@ -68,7 +91,36 @@ public class BubbleSpinnerController {
         }
     }
 
+    /**
+     * Get the game score.
+     * @return Int with the result.
+     */
     public int getResult() {
         return hexagonController.getResult();
     }
+
+    /**
+     * Set custom hexagon.
+     * @param hexagonController HexagonController object.
+     */
+    public void setHexagonController(HexagonController hexagonController) {
+        this.hexagonController = hexagonController;
+    }
+
+    /**
+     * Set custom shooter.
+     * @param shooter Shooter object.
+     */
+    public void setShooter(Shooter shooter) {
+        this.shooter = shooter;
+    }
+
+    /**
+     * Set difficulty of the game.
+     * @param difficulty 0-1-2 for Easy-Medium-Hard.
+     */
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
 }

@@ -1,7 +1,16 @@
 package client;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import config.Config;
+import game.Pair;
+import game.ui.UserInterfaceFactory;
+
+import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -110,5 +119,30 @@ public class Client {
         return new RestTemplate().postForObject(Config.Api.URL + "/getUserScore",
                                 user,
                                 Score.class);
+    }
+
+    /**
+     * gets the user badges as a texture list.
+     * @return list of textures
+     */
+    public List<Pair<Image, Label>> getUserBadge(User user) {
+        Badge[] badge = new Client().getBadges(user);
+        List<Pair<Image,Label>> result = new ArrayList<>();
+        parseBadges(badge, result);
+        return result;
+    }
+
+    private void parseBadges(Badge[] badge, List<Pair<Image, Label>> result) {
+        for (int i = 0; i < badge.length; ++i) {
+            Image img = getImageFromBadgeName(badge[i].getAward().getText());
+            img.setSize(3,1);
+            Label currentLabel = UserInterfaceFactory.createLabel(badge[i].getAward().getText(),
+                    UserInterfaceFactory.LabelColor.BadgeText);
+            result.add(new Pair(img,currentLabel));
+        }
+    }
+
+    private Image getImageFromBadgeName(String name) {
+        return new Image(new Texture(Gdx.files.internal("assets/Badges/" + name + ".png")));
     }
 }
