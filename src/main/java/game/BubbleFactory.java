@@ -49,20 +49,25 @@ public class BubbleFactory implements AbstractBubbleFactory {
      * @return a new BubbleActor.
      */
     public BubbleActor createBubbleGivenMap(int[] mapBubbles) {
+        List<Integer> possibleColors = getPossibleColors(mapBubbles);
+        if (possibleColors.size() == 0) {
+            return null;
+        } else {
+            int pos = rnd.nextInt(possibleColors.size());
+            BubbleActor actor = new BubbleActor(texture.get(possibleColors.get(pos)), stage);
+            actor.setColorId(possibleColors.get(pos));
+            return actor;
+        }
+    }
+
+    private List<Integer> getPossibleColors(int[] mapBubbles) {
         List<Integer> possibleColors = new ArrayList<>();
         for (int i = 0; i < mapBubbles.length; ++i) {
             if (mapBubbles[i] != 0) {
                 possibleColors.add(i);
             }
         }
-        if (possibleColors.size() == 0) {
-            return null;
-        }
-
-        int pos = rnd.nextInt(possibleColors.size());
-        BubbleActor actor = new BubbleActor(texture.get(possibleColors.get(pos)), stage);
-        actor.setColorId(possibleColors.get(pos));
-        return actor;
+        return possibleColors;
     }
 
     /**
