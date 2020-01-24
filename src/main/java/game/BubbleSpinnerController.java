@@ -11,6 +11,7 @@ public class BubbleSpinnerController {
     transient Stage stage;
     transient Shooter shooter;
     transient HexagonController hexagonController;
+    transient int difficulty;
 
     /**
      * Constructor for the Controller of the Bubble Spinner game.
@@ -22,7 +23,7 @@ public class BubbleSpinnerController {
         this.stage = stage;
         this.shooter = new Shooter(stage, difficulty);
         this.hexagonController = new HexagonController(stage, difficulty);
-        this.difficultyLevel(difficulty);
+        this.difficulty = difficulty;
     }
 
     private void difficultyLevel(int difficulty) {
@@ -42,8 +43,12 @@ public class BubbleSpinnerController {
      * Initialize the hexagon and shooter.
      */
     public void initialize() {
-        //this.hexagonController.initialize();
+
+        this.hexagonController.initialize();
+
         this.hexagonController.drawGrid();
+        this.difficultyLevel(difficulty);
+
         this.shooter.initialize(hexagonController.getMapBubbles());
     }
 

@@ -71,5 +71,6 @@ class HexagonControllerTest {
 
     @Test
     void checkGameStatus() {
+
     }
 }

@@ -57,6 +57,7 @@ public class BubbleSpinnerControllerTest {
 
     @Test
     public void testCheckShootFalse() {
+        Mockito.when(hexagonController.getBuilder()).thenReturn(new EasyHexagonBuilder());
         controller.initialize();
         controller.checkShoot(bubble);
         Mockito.verify(shooter, Mockito.never()).shootBubble();
