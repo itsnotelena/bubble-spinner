@@ -6,11 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import config.Config;
 import game.Pair;
+import game.ui.UserInterfaceFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import game.ui.UserInterfaceFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -125,8 +125,6 @@ public class Client {
      * gets the user badges as a texture list.
      * @return list of textures
      */
-    @SuppressWarnings("PMD")
-    //Suppressed error for UR anomaly error for the variable in the for loop.
     public List<Pair<Image, Label>> getUserBadge(User user) {
         Badge[] badge = new Client().getBadges(user);
         List<Pair<Image,Label>> result = new ArrayList<>();
@@ -135,10 +133,10 @@ public class Client {
     }
 
     private void parseBadges(Badge[] badge, List<Pair<Image, Label>> result) {
-        for (Badge name : badge) {
-            Image img = getImageFromBadgeName(name.getAward().getText());
+        for (int i = 0; i < badge.length; ++i) {
+            Image img = getImageFromBadgeName(badge[i].getAward().getText());
             img.setSize(3,1);
-            Label currentLabel = UserInterfaceFactory.createLabel(name.getAward().getText(),
+            Label currentLabel = UserInterfaceFactory.createLabel(badge[i].getAward().getText(),
                     UserInterfaceFactory.LabelColor.BadgeText);
             result.add(new Pair(img,currentLabel));
         }
