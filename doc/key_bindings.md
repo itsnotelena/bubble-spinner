@@ -25,6 +25,7 @@
 | Keybind | Action |
 | ------- | ------ |
 | Space | Start Game |
+| A | Achievement Screen |
 | C | Computer Player |
 | T | Timer |
 | D | Difficulty |
