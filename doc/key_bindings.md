@@ -13,6 +13,7 @@
 | R | Register |
 | F | Forgot Password |
 | Ctrl + D | Login with Default User |
+| Escape | Go to Splah Screen |
 
 ## RegisterScreen
 | Keybind | Action |
@@ -24,9 +25,11 @@
 | Keybind | Action |
 | ------- | ------ |
 | Space | Start Game |
+| A | Achievement Screen |
 | C | Computer Player |
 | T | Timer |
 | D | Difficulty |
+| M | Change Mode |
 | Backspace | Logout |
 | ESC | Exit |
 
