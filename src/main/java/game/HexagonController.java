@@ -5,8 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import config.Config;
 import game.ui.GameScreen;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class HexagonController {
 
@@ -49,11 +48,13 @@ public class HexagonController {
     }
 
     public void positionBubble(int x, int y) {
-        BubbleActor bub2 = bubbleFactory.createBubble();
-        bubbles.add(bub2);
-        bubbleGrid.setBubble(x, y, bub2);
-        stage.addActor(bub2);
-        mapBubbles[bub2.getColorId()]++;
+        if(bubbleGrid.getBubble(x, y) == null) {
+            BubbleActor bub2 = bubbleFactory.createBubble();
+            bubbles.add(bub2);
+            bubbleGrid.setBubble(x, y, bub2);
+            stage.addActor(bub2);
+            mapBubbles[bub2.getColorId()]++;
+        }
     }
 
     public void drawGrid() {
@@ -203,6 +204,17 @@ public class HexagonController {
         result--;
         if (missedBubbles >= MAX_MISSED_BUBBLES) {
             missedBubbles = 0;
+            // Add new bubbles to the grid
+            Set<Pair<Integer, Integer>> set = this.bubbleGrid.getPossiblePositions();
+
+            for(int i = 0; i < set.size() || i < 5; i++ ) {
+                int size = set.size();
+                int index = new Random().nextInt(size);
+                Object[] pairs = set.toArray();
+                Pair<Integer, Integer> randomValue = (Pair<Integer, Integer>) pairs[index];
+                positionBubble(randomValue.getLeft(), randomValue.getRight());
+                set.remove(randomValue.getLeft());
+            }
         }
     }
 
