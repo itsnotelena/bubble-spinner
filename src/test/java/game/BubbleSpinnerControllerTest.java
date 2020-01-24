@@ -28,6 +28,9 @@ public class BubbleSpinnerControllerTest {
     @Mock
     private transient BubbleActor bubble;
 
+    @Mock
+    private transient HexagonStrategy hexagonStrategy;
+
     private transient BubbleSpinnerController controller;
     private transient CustomMockInput input;
 
@@ -41,10 +44,12 @@ public class BubbleSpinnerControllerTest {
         shooter = Mockito.mock(Shooter.class);
         hexagonController = Mockito.mock(HexagonController.class);
         bubble = Mockito.mock(BubbleActor.class);
+        hexagonStrategy = Mockito.mock(HexagonStrategy.class);
         //Mockito.doNothing().when(hexagonController);
         Mockito.doNothing().when(hexagonController).drawGrid();
         Mockito.doNothing().when(shooter).initialize(Mockito.any());
         Mockito.when(shooter.current()).thenReturn(bubble);
+        Mockito.when(hexagonController.getBuilder()).thenReturn(hexagonStrategy);
         controller = new BubbleSpinnerController(gameScreen, stage, 0);
         controller.setHexagonController(hexagonController);
         controller.setShooter(shooter);
@@ -58,6 +63,36 @@ public class BubbleSpinnerControllerTest {
         controller.initialize();
         controller.checkShoot(bubble);
         Mockito.verify(shooter, Mockito.never()).shootBubble();
+    }
+
+    @Test
+    public void testEasyDifficulty() {
+        controller.setDifficulty(0);
+        controller.initialize();
+        Mockito.verify(hexagonController, Mockito.times(1))
+                .setBuilder(Mockito.any(EasyHexagonStrategy.class));
+        Mockito.verify(hexagonStrategy, Mockito.times(1))
+                .setupUpHexagon(hexagonController);
+    }
+
+    @Test
+    public void testMediumDifficulty() {
+        controller.setDifficulty(1);
+        controller.initialize();
+        Mockito.verify(hexagonController, Mockito.times(1))
+                .setBuilder(Mockito.any(MediumHexagonStrategy.class));
+        Mockito.verify(hexagonStrategy, Mockito.times(1))
+                .setupUpHexagon(hexagonController);
+    }
+
+    @Test
+    public void testHardDifficulty() {
+        controller.setDifficulty(2);
+        controller.initialize();
+        Mockito.verify(hexagonController, Mockito.times(1))
+                .setBuilder(Mockito.any(HardHexagonStrategy.class));
+        Mockito.verify(hexagonStrategy, Mockito.times(1))
+                .setupUpHexagon(hexagonController);
     }
 
     @Test
