@@ -18,20 +18,8 @@ class HexagonControllerTest {
 
     @BeforeEach
     void setUp() {
-        controller = new HexagonController(Mockito.mock(Stage.class), 0);
+        controller = new HexagonController(Mockito.mock(Stage.class), 2);
     }
-
-//    @Test
-//    void positionBubble() {
-//        BubbleFactory fac = Mockito.mock(BubbleFactory.class);
-//        Texture tex = Mockito.mock(Texture.class);
-//        controller.setBubbleFactory(fac);
-//        Mockito.when(fac.createBubble()).thenReturn(new BubbleActor(tex, null , 0, 1));
-//
-//        controller.positionBubble(0,1);
-//        Assertions.assertThat(controller.getBubbles().get(1).getPosition().x).isEqualTo(0);
-//        Assertions.assertThat(controller.getBubbles().get(1).getPosition().y).isEqualTo(1);
-//    }
 
     @Test
     void drawGrid() {
