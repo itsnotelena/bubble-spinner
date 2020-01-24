@@ -59,7 +59,7 @@ public class Shooter {
         Stack<BubbleActor> stack = new Stack<>();
         while (!available.isEmpty()) {
             BubbleActor current = poll();
-            if (mapBubbles[current.getColorId()] != 0) {
+            if (mapBubbles[current.getColorId()] > 0) {
                 stack.push(current.shiftX(false, 1 + removed));
             } else {
                 removed++;

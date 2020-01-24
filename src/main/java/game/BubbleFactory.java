@@ -63,7 +63,7 @@ public class BubbleFactory implements AbstractBubbleFactory {
     private List<Integer> getPossibleColors(int[] mapBubbles) {
         List<Integer> possibleColors = new ArrayList<>();
         for (int i = 0; i < mapBubbles.length; ++i) {
-            if (mapBubbles[i] != 0) {
+            if (mapBubbles[i] > 0) {
                 possibleColors.add(i);
             }
         }
