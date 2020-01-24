@@ -34,7 +34,6 @@ public class HexagonController {
         this.bubbleFactory = new BubbleFactory(stage, difficulty);
         this.bubbles = new ArrayList<>();
         this.stage = stage;
-
     }
 
     public void initialize(){
@@ -50,6 +49,16 @@ public class HexagonController {
     public void positionBubble(int x, int y) {
         if(bubbleGrid.getBubble(x, y) == null) {
             BubbleActor bub2 = bubbleFactory.createBubble();
+            bubbles.add(bub2);
+            bubbleGrid.setBubble(x, y, bub2);
+            stage.addActor(bub2);
+            mapBubbles[bub2.getColorId()]++;
+        }
+    }
+
+    public void positionBubbleGivenMap(int x, int y) {
+        if(bubbleGrid.getBubble(x, y) == null) {
+            BubbleActor bub2 = bubbleFactory.createBubbleGivenMap(mapBubbles);
             bubbles.add(bub2);
             bubbleGrid.setBubble(x, y, bub2);
             stage.addActor(bub2);
@@ -212,7 +221,7 @@ public class HexagonController {
                 int index = new Random().nextInt(size);
                 Object[] pairs = set.toArray();
                 Pair<Integer, Integer> randomValue = (Pair<Integer, Integer>) pairs[index];
-                positionBubble(randomValue.getLeft(), randomValue.getRight());
+                positionBubbleGivenMap(randomValue.getLeft(), randomValue.getRight());
                 set.remove(randomValue.getLeft());
             }
         }
