@@ -3,12 +3,14 @@ package game;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import config.Config;
+import game.ui.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HexagonController {
 
+    private static int THRESHOLD_BUBBLES = 1;
     private transient int result = 0;
     private transient Stage stage;
     private transient List<BubbleActor> bubbles;
@@ -153,6 +155,7 @@ public class HexagonController {
                 this.bubbleGrid.apply_torque(bubble.getMovingDirection(), bubble.getPosition());
                 bubble.stop();
                 bubbles.add(bubble);
+                mapBubbles[bubble.getColorId()]++;
                 int[] gridPos = bubbleGrid.worldToGrid(bubble
                         .getPosition().sub(this.bubbleGrid.origin));
                 this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
@@ -197,8 +200,7 @@ public class HexagonController {
         List<BubbleActor> connectedBubbles = this.bubbleGrid.getConnectedBubbles(0,0);
         for (int i = 0; i < oldBubbles.size(); i++) {
             BubbleActor actor = oldBubbles.get(i);
-            if (!this.bubbleGrid.getConnectedBubbles(0,0)
-                    .contains(actor)) {
+            if (!connectedBubbles.contains(actor)) {
                 popSingleBubble(actor);
                 num += 1;
             }
@@ -232,6 +234,10 @@ public class HexagonController {
         result--;
         if (missedBubbles >= MAX_MISSED_BUBBLES) {
             // Add more bubbles to the grid.
+            // Should be something like this with random coords.
+//            BubbleActor bubble = bubbleFactory.createBubbleGivenMap(mapBubbles);
+//            mapBubbles[bubble.getColorId()]++;
+//            bubbleGrid.setBubble(0, 0, bubble);
             missedBubbles = 0;
         }
     }
@@ -242,5 +248,25 @@ public class HexagonController {
      */
     public int[] getMapBubbles() {
         return mapBubbles;
+    }
+
+    /**
+     * Check whether you won or lost the game.
+     * @param gameScreen GameScreen instance.
+     */
+    public void checkGameStatus(GameScreen gameScreen) {
+        if (lostGame) {
+            gameScreen.dispose();
+            return;
+        }
+
+        int counter = 0;
+        for (int i = 0; i < mapBubbles.length; ++i) {
+            counter += mapBubbles[i] > 0 ? 1 : 0;
+        }
+        if (counter <= THRESHOLD_BUBBLES) {
+            result += formula(bubbles.size());
+            gameScreen.nextLevel();
+        }
     }
 }
