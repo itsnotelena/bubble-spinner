@@ -4,9 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class HexagonBuilderTest {
+public class HexagonStrategyTest {
 
-    transient HexagonBuilder builder;
+    transient HexagonStrategy builder;
 
     @BeforeEach
     void setUp(){
@@ -15,7 +15,7 @@ public class HexagonBuilderTest {
 
     @Test
     void hardHexagonSetupTest() {
-        builder = new HardHexagonBuilder();
+        builder = new HardHexagonStrategy();
         HexagonController hex = Mockito.mock(HexagonController.class);
         builder.setupUpHexagon(hex);
         Mockito.verify(hex, Mockito.times(126)).positionBubble(Mockito.anyInt(), Mockito.anyInt());
@@ -23,7 +23,7 @@ public class HexagonBuilderTest {
 
     @Test
     void medHexagonSetupTest() {
-        builder = new MediumHexagonBuilder();
+        builder = new MediumHexagonStrategy();
         HexagonController hex = Mockito.mock(HexagonController.class);
         builder.setupUpHexagon(hex);
         Mockito.verify(hex, Mockito.times(60)).positionBubble(Mockito.anyInt(), Mockito.anyInt());
@@ -31,7 +31,7 @@ public class HexagonBuilderTest {
 
     @Test
     void easyHexagonSetupTest() {
-        builder = new EasyHexagonBuilder();
+        builder = new EasyHexagonStrategy();
         HexagonController hex = Mockito.mock(HexagonController.class);
         builder.setupUpHexagon(hex);
         Mockito.verify(hex, Mockito.times(18)).positionBubble(Mockito.anyInt(), Mockito.anyInt());

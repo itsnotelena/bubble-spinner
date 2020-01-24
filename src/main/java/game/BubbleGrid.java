@@ -3,9 +3,7 @@ package game;
 import com.badlogic.gdx.math.Vector2;
 import config.Config;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class BubbleGrid {
     private static final int RADIUS = 100;
@@ -115,6 +113,19 @@ public class BubbleGrid {
             }
         }
         return visited;
+    }
+
+    public Set<Pair<Integer, Integer>> getPossiblePositions(){
+        HashSet<Pair<Integer, Integer>> hm = new HashSet<>();
+        for(int i = 0; i < RADIUS * 2; i++) {
+            for(int j = 0; j < RADIUS * 2; j++) {
+                BubbleActor bub = getBubble(i, j);
+                if(bub == null && getNeighbours(i, j).size() > 0) {
+                    hm.add(new Pair<>(i, j));
+                }
+            }
+        }
+        return hm;
     }
 
     public float getTheta() {

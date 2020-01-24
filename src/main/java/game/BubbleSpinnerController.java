@@ -29,13 +29,13 @@ public class BubbleSpinnerController {
 
     private void difficultyLevel(int difficulty) {
         if(difficulty == Config.Difficulty.easy) {
-            this.hexagonController.setBuilder(new EasyHexagonBuilder());
+            this.hexagonController.setBuilder(new EasyHexagonStrategy());
             this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
         } else if (difficulty == Config.Difficulty.med) {
-            this.hexagonController.setBuilder(new MediumHexagonBuilder());
+            this.hexagonController.setBuilder(new MediumHexagonStrategy());
             this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
         } else {
-            this.hexagonController.setBuilder(new HardHexagonBuilder());
+            this.hexagonController.setBuilder(new HardHexagonStrategy());
             this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
         }
     }
