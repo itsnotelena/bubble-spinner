@@ -85,24 +85,6 @@ public class BubbleSpinnerControllerTest {
     }
 
     @Test
-    public void testUpdateLostGame() {
-        hexagonController.lostGame = true;
-        controller.update();
-        Mockito.verify(gameScreen, Mockito.times(1)).dispose();
-        Mockito.verify(gameScreen, Mockito.never()).nextLevel();
-    }
-
-    @Test
-    public void testUpdateNextLevel() {
-        List<BubbleActor> list = new ArrayList<>();
-        list.add(bubble);
-        Mockito.when(hexagonController.getBubbles()).thenReturn(list);
-        controller.update();
-        Mockito.verify(gameScreen, Mockito.never()).dispose();
-        Mockito.verify(gameScreen, Mockito.times(1)).nextLevel();
-    }
-
-    @Test
     public void testShootMovingBubble() {
         input.setKeyPresed(true);
         Mockito.when(bubble.isMoving()).thenReturn(true);
