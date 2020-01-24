@@ -44,7 +44,7 @@ public class BubbleSpinnerControllerTest {
         shooter = Mockito.mock(Shooter.class);
         hexagonController = Mockito.mock(HexagonController.class);
         bubble = Mockito.mock(BubbleActor.class);
-        Mockito.doNothing().when(hexagonController).initialize();
+        //Mockito.doNothing().when(hexagonController);
         Mockito.doNothing().when(hexagonController).drawGrid();
         Mockito.doNothing().when(shooter).initialize(Mockito.any());
         Mockito.when(shooter.current()).thenReturn(bubble);
@@ -57,6 +57,7 @@ public class BubbleSpinnerControllerTest {
 
     @Test
     public void testCheckShootFalse() {
+        Mockito.when(hexagonController.getBuilder()).thenReturn(new EasyHexagonBuilder());
         controller.initialize();
         controller.checkShoot(bubble);
         Mockito.verify(shooter, Mockito.never()).shootBubble();

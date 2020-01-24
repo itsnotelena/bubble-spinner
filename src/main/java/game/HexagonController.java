@@ -20,6 +20,7 @@ public class HexagonController {
     private transient int[] mapBubbles;
     private transient int missedBubbles;
     private transient int difficulty;
+    private transient HexagonBuilder builder;
     public List<BubbleActor> getBubbles() {
         return bubbles;
     }
@@ -34,70 +35,25 @@ public class HexagonController {
         this.bubbleFactory = new BubbleFactory(stage, difficulty);
         this.bubbles = new ArrayList<>();
         this.stage = stage;
+
     }
 
-    /**
-     * Create the grid and draw it at the centre of the screen.
-     */
-    public void initialize() {
-
+    public void initialize(){
         this.bubbleFactory.addAllTextures();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
         stage.addActor(center);
         bubbles.add(center);
         this.bubbleGrid = new BubbleGrid(center.getPosition());
         bubbleGrid.setBubble(0,0, center);
-        BubbleActor bub2;
 
-        if (difficulty == Config.Difficulty.easy) {
-            for (int i = -2; i <= 2; i++) {
-                for (int j = -2; j <= 2; j++) {
-                    if (!(Math.abs(i) == 2 && Math.abs(j) == 2)
-                            && !(i == -2 && Math.abs(j) == 1)
-                            && !(i == 0 && j == 0)) {
-                        bub2 = bubbleFactory.createBubble();
-                        bubbles.add(bub2);
-                        bubbleGrid.setBubble(j, i, bub2);
-                        stage.addActor(bub2);
-                        mapBubbles[bub2.getColorId()]++;
-                    }
-                }
-            }
-        } else if (difficulty == Config.Difficulty.med) {
-            for (int k = -4; k <= 4; k++) {
-                for (int m = -4; m <= 4; m++) {
-                    if(!((k == 0 && m == 0) || (k == -4 && Math.abs(m) >= 1)
-                        || (k == -4 && Math.abs(m) >= 1)
-                        || (k == -3 && Math.abs(m) >= 3) ||(k == 4 && Math.abs(m)>= 2)
-                        || (Math.abs(m) == 4 && k == 3))) {
-                        bub2 = bubbleFactory.createBubble();
-                        bubbles.add(bub2);
-                        bubbleGrid.setBubble(m, k, bub2);
-                        stage.addActor(bub2);
-                        mapBubbles[bub2.getColorId()]++;
-                    }
-                }
-            }
-        } else if (difficulty == Config.Difficulty.diff) {
-            for (int k = -6; k <= 6; k++) {
-                for (int m = -6; m <= 6; m++) {
-                    if (!((m == 0 && k == 0)
-                        || (k == -6 && Math.abs(m) >= 1)
-                        ||(k == -5 && Math.abs(m) >= 3)
-                        ||(k == -4 && Math.abs(m) >= 5)
-                        ||(k == 4 && Math.abs(m) >= 6)
-                        ||(k == 5 && Math.abs(m) >= 4) || (k == 6 && Math.abs(m) >= 2))) {
+    }
 
-                        bub2 = bubbleFactory.createBubble();
-                        bubbles.add(bub2);
-                        bubbleGrid.setBubble(m, k, bub2);
-                        stage.addActor(bub2);
-
-                        mapBubbles[bub2.getColorId()]++;
-                    }
-                }
-            }
-        }
+    public void positionBubble(int x, int y) {
+        BubbleActor bub2 = bubbleFactory.createBubble();
+        bubbles.add(bub2);
+        bubbleGrid.setBubble(x, y, bub2);
+        stage.addActor(bub2);
+        mapBubbles[bub2.getColorId()]++;
     }
 
     public void drawGrid() {
@@ -108,6 +64,19 @@ public class HexagonController {
             bub.center();
             bub.moveBy(vec.x, vec.y);
         }
+    }
+
+    public void setBuilder(HexagonBuilder builder) {
+        this.builder = builder;
+    }
+
+    public HexagonBuilder getBuilder() {
+        return this.builder;
+    }
+
+
+    public void setBubbleFactory(BubbleFactory bubbleFactory) {
+        this.bubbleFactory = bubbleFactory;
     }
 
     private void popSingleBubble(BubbleActor actor) {
@@ -221,7 +190,7 @@ public class HexagonController {
         if (num == three) {
             return 5;
         } else {
-            return (int)(1.5 * formula(num - 1));
+            return (int)(1.1 * formula(num - 1));
         }
     }
 
@@ -233,11 +202,6 @@ public class HexagonController {
         missedBubbles++;
         result--;
         if (missedBubbles >= MAX_MISSED_BUBBLES) {
-            // Add more bubbles to the grid.
-            // Should be something like this with random coords.
-//            BubbleActor bubble = bubbleFactory.createBubbleGivenMap(mapBubbles);
-//            mapBubbles[bubble.getColorId()]++;
-//            bubbleGrid.setBubble(0, 0, bubble);
             missedBubbles = 0;
         }
     }

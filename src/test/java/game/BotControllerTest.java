@@ -40,7 +40,7 @@ public class BotControllerTest {
         shooter = Mockito.mock(Shooter.class);
         hexagonController = Mockito.mock(HexagonController.class);
         bubble = Mockito.mock(BubbleActor.class);
-        Mockito.doNothing().when(hexagonController).initialize();
+        //Mockito.doNothing().when(hexagonController);
         Mockito.doNothing().when(hexagonController).drawGrid();
         Mockito.doNothing().when(shooter).initialize(Mockito.any());
         Mockito.when(shooter.current()).thenReturn(bubble);
@@ -52,6 +52,8 @@ public class BotControllerTest {
     @Test
     public void testInitialize() {
         Mockito.when(hexagonController.getBubbles()).thenReturn(new ArrayList<>());
+
+        Mockito.when(hexagonController.getBuilder()).thenReturn(new EasyHexagonBuilder());
         controller.initialize();
         Mockito.verify(hexagonController, Mockito.times(1)).getBubbles();
     }
@@ -62,6 +64,7 @@ public class BotControllerTest {
         bubbles.add(bubble);
         Mockito.when(hexagonController.getBubbles()).thenReturn(bubbles);
         Mockito.when(bubble.getPosition()).thenReturn(new Vector2(50, 50));
+        Mockito.when(hexagonController.getBuilder()).thenReturn(new EasyHexagonBuilder());
         controller.initialize();
         Mockito.verify(hexagonController, Mockito.times(1)).getBubbles();
         Mockito.verify(bubble, Mockito.times(1)).getPosition();
