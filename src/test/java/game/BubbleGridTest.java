@@ -94,29 +94,29 @@ public class BubbleGridTest {
     public void applyZeroTorqueTest() {
         BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
         grid.apply_torque(new Vector2(0,0), new Vector2(0,0));
-        Assertions.assertThat(grid.getDelta_theta()).isEqualTo(0);
+        Assertions.assertThat(grid.getDeltaTheta()).isEqualTo(0);
     }
 
     @Test
     public void applyTorqueTest() {
         BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
         grid.apply_torque(new Vector2(0,1), new Vector2(1,0));
-        Assertions.assertThat(grid.getDelta_theta()).isEqualTo(0.004f);
+        Assertions.assertThat(grid.getDeltaTheta()).isEqualTo(0.004f);
     }
 
     @Test
     public void updateRotation() {
         BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
-        grid.setDelta_theta(1);
+        grid.setDeltaTheta(1);
         grid.update_rotation();
-        Assertions.assertThat(grid.getDelta_theta()).isEqualTo(0.97f);
+        Assertions.assertThat(grid.getDeltaTheta()).isEqualTo(0.97f);
     }
 
     @Test
     public void updateRotationTest() {
         BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
         grid.update_rotation();
-        Assertions.assertThat(grid.getDelta_theta()).isEqualTo(0);
+        Assertions.assertThat(grid.getDeltaTheta()).isEqualTo(0);
     }
 
     @Test

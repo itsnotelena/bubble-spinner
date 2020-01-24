@@ -3,35 +3,58 @@ package game;
 import com.badlogic.gdx.math.Vector2;
 import config.Config;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 public class BubbleGrid {
     private static final int RADIUS = 100;
     private transient BubbleActor[][] bubbles = new BubbleActor[RADIUS * 2][RADIUS * 2];
     public transient Vector2 origin;
     private transient  float theta = 0;
-    private transient float delta_theta = 0;
+    private transient float deltaTheta = 0;
 
+    /**
+     * Constructor for the bubble grid.
+     * @param origin the origin of the center of the structure in screen coordinates
+     */
     public BubbleGrid(Vector2 origin) {
         this.origin = origin;
     }
 
+    /**
+     * Calculate the torque of the incoming bubble on the structure,
+     * apply the torque to the deltaTheta.
+     * @param moveDirection the direction at which the incoming bubble is moving
+     * @param strikePosition the position in screen space, where the bubble hit.
+     */
     public void apply_torque(Vector2 moveDirection, Vector2 strikePosition) {
         Vector2 originToHit = strikePosition.sub(origin);
         float torque = originToHit.crs(moveDirection) / 250;
-        delta_theta += torque;
+        deltaTheta += torque;
     }
 
+    /**
+     * Updates the rotation of the structure based on the rotation speed.
+     */
     public void update_rotation() {
         double zeroone = 0.1;
-        if (Math.abs(delta_theta) > zeroone) {
-            delta_theta *= 0.97f;
+        if (Math.abs(deltaTheta) > zeroone) {
+            deltaTheta *= 0.97f;
         } else {
-            delta_theta = 0;
+            deltaTheta = 0;
         }
-        theta += delta_theta;
+        theta += deltaTheta;
     }
 
+    /**
+     * Sets a bubble to the grid, overwrites the bubble if needed
+     * @param x the x coordinate in the grid
+     * @param y the y coordinate in the grid
+     * @param bubbleActor the bubble Actor to add to the structure
+     */
     public void setBubble(int x, int y, BubbleActor bubbleActor) {
         int dx = x + RADIUS;
         int dy = y + RADIUS;
@@ -43,6 +66,12 @@ public class BubbleGrid {
         }
     }
 
+    /**
+     * Gets a bubble actor from the grid using the coordinates given.
+     * @param x the x coordinate on the grid
+     * @param y the y coordinate on the grid
+     * @return the bubble at the place in the grid.
+     */
     public BubbleActor getBubble(int x, int y) {
         int dx = x + RADIUS;
         int dy = y + RADIUS;
@@ -52,6 +81,12 @@ public class BubbleGrid {
         return null;
     }
 
+    /**
+     * Converts a point on the grid, to a point on the screen
+     * @param x the coordinate on the grid
+     * @param y the coordinate on the grid
+     * @return the coordinate in screen space.
+     */
     public Vector2 gridToWorld(int x, int y) {
         // Center of the structure should be at 0,0
         int offset = Math.abs(x) % 2;
@@ -62,7 +97,11 @@ public class BubbleGrid {
         return vec;
     }
 
-    // Takes an offset from the center and returns the grid coordinates
+    /**
+     * Converts a point on the grid, to a point on the screen
+     * @param vec the coordinates in screen space
+     * @return the coordinate in grid space.
+     */
     public int[] worldToGrid(Vector2 vec) {
         vec = vec.rotate(-theta); // Remove the rotation
         float colDistance = (float) (Config.Game.BUBBLE_SIZE * Math.sqrt(3) / 2.f);
@@ -73,6 +112,12 @@ public class BubbleGrid {
         return new int[]{x,y};
     }
 
+    /**
+     * Gets the neighbours of the given grid coordinate
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @return A list of bubbles.
+     */
     public List<BubbleActor> getNeighbours(int x, int y) {
         ArrayList<BubbleActor> list = new ArrayList<>();
 
@@ -136,12 +181,12 @@ public class BubbleGrid {
         this.theta = theta;
     }
 
-    public float getDelta_theta() {
-        return delta_theta;
+    public float getDeltaTheta() {
+        return deltaTheta;
     }
 
-    public void setDelta_theta(float delta_theta) {
-        this.delta_theta = delta_theta;
+    public void setDeltaTheta(float deltaTheta) {
+        this.deltaTheta = deltaTheta;
     }
 
 }
