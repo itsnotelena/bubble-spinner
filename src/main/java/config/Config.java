@@ -64,4 +64,12 @@ public class Config {
         public static final int med = 1;
         public static final int diff = 2;
     }
+
+    public static class Mode {
+        public static final String[] types = {
+                "None",
+                "Casual",
+                "Competitive"
+        };
+    }
 }
