@@ -74,6 +74,11 @@ public class HexagonController {
         return this.builder;
     }
 
+
+    public void setBubbleFactory(BubbleFactory bubbleFactory) {
+        this.bubbleFactory = bubbleFactory;
+    }
+
     private void popSingleBubble(BubbleActor actor) {
         this.bubbles.remove(actor);
         this.bubbleGrid.setBubble(actor.gridPos[0], actor.gridPos[1], null);
