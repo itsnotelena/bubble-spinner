@@ -30,14 +30,12 @@ public class BubbleSpinnerController {
     private void difficultyLevel(int difficulty) {
         if (difficulty == Config.Difficulty.easy) {
             this.hexagonController.setBuilder(new EasyHexagonStrategy());
-            this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
         } else if (difficulty == Config.Difficulty.med) {
             this.hexagonController.setBuilder(new MediumHexagonStrategy());
-            this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
         } else {
             this.hexagonController.setBuilder(new HardHexagonStrategy());
-            this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
         }
+        this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
     }
 
     /**
@@ -115,6 +113,14 @@ public class BubbleSpinnerController {
      */
     public void setShooter(Shooter shooter) {
         this.shooter = shooter;
+    }
+
+    /**
+     * Set difficulty of the game.
+     * @param difficulty 0-1-2 for Easy-Medium-Hard.
+     */
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 
 }
