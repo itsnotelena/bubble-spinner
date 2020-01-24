@@ -76,7 +76,8 @@ public class DbImplementTest {
         boolean resA = dbImplement.insertBadge(beyhive);
         Assertions.assertThat(resA).isTrue();
 
-        ArrayList badgeOptional = dbImplement.getDbImplementGet().getBadgeByUser(beyhive.getUsername());
+        ArrayList badgeOptional = dbImplement.getDbImplementGet()
+                .getBadgeByUser(beyhive.getUsername());
         Assertions.assertThat(badgeOptional).isNotEqualTo(new ArrayList<>());
         ArrayList e = new ArrayList<>();
         e.add(beyhive);

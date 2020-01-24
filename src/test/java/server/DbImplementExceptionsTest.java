@@ -76,7 +76,8 @@ public class DbImplementExceptionsTest {
     public void errorGettingUserByUsername() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
 
-        Assertions.assertThatThrownBy(() -> dbImplement.getDbImplementGet().getUserByUsername("baba"))
+        Assertions.assertThatThrownBy(() -> dbImplement.getDbImplementGet()
+                .getUserByUsername("baba"))
                 .isInstanceOf(SQLException.class);
     }
 
@@ -136,6 +137,8 @@ public class DbImplementExceptionsTest {
     @Test
     void errorGettingGameByUsername() throws SQLException {
         Mockito.when(dbImplement.getDbAdapter().getConn()).thenThrow(new SQLException());
-        Assertions.assertThat(dbImplement.getDbImplementGet().getGameByUser("asd")).isEqualTo(new Game("",0,0));
+        Assertions.assertThat(dbImplement.getDbImplementGet()
+                .getGameByUser("asd"))
+                .isEqualTo(new Game("",0,0));
     }
 }

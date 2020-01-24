@@ -1,14 +1,12 @@
 package game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.ui.GameScreen;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
 
 
 class HexagonControllerTest {
