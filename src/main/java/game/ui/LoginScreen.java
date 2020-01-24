@@ -48,6 +48,11 @@ public class LoginScreen extends ScreenAdapter {
         stage.act();
         stage.draw();
 
+        // Escape -> Go back
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.setScreen(new SplashScreen(game));
+        }
+
         // Enter -> Login
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             login(loginMenu.getUserDetails());
