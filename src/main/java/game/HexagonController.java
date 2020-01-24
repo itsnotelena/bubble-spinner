@@ -131,13 +131,7 @@ public class HexagonController {
     public boolean checkCollisions(BubbleActor bubble) {
         for (int i = 0; i < bubbles.size(); ++i) {
             if (bubble.collide(bubbles.get(i))) {
-                this.bubbleGrid.apply_torque(bubble.getMovingDirection(), bubble.getPosition());
-                bubble.stop();
-                bubbles.add(bubble);
-                mapBubbles[bubble.getColorId()]++;
-                int[] gridPos = bubbleGrid.worldToGrid(bubble
-                        .getPosition().sub(this.bubbleGrid.origin));
-                this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
+                addBubbleToGrid(bubble);
                 result += this.popBubbles(bubble);
                 drawGrid();
                 return true;
@@ -147,6 +141,16 @@ public class HexagonController {
             }
         }
         return false;
+    }
+
+    private void addBubbleToGrid(BubbleActor bubble) {
+        this.bubbleGrid.apply_torque(bubble.getMovingDirection(), bubble.getPosition());
+        bubble.stop();
+        bubbles.add(bubble);
+        mapBubbles[bubble.getColorId()]++;
+        int[] gridPos = bubbleGrid.worldToGrid(bubble
+                .getPosition().sub(this.bubbleGrid.origin));
+        this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
     }
 
     /**
