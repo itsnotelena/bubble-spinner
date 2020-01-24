@@ -23,9 +23,8 @@ public class HexagonController {
     private transient int missedBubbles;
     private transient int difficulty;
     private transient HexagonStrategy builder;
-    public List<BubbleActor> getBubbles() {
-        return bubbles;
-    }
+    private static final int MAX_MISSED_BUBBLES = 3;
+
 
     /**
      * Constructor for the HexagonController.
@@ -42,7 +41,7 @@ public class HexagonController {
     /**
      * Initializes the HexagonController object.
      */
-    public void initialize(){
+    public void initialize() {
         this.bubbleFactory.addAllTextures();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
         stage.addActor(center);
@@ -104,9 +103,8 @@ public class HexagonController {
         return this.builder;
     }
 
-
-    public void setBubbleFactory(BubbleFactory bubbleFactory) {
-        this.bubbleFactory = bubbleFactory;
+    public List<BubbleActor> getBubbles() {
+        return bubbles;
     }
 
     private void popSingleBubble(BubbleActor actor) {
@@ -235,7 +233,6 @@ public class HexagonController {
      * Called when a bubble is missed.
      */
     public void bubbleMissed() {
-        final int MAX_MISSED_BUBBLES = 3;
         missedBubbles++;
         result--;
         if (missedBubbles >= MAX_MISSED_BUBBLES) {
@@ -243,7 +240,7 @@ public class HexagonController {
             // Add new bubbles to the grid
             Set<Pair<Integer, Integer>> set = this.bubbleGrid.getPossiblePositions();
 
-            for(int i = 0; i < set.size() || i < 5; i++ ) {
+            for (int i = 0; i < set.size() || i < 5; i++) {
                 int size = set.size();
                 int index = new Random().nextInt(size);
                 Object[] pairs = set.toArray();
