@@ -28,7 +28,7 @@ public class BubbleSpinnerController {
      * Initialize the hexagon and shooter.
      */
     public void initialize() {
-        this.hexagonController.initialize();
+        //this.hexagonController.initialize();
         this.hexagonController.drawGrid();
         this.shooter.initialize(hexagonController.getMapBubbles());
     }

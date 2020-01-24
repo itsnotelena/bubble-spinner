@@ -35,12 +35,6 @@ public class HexagonController {
         this.bubbleFactory = new BubbleFactory(stage, difficulty);
         this.bubbles = new ArrayList<>();
         this.stage = stage;
-    }
-
-    /**
-     * Create the grid and draw it at the centre of the screen.
-     */
-    public void initialize() {
         this.bubbleFactory.addAllTextures();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
         stage.addActor(center);
@@ -49,8 +43,15 @@ public class HexagonController {
         bubbleGrid.setBubble(0,0, center);
         this.difficultyLevel(difficulty);
         this.builder.setupUpHexagon(this);
-
     }
+
+//    /**
+//     * Create the grid and draw it at the centre of the screen.
+//     */
+//    public void initialize() {
+//
+//
+//    }
 
     public void positionBubble(int x, int y) {
         BubbleActor bub2 = bubbleFactory.createBubble();
