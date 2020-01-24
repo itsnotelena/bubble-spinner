@@ -86,6 +86,11 @@ public class MenuScreen extends ScreenAdapter {
             achievementPanel();
         }
 
+        // M -> Change mode
+        if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+            mainMenu.changeMode();
+        }
+
         // Backspace -> Logout
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
             logout();

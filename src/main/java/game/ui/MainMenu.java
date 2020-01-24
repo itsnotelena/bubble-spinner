@@ -16,8 +16,10 @@ public class MainMenu {
     private transient TextButton exitButton;
     private transient TextButton logoutButton;
     private transient TextButton achievementButton;
+    private transient TextButton modeButton;
     private transient boolean computerPlayer;
     private transient int difficulty;
+    private transient int modeId;
 
     /**
      * Constructor.
@@ -33,9 +35,11 @@ public class MainMenu {
 
         computerButton = UserInterfaceFactory.createTextButton("Computer Player OFF");
         timerButton = UserInterfaceFactory.createTextButton("Timer: 10 minutes");
+        modeButton = UserInterfaceFactory.createTextButton("Mode: None");
 
         Config.Game.GAME_TIME = Config.Time.DEFAULT;
         computerPlayer = false;
+        modeId = 0;
 
         startButton.addListener(new InputListener() {
             @Override
@@ -113,12 +117,25 @@ public class MainMenu {
             }
         });
 
+        modeButton.addListener(new InputListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                changeMode();
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+
         new TableMenu(stage)
                 .addItem(startButton)
                 .addItem(computerButton)
                 .addItem(timerButton)
                 .addItem(achievementButton)
                 .addItem(difficultyButton)
+                .addItem(modeButton)
                 .addItem(logoutButton)
                 .addItem(exitButton);
     }
@@ -128,11 +145,29 @@ public class MainMenu {
      * @return GameSettings instance.
      */
     public GameSettings getGameSettings() {
+        if (modeId != 0) {
+            return getModeSettings();
+        } else {
+            return new GameSettings.GameSettingsBuilder()
+                    .withComputerPlayer(computerPlayer)
+                    .withLevel(0)
+                    .withDifficulty(difficulty)
+                    .withInfinite(Config.Game.GAME_TIME == 0)
+                    .build();
+        }
+    }
+
+    /**
+     * Get GameSettings based on current mode.
+     * @return GameSettings instance.
+     */
+    public GameSettings getModeSettings() {
+        Config.Game.GAME_TIME = 600;
         return new GameSettings.GameSettingsBuilder()
-                .withComputerPlayer(computerPlayer)
+                .withComputerPlayer(false)
                 .withLevel(0)
-                .withDifficulty(difficulty)
-                .withInfinite(Config.Game.GAME_TIME == 0)
+                .withDifficulty(modeId == 1 ? 0 : 2)
+                .withInfinite(modeId == 1)
                 .build();
     }
 
@@ -163,5 +198,13 @@ public class MainMenu {
     public void changeDifficulty() {
         difficulty = (difficulty + 1) % Config.Difficulty.types.length;
         difficultyButton.setText("Diffulty: " + Config.Difficulty.types[difficulty]);
+    }
+
+    /**
+     * Change game mode.
+     */
+    public void changeMode() {
+        modeId = (modeId + 1) % Config.Mode.types.length;
+        modeButton.setText("Mode: " + Config.Mode.types[modeId]);
     }
 }
