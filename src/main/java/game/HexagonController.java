@@ -240,7 +240,7 @@ public class HexagonController {
             // Add new bubbles to the grid
             Set<Pair<Integer, Integer>> set = this.bubbleGrid.getPossiblePositions();
 
-            for (int i = 0; i < set.size() || i < 5; i++) {
+            for (int i = 0; i < set.size() && i < 5; i++) {
                 int size = set.size();
                 int index = new Random().nextInt(size);
                 Object[] pairs = set.toArray();
@@ -277,5 +277,21 @@ public class HexagonController {
             result += formula(bubbles.size());
             gameScreen.nextLevel();
         }
+    }
+
+    /**
+     * Set custom bubble grid.
+     * @param bubbleGrid BubbleGrid instance.
+     */
+    public void setBubbleGrid(BubbleGrid bubbleGrid) {
+        this.bubbleGrid = bubbleGrid;
+    }
+
+    /**
+     * Set custom bubble factory.
+     * @param bubbleFactory BubbleFactory instance.
+     */
+    public void setBubbleFactory(BubbleFactory bubbleFactory) {
+        this.bubbleFactory = bubbleFactory;
     }
 }
