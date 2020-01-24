@@ -13,7 +13,8 @@ public class UserInterfaceFactory {
 
     public enum LabelColor {
         ButtonText,
-        NormalText
+        NormalText,
+        BadgeText
     }
 
     /**
@@ -47,6 +48,8 @@ public class UserInterfaceFactory {
             label.setColor(0.f,0.f,0.f,1.f);
         } else if (color == LabelColor.NormalText) {
             label.setColor(0.2f,0.2f,0.5f,1);
+        } else if (color == LabelColor.BadgeText) {
+            label.setColor(0.5f,0.5f,1,1);
         }
         return label;
     }

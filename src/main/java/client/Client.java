@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import config.Config;
 import game.Pair;
+import game.ui.UserInterfaceFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,24 +125,24 @@ public class Client {
      * gets the user badges as a texture list.
      * @return list of textures
      */
-    @SuppressWarnings("PMD")
-    //Suppressed error for UR anomaly error for the variable in the for loop.
     public List<Pair<Image, Label>> getUserBadge(User user) {
         Badge[] badge = new Client().getBadges(user);
-        System.out.println(badge.length);
         List<Pair<Image,Label>> result = new ArrayList<>();
-        for (Badge name : badge) {
-            Image img = new Image(new Texture(Gdx.files
-                    .internal("assets/Badges/"
-                            + name.getAward().getText()
-                            + ".png")));
+        parseBadges(badge, result);
+        return result;
+    }
+
+    private void parseBadges(Badge[] badge, List<Pair<Image, Label>> result) {
+        for (int i = 0; i < badge.length; ++i) {
+            Image img = getImageFromBadgeName(badge[i].getAward().getText());
             img.setSize(3,1);
-            Label currentLabel = new Label(name.getAward().getText(),
-                    new Skin(Gdx.files.internal("assets/uiskin.json")),
-                    "default");
-            currentLabel.setColor(0.5f,0.5f,1,1);
+            Label currentLabel = UserInterfaceFactory.createLabel(badge[i].getAward().getText(),
+                    UserInterfaceFactory.LabelColor.BadgeText);
             result.add(new Pair(img,currentLabel));
         }
-        return result;
+    }
+
+    private Image getImageFromBadgeName(String name) {
+        return new Image(new Texture(Gdx.files.internal("assets/Badges/" + name + ".png")));
     }
 }
