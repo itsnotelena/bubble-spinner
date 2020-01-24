@@ -11,7 +11,6 @@ public class BubbleSpinnerController {
     transient Stage stage;
     transient Shooter shooter;
     transient HexagonController hexagonController;
-    private static int THRESHOLD_BUBBLES = 1;
 
     /**
      * Constructor for the Controller of the Bubble Spinner game.
@@ -45,22 +44,20 @@ public class BubbleSpinnerController {
 
         hexagonController.drawGrid();
 
+        checkCurrentBubble(bubble);
+
+        hexagonController.checkGameStatus(gameScreen);
+    }
+
+    private void checkCurrentBubble(BubbleActor bubble) {
         if (hexagonController.checkCollisions(bubble)
-            || bubble.belowScreen() || bubble.aboveScreen()) {
+                || bubble.belowScreen() || bubble.aboveScreen()) {
             shooter.poll();
             shooter.shiftBubbles(hexagonController.getMapBubbles());
             if (bubble.belowScreen() || bubble.aboveScreen()) {
                 bubble.remove();
                 hexagonController.bubbleMissed();
             }
-        }
-
-        if (hexagonController.lostGame) {
-            gameScreen.dispose();
-        }
-
-        if (hexagonController.getBubbles().size() == THRESHOLD_BUBBLES) {
-            gameScreen.nextLevel();
         }
     }
 

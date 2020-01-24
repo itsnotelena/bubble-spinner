@@ -3,12 +3,14 @@ package game;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import config.Config;
+import game.ui.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HexagonController {
 
+    private static int THRESHOLD_BUBBLES = 1;
     private transient int result = 0;
     private transient Stage stage;
     private transient List<BubbleActor> bubbles;
@@ -246,5 +248,15 @@ public class HexagonController {
      */
     public int[] getMapBubbles() {
         return mapBubbles;
+    }
+
+    public void checkGameStatus(GameScreen gameScreen) {
+        if (lostGame) {
+            gameScreen.dispose();
+        }
+
+        if (getBubbles().size() == THRESHOLD_BUBBLES) {
+            gameScreen.nextLevel();
+        }
     }
 }

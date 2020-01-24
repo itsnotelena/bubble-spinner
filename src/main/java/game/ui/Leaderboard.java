@@ -22,7 +22,7 @@ public class Leaderboard extends Table {
         scores = new Client().getTop5();
 
         this.add(new Label("User", skin));
-        this.add(new Label("Score a", skin));
+        this.add(new Label("Score", skin));
         this.add(new Label("Weekly", skin));
         this.row();
 
