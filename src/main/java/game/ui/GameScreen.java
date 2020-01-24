@@ -125,12 +125,4 @@ public class GameScreen implements Screen {
             game.setScreen(new WinScreen(game, gameSettings, bubbleSpinnerController.getResult()));
         }
     }
-
-    public GameSettings getGameSettings() {
-        return gameSettings;
-    }
-
-    public void setGameSettings(GameSettings gameSettings) {
-        this.gameSettings = gameSettings;
-    }
 }

@@ -50,7 +50,7 @@ public class BubbleGrid {
     }
 
     /**
-     * Sets a bubble to the grid, overwrites the bubble if needed
+     * Sets a bubble to the grid, overwrites the bubble if needed.
      * @param x the x coordinate in the grid
      * @param y the y coordinate in the grid
      * @param bubbleActor the bubble Actor to add to the structure
@@ -82,7 +82,7 @@ public class BubbleGrid {
     }
 
     /**
-     * Converts a point on the grid, to a point on the screen
+     * Converts a point on the grid, to a point on the screen.
      * @param x the coordinate on the grid
      * @param y the coordinate on the grid
      * @return the coordinate in screen space.
@@ -98,7 +98,7 @@ public class BubbleGrid {
     }
 
     /**
-     * Converts a point on the grid, to a point on the screen
+     * Converts a point on the grid, to a point on the screen.
      * @param vec the coordinates in screen space
      * @return the coordinate in grid space.
      */
@@ -113,7 +113,7 @@ public class BubbleGrid {
     }
 
     /**
-     * Gets the neighbours of the given grid coordinate
+     * Gets the neighbours of the given grid coordinate.
      * @param x the x coordinate
      * @param y the y coordinate
      * @return A list of bubbles.
@@ -140,6 +140,12 @@ public class BubbleGrid {
         return list;
     }
 
+    /**
+     * Get the bubbles that are connected to the given coordinate.
+     * @param x the x coordinate to start off from.
+     * @param y the y coordinate to start off from.
+     * @return a list of neighbours.
+     */
     public List<BubbleActor> getConnectedBubbles(int x, int y) {
         ArrayList<BubbleActor> visited = new ArrayList<>();
         LinkedList<BubbleActor> next = new LinkedList<>();
@@ -160,12 +166,16 @@ public class BubbleGrid {
         return visited;
     }
 
-    public Set<Pair<Integer, Integer>> getPossiblePositions(){
+    /**
+     * Get a set of all possible locations where bubbles can be added.
+     * @return the set of bubbles.
+     */
+    public Set<Pair<Integer, Integer>> getPossiblePositions() {
         HashSet<Pair<Integer, Integer>> hm = new HashSet<>();
-        for(int i = 0; i < RADIUS * 2; i++) {
-            for(int j = 0; j < RADIUS * 2; j++) {
+        for (int i = 0; i < RADIUS * 2; i++) {
+            for (int j = 0; j < RADIUS * 2; j++) {
                 BubbleActor bub = getBubble(i, j);
-                if(bub == null && getNeighbours(i, j).size() > 0) {
+                if (bub == null && getNeighbours(i, j).size() > 0) {
                     hm.add(new Pair<>(i, j));
                 }
             }

@@ -1,14 +1,12 @@
 package game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.ui.GameScreen;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 
-import java.util.ArrayList;
 
 
 class HexagonControllerTest {
@@ -19,31 +17,6 @@ class HexagonControllerTest {
     @BeforeEach
     void setUp() {
         controller = new HexagonController(Mockito.mock(Stage.class), 2);
-    }
-
-    @Test
-    void drawGrid() {
-    }
-
-    @Test
-    void getPoppable() {
-    }
-
-    @Test
-    void getResult() {
-    }
-
-    @Test
-    void checkCollisions() {
-    }
-
-    @Test
-    void popBubbles() {
-    }
-
-    @Test
-    void popFloatingBubbles() {
-
     }
 
     @Test
@@ -59,11 +32,6 @@ class HexagonControllerTest {
     @Test
     void formula3() {
         Assertions.assertThat(controller.formula(2)).isEqualTo(0);
-    }
-
-    @Test
-    void bubbleMissed() {
-
     }
 
     @Test

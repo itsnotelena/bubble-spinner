@@ -28,7 +28,7 @@ public class BubbleSpinnerController {
     }
 
     private void difficultyLevel(int difficulty) {
-        if(difficulty == Config.Difficulty.easy) {
+        if (difficulty == Config.Difficulty.easy) {
             this.hexagonController.setBuilder(new EasyHexagonStrategy());
         } else if (difficulty == Config.Difficulty.med) {
             this.hexagonController.setBuilder(new MediumHexagonStrategy());

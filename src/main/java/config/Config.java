@@ -31,7 +31,7 @@ public class Config {
                     + " connected together they will pop and you will get points for it.",
             "If you miss the hexagon structure you will lose points but you will not lose points"
                     + " if you don't hit a bubble of he same color.",
-            "In order to win the game you need to pop all the bubbles from the hexagon structure.",
+            "In order to win the game Only one bubble color is left on the grid.",
             "Have fun!"
         };
     }
@@ -67,9 +67,9 @@ public class Config {
 
     public static class Mode {
         public static final String[] types = {
-                "None",
-                "Casual",
-                "Competitive"
+            "None",
+            "Casual",
+            "Competitive"
         };
     }
 }
