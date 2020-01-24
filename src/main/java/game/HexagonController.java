@@ -20,6 +20,7 @@ public class HexagonController {
     private transient int[] mapBubbles;
     private transient int missedBubbles;
     private transient int difficulty;
+    private transient HexagonBuilder builder;
     public List<BubbleActor> getBubbles() {
         return bubbles;
     }
@@ -40,63 +41,32 @@ public class HexagonController {
      * Create the grid and draw it at the centre of the screen.
      */
     public void initialize() {
-
         this.bubbleFactory.addAllTextures();
         BubbleActor center = bubbleFactory.createCenterBubble().center();
         stage.addActor(center);
         bubbles.add(center);
         this.bubbleGrid = new BubbleGrid(center.getPosition());
         bubbleGrid.setBubble(0,0, center);
-        BubbleActor bub2;
+        this.difficultyLevel(difficulty);
+        this.builder.setupUpHexagon(this);
 
-        if (difficulty == Config.Difficulty.easy) {
-            for (int i = -2; i <= 2; i++) {
-                for (int j = -2; j <= 2; j++) {
-                    if (!(Math.abs(i) == 2 && Math.abs(j) == 2)
-                            && !(i == -2 && Math.abs(j) == 1)
-                            && !(i == 0 && j == 0)) {
-                        bub2 = bubbleFactory.createBubble();
-                        bubbles.add(bub2);
-                        bubbleGrid.setBubble(j, i, bub2);
-                        stage.addActor(bub2);
-                        mapBubbles[bub2.getColorId()]++;
-                    }
-                }
-            }
-        } else if (difficulty == Config.Difficulty.med) {
-            for (int k = -4; k <= 4; k++) {
-                for (int m = -4; m <= 4; m++) {
-                    if(!((k == 0 && m == 0) || (k == -4 && Math.abs(m) >= 1)
-                        || (k == -4 && Math.abs(m) >= 1)
-                        || (k == -3 && Math.abs(m) >= 3) ||(k == 4 && Math.abs(m)>= 2)
-                        || (Math.abs(m) == 4 && k == 3))) {
-                        bub2 = bubbleFactory.createBubble();
-                        bubbles.add(bub2);
-                        bubbleGrid.setBubble(m, k, bub2);
-                        stage.addActor(bub2);
-                        mapBubbles[bub2.getColorId()]++;
-                    }
-                }
-            }
-        } else if (difficulty == Config.Difficulty.diff) {
-            for (int k = -6; k <= 6; k++) {
-                for (int m = -6; m <= 6; m++) {
-                    if (!((m == 0 && k == 0)
-                        || (k == -6 && Math.abs(m) >= 1)
-                        ||(k == -5 && Math.abs(m) >= 3)
-                        ||(k == -4 && Math.abs(m) >= 5)
-                        ||(k == 4 && Math.abs(m) >= 6)
-                        ||(k == 5 && Math.abs(m) >= 4) || (k == 6 && Math.abs(m) >= 2))) {
+    }
 
-                        bub2 = bubbleFactory.createBubble();
-                        bubbles.add(bub2);
-                        bubbleGrid.setBubble(m, k, bub2);
-                        stage.addActor(bub2);
+    public void positionBubble(int x, int y) {
+        BubbleActor bub2 = bubbleFactory.createBubble();
+        bubbles.add(bub2);
+        bubbleGrid.setBubble(x, y, bub2);
+        stage.addActor(bub2);
+        mapBubbles[bub2.getColorId()]++;
+    }
 
-                        mapBubbles[bub2.getColorId()]++;
-                    }
-                }
-            }
+    private void difficultyLevel(int difficulty) {
+        if(difficulty == 0) {
+            this.builder = new EasyHexagonBuilder();
+        } else if (difficulty == 1) {
+            this.builder = new MediumHexagonBuilder();
+        } else {
+            this.builder = new HardHexagonBuilder();
         }
     }
 
