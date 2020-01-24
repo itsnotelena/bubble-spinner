@@ -22,6 +22,20 @@ public class BubbleSpinnerController {
         this.stage = stage;
         this.shooter = new Shooter(stage, difficulty);
         this.hexagonController = new HexagonController(stage, difficulty);
+        this.difficultyLevel(difficulty);
+    }
+
+    private void difficultyLevel(int difficulty) {
+        if(difficulty == 0) {
+            this.hexagonController.setBuilder(new EasyHexagonBuilder());
+            this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
+        } else if (difficulty == 1) {
+            this.hexagonController.setBuilder(new MediumHexagonBuilder());
+            this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
+        } else {
+            this.hexagonController.setBuilder(new HardHexagonBuilder());
+            this.hexagonController.getBuilder().setupUpHexagon(this.hexagonController);
+        }
     }
 
     /**

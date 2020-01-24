@@ -41,8 +41,6 @@ public class HexagonController {
         bubbles.add(center);
         this.bubbleGrid = new BubbleGrid(center.getPosition());
         bubbleGrid.setBubble(0,0, center);
-        this.difficultyLevel(difficulty);
-        this.builder.setupUpHexagon(this);
     }
 
 //    /**
@@ -61,16 +59,6 @@ public class HexagonController {
         mapBubbles[bub2.getColorId()]++;
     }
 
-    private void difficultyLevel(int difficulty) {
-        if(difficulty == 0) {
-            this.builder = new EasyHexagonBuilder();
-        } else if (difficulty == 1) {
-            this.builder = new MediumHexagonBuilder();
-        } else {
-            this.builder = new HardHexagonBuilder();
-        }
-    }
-
     public void drawGrid() {
         this.bubbleGrid.update_rotation();
         for (int i = 1; i < bubbles.size(); i++) {
@@ -79,6 +67,14 @@ public class HexagonController {
             bub.center();
             bub.moveBy(vec.x, vec.y);
         }
+    }
+
+    public void setBuilder(HexagonBuilder builder) {
+        this.builder = builder;
+    }
+
+    public HexagonBuilder getBuilder() {
+        return this.builder;
     }
 
     private void popSingleBubble(BubbleActor actor) {
