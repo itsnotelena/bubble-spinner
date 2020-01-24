@@ -53,7 +53,7 @@ class HexagonControllerTest {
 
     @Test
     void formula2() {
-        Assertions.assertThat(controller.formula(4)).isEqualTo(7);
+        Assertions.assertThat(controller.formula(4)).isEqualTo(5);
     }
 
     @Test
