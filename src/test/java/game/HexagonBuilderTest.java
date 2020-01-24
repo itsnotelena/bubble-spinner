@@ -6,7 +6,7 @@ import org.mockito.Mockito;
 
 public class HexagonBuilderTest {
 
-    HexagonBuilder builder;
+    transient HexagonBuilder builder;
 
     @BeforeEach
     void setUp(){

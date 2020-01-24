@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 class HexagonControllerTest {
 
-    HexagonController controller;
+    transient HexagonController controller;
 
 
     @BeforeEach
