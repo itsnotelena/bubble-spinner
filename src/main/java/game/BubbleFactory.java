@@ -99,7 +99,7 @@ public class BubbleFactory implements AbstractBubbleFactory {
      */
     public void addAllTextures() {
         String[] list = Config.Bubbles.textures;
-        for (int i = 0; i < list.length || i < maximumBubbles; i++) {
+        for (int i = 0; i < list.length && i < maximumBubbles; i++) {
             addTexture(list[i]);
         }
     }

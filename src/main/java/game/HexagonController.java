@@ -153,6 +153,7 @@ public class HexagonController {
                 this.bubbleGrid.apply_torque(bubble.getMovingDirection(), bubble.getPosition());
                 bubble.stop();
                 bubbles.add(bubble);
+                mapBubbles[bubble.getColorId()]++;
                 int[] gridPos = bubbleGrid.worldToGrid(bubble
                         .getPosition().sub(this.bubbleGrid.origin));
                 this.bubbleGrid.setBubble(gridPos[0], gridPos[1], bubble);
@@ -197,8 +198,7 @@ public class HexagonController {
         List<BubbleActor> connectedBubbles = this.bubbleGrid.getConnectedBubbles(0,0);
         for (int i = 0; i < oldBubbles.size(); i++) {
             BubbleActor actor = oldBubbles.get(i);
-            if (!this.bubbleGrid.getConnectedBubbles(0,0)
-                    .contains(actor)) {
+            if (!connectedBubbles.contains(actor)) {
                 popSingleBubble(actor);
                 num += 1;
             }
@@ -232,6 +232,10 @@ public class HexagonController {
         result--;
         if (missedBubbles >= MAX_MISSED_BUBBLES) {
             // Add more bubbles to the grid.
+            // Should be something like this with random coords.
+//            BubbleActor bubble = bubbleFactory.createBubbleGivenMap(mapBubbles);
+//            mapBubbles[bubble.getColorId()]++;
+//            bubbleGrid.setBubble(0, 0, bubble);
             missedBubbles = 0;
         }
     }
