@@ -19,7 +19,7 @@ public class HexagonController {
     private transient int[] mapBubbles;
     private transient int missedBubbles;
     private transient int difficulty;
-    private transient HexagonBuilder builder;
+    private transient HexagonStrategy builder;
     public List<BubbleActor> getBubbles() {
         return bubbles;
     }
@@ -76,11 +76,11 @@ public class HexagonController {
         }
     }
 
-    public void setBuilder(HexagonBuilder builder) {
+    public void setBuilder(HexagonStrategy builder) {
         this.builder = builder;
     }
 
-    public HexagonBuilder getBuilder() {
+    public HexagonStrategy getBuilder() {
         return this.builder;
     }
 

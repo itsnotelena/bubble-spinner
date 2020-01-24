@@ -5,9 +5,6 @@ import com.badlogic.gdx.backends.headless.mock.input.MockInput;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.ui.GameScreen;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -57,7 +54,7 @@ public class BubbleSpinnerControllerTest {
 
     @Test
     public void testCheckShootFalse() {
-        Mockito.when(hexagonController.getBuilder()).thenReturn(new EasyHexagonBuilder());
+        Mockito.when(hexagonController.getBuilder()).thenReturn(new EasyHexagonStrategy());
         controller.initialize();
         controller.checkShoot(bubble);
         Mockito.verify(shooter, Mockito.never()).shootBubble();

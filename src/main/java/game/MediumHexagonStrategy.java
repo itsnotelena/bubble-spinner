@@ -1,6 +1,6 @@
 package game;
 
-public class MediumHexagonBuilder implements HexagonBuilder {
+public class MediumHexagonStrategy implements HexagonStrategy {
     @Override
     public void setupUpHexagon(HexagonController hex) {
         for (int y = -4; y <= 4; y++) {
