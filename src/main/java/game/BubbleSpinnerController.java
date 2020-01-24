@@ -20,7 +20,7 @@ public class BubbleSpinnerController {
     public BubbleSpinnerController(GameScreen gameScreen, Stage stage, int difficulty) {
         this.gameScreen = gameScreen;
         this.stage = stage;
-        this.shooter = new Shooter(stage);
+        this.shooter = new Shooter(stage, difficulty);
         this.hexagonController = new HexagonController(stage, difficulty);
     }
 
