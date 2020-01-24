@@ -20,31 +20,6 @@ class HexagonControllerTest {
     }
 
     @Test
-    void drawGrid() {
-    }
-
-    @Test
-    void getPoppable() {
-    }
-
-    @Test
-    void getResult() {
-    }
-
-    @Test
-    void checkCollisions() {
-    }
-
-    @Test
-    void popBubbles() {
-    }
-
-    @Test
-    void popFloatingBubbles() {
-
-    }
-
-    @Test
     void formula1() {
         Assertions.assertThat(controller.formula(3)).isEqualTo(5);
     }
@@ -57,11 +32,6 @@ class HexagonControllerTest {
     @Test
     void formula3() {
         Assertions.assertThat(controller.formula(2)).isEqualTo(0);
-    }
-
-    @Test
-    void bubbleMissed() {
-
     }
 
     @Test
