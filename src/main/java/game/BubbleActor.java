@@ -43,11 +43,11 @@ public class BubbleActor extends Image implements Observer {
         super(texture);
         this.stage = stage;
         setSize(SIZE, SIZE);
-        setOrigin(SIZE / 2, SIZE / 2);
+        setOrigin(SIZE / 2f, SIZE / 2f);
         circle = new Circle(
-                getX() + SIZE / 2,
-                getY() + SIZE / 2,
-                SIZE / 2 - 7
+                getX() + SIZE / 2f,
+                getY() + SIZE / 2f,
+                SIZE / 2f
         );
         setPosition(x, y);
     }
