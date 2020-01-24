@@ -35,13 +35,16 @@ public class Achievement {
         if (score.getScoreA() > VETERAN_SCORE) {
             client.addBadge(new Badge(score.getUsername(),
                             BadgesEnum.Badge_Veteran));
-        } else if (score.getScoreA() > LEGEND_SCORE) {
+        }
+        if (score.getScoreA() > LEGEND_SCORE) {
             client.addBadge(new Badge(score.getUsername(),
                             BadgesEnum.Badge_Legend));
-        } else if (score.getScoreA() > GAMER_SCORE) {
+        }
+        if (score.getScoreA() > GAMER_SCORE) {
             client.addBadge(new Badge(score.getUsername(),
                             BadgesEnum.Badge_Gamer));
-        } else if (score.getScoreA() > 0) {
+        }
+        if (score.getScoreA() > 0) {
             client.addBadge(new Badge(score.getUsername(),
                             BadgesEnum.First_Victory));
         }
