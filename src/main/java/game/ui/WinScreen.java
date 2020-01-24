@@ -1,13 +1,15 @@
 package game.ui;
 
+import client.Client;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import game.BubbleSpinner;
 import game.GameSettings;
+import server.Score;
+import server.User;
 
 public class WinScreen implements Screen {
 
@@ -16,9 +18,16 @@ public class WinScreen implements Screen {
     private transient PopupMenu popupMenu;
     private transient Stage stage;
 
-    public WinScreen(BubbleSpinner game, GameSettings gameSettings) {
+    /**
+     * WinScreen constructor.
+     * @param game BubbleSpinner instance.
+     * @param gameSettings Settings for the current game.
+     * @param score Obtained score.
+     */
+    public WinScreen(BubbleSpinner game, GameSettings gameSettings, int score) {
         this.game = game;
         this.gameSettings = gameSettings;
+        this.updateScore(score);
     }
 
     @Override
@@ -66,5 +75,10 @@ public class WinScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    private void updateScore(int score) {
+        User user = game.getUser();
+        new Client().addScore(new Score(user.getUsername(), score, score));
     }
 }

@@ -8,9 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import config.Config;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 
 public class BubbleActor extends Image implements Observer {
 

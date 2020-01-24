@@ -30,6 +30,9 @@ public class BotControllerTest {
 
     private transient BotController controller;
 
+    /**
+     * Setup method.
+     */
     @BeforeEach
     public void before() {
         gameScreen = Mockito.mock(GameScreen.class);

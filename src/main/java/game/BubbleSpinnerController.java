@@ -26,6 +26,9 @@ public class BubbleSpinnerController {
                 difficulty);
     }
 
+    /**
+     * Initialize the hexagon and shooter.
+     */
     public void initialize() {
         this.hexagonController.initialize();
         this.hexagonController.drawGrid();

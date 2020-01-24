@@ -122,7 +122,8 @@ public class BubbleGridTest {
     @Test
     public void gridToWorld() {
         BubbleGrid grid = new BubbleGrid(new Vector2(0,0));
-        Assertions.assertThat(grid.worldToGrid(grid.gridToWorld(10, 10))).isEqualTo(new int[]{10, 10});
+        Assertions.assertThat(grid.worldToGrid(grid.gridToWorld(10, 10)))
+                .isEqualTo(new int[]{10, 10});
     }
 
     @Test

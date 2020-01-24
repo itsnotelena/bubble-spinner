@@ -10,20 +10,27 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import game.BubbleSpinner;
 
 public class PauseMenu extends Stage {
-    private transient GameScreen gameScreen;
+
+    private transient Skin skin = new Skin(Gdx.files.internal("assets/uiskin.json"));
+
     private transient int width = 300;
     private transient int height = 50;
 
+    private transient BubbleSpinner game;
+    private transient GameMenu gameMenu;
+
     /**
-     * Pause menu constructor.
-     * @param gameScreen is the GameScreen instance.
-     * @param skin Layout for the menu.
+     * Pause menu.
+     * @param game BubbleSpinner instance.
+     * @param gameMenu GameMenu instance.
      */
-    public PauseMenu(GameScreen gameScreen, Skin skin) {
+    public PauseMenu(BubbleSpinner game, GameMenu gameMenu) {
         super(new ScreenViewport());
-        this.gameScreen = gameScreen;
+        this.game = game;
+        this.gameMenu = gameMenu;
         Gdx.input.setInputProcessor(this);
 
         String def = "default";
@@ -36,7 +43,7 @@ public class PauseMenu extends Stage {
         resumeButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameScreen.togglePause();
+                gameMenu.togglePause();
             }
 
             @Override
@@ -64,7 +71,7 @@ public class PauseMenu extends Stage {
         exitButton.addListener(new InputListener() {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                gameScreen.game.setScreen(new MenuScreen(gameScreen.game));
+                game.setScreen(new MenuScreen(game));
             }
 
             @Override
@@ -98,12 +105,12 @@ public class PauseMenu extends Stage {
 
         // Space -> Resume Game
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            gameScreen.togglePause();
+            gameMenu.togglePause();
         }
 
         // Escape -> Exit Game
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-            gameScreen.game.setScreen(new MenuScreen(gameScreen.game));
+            game.setScreen(new MenuScreen(game));
         }
     }
 }

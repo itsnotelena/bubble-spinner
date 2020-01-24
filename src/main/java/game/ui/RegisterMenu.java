@@ -3,7 +3,9 @@ package game.ui;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import server.User;
 
 public class RegisterMenu {
@@ -15,18 +17,24 @@ public class RegisterMenu {
     private transient TextButton registerButton;
     private transient Label goBackField;
 
+    /**
+     * Constructor.
+     * @param stage Stage instance.
+     * @param screen RegisterScreen instance.
+     */
     public RegisterMenu(Stage stage, RegisterScreen screen) {
-        registerScreenLabel = UIFactory.createLabel("Please register below",
-                UIFactory.LabelColor.ButtonText);
+        registerScreenLabel = UserInterfaceFactory.createLabel("Please register below",
+                UserInterfaceFactory.LabelColor.ButtonText);
 
-        emailTextField = UIFactory.createTextField("Email");
-        userTextField = UIFactory.createTextField("Username");
-        passTextField = UIFactory.createTextField("Password");
+        emailTextField = UserInterfaceFactory.createTextField("Email");
+        userTextField = UserInterfaceFactory.createTextField("Username");
+        passTextField = UserInterfaceFactory.createTextField("Password");
         passTextField.setPasswordCharacter('*');
         passTextField.setPasswordMode(true);
 
-        registerButton = UIFactory.createTextButton("Register");
-        goBackField = UIFactory.createLabel("Go back", UIFactory.LabelColor.NormalText);
+        registerButton = UserInterfaceFactory.createTextButton("Register");
+        goBackField = UserInterfaceFactory.createLabel("Go back",
+                UserInterfaceFactory.LabelColor.NormalText);
 
         goBackField.addListener(new InputListener() {
             @Override

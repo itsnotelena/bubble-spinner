@@ -23,6 +23,7 @@ public class BotController extends BubbleSpinnerController {
     }
 
     public void initialize() {
+        super.initialize();
         calculateBounds();
     }
 
