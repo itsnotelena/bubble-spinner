@@ -250,12 +250,22 @@ public class HexagonController {
         return mapBubbles;
     }
 
+    /**
+     * Check whether you won or lost the game.
+     * @param gameScreen GameScreen instance.
+     */
     public void checkGameStatus(GameScreen gameScreen) {
         if (lostGame) {
             gameScreen.dispose();
+            return;
         }
 
-        if (getBubbles().size() == THRESHOLD_BUBBLES) {
+        int counter = 0;
+        for (int i = 0; i < mapBubbles.length; ++i) {
+            counter += mapBubbles[i] > 0 ? 1 : 0;
+        }
+        if (counter <= THRESHOLD_BUBBLES) {
+            result += formula(bubbles.size());
             gameScreen.nextLevel();
         }
     }
